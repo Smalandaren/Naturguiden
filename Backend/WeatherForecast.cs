@@ -1,4 +1,4 @@
-namespace Naturguiden
+namespace Backend
 {
     public class WeatherForecast
     {
