@@ -1,6 +1,24 @@
 @Backend_HostAddress = http://localhost:5112
 
-GET {{Backend_HostAddress}}/weatherforecast/
+GET {{Backend_HostAddress}}/Test/
 Accept: application/json
+
+###
+
+POST {{Backend_HostAddress}}/Test/
+Content-Type: application/json
+
+"Hej Värld"
+
+###
+
+PUT {{Backend_HostAddress}}/Test/0
+Content-Type: application/json
+
+"Hello! World!"
+
+###
+
+DELETE {{Backend_HostAddress}}/Test/0
 
 ###
