@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "cross-env NODE_EXTRA_CA_CERTS=./localhost-cert.cer next dev --turbopack",
+    "setup-env": "cross-env NODE_EXTRA_CA_CERTS=./localhost-cert.cer",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

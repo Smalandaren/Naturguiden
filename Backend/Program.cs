@@ -8,6 +8,15 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5112); // HTTP port
+    options.ListenLocalhost(7055, listenOptions =>
+    {
+        listenOptions.UseHttps(); // Enables HTTPS on port 7055
+    });
+});
+
 // CORS konfiguration. Krävs för att kommunikation mellan webbläsare och API ska fungera
 builder.Services.AddCors(options =>
 {
