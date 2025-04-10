@@ -41,6 +41,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Registrera våra egna services
 builder.Services.AddScoped<PlacesService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<VisitsService>();
 
 // Registrera cookie autentisering
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
