@@ -17,24 +17,24 @@ public class VisitsService
         return await _context.PlaceVisits.FindAsync(placeID, userID) != null; //Returnerar true om den finns, annars false
     }
 
-    public async Task<bool> RegisterVisit(PlaceVisit visit)
+    public async Task<bool> RegisterVisit(VisitRequest visit)
     {
         if(await _context.PlaceVisits.FindAsync(visit.PlaceId, visit.UserId) != null)
         {
             return false;
         }
-        _context.Add(new PlaceVisit { PlaceId = visit.PlaceId, UserId = visit.UserId, CreatedTimestamp = DateTime.UtcNow });
+        _context.PlaceVisits.Add(new PlaceVisit { PlaceId = visit.PlaceId, UserId = visit.UserId});
         await _context.SaveChangesAsync();
         return true;
     }
 
-    public async Task<bool> RemoveVisit(PlaceVisit visit)
+    public async Task<bool> RemoveVisit(VisitRequest request)
     {
-        if (await _context.PlaceVisits.FindAsync(visit.PlaceId, visit.UserId) == null)
+        if (await _context.PlaceVisits.FindAsync(request.PlaceId, request.UserId) == null)
         {
             return false;
         }
-        _context.Remove(_context.PlaceVisits.FindAsync(visit.PlaceId, visit.UserId));
+        _context.PlaceVisits.Remove(new PlaceVisit { PlaceId = request.PlaceId, UserId = request.UserId });
         await _context.SaveChangesAsync();
         return true;
     }

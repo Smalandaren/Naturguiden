@@ -1,4 +1,5 @@
 ﻿using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Text.Json;
@@ -16,13 +17,11 @@ public class VisitsController : ControllerBase
     }
 
     [HttpPost("check-visit")]
-    public async Task<IActionResult> HasVisited([FromBody] JsonElement data)
+    public async Task<IActionResult> HasVisited([FromBody] VisitRequest request)
     {
         try
         {
-            PlaceVisit visit = JsonSerializer.Deserialize<PlaceVisit>(data);
-
-            if (await _visitsService.HasVisited(visit.PlaceId, visit.UserId))
+            if (await _visitsService.HasVisited(request.PlaceId, request.UserId))
             {
                 return Ok(true);
             }
@@ -34,13 +33,13 @@ public class VisitsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost]
-    public async Task<IActionResult> RegisterVisit([FromBody] JsonElement data)
+    public async Task<IActionResult> RegisterVisit([FromBody] VisitRequest request)
     {
         try
         {
-            PlaceVisit visit = JsonSerializer.Deserialize<PlaceVisit>(data);
-            await _visitsService.RegisterVisit(visit);
+            await _visitsService.RegisterVisit(request);
             return Ok();
         }
         catch (Exception ex)
@@ -49,13 +48,13 @@ public class VisitsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete]
-    public async Task<IActionResult> RemoveVisit([FromBody] JsonElement data)
+    public async Task<IActionResult> RemoveVisit([FromBody] VisitRequest request)
     {
         try
         {
-            PlaceVisit visit = JsonSerializer.Deserialize<PlaceVisit>(data);
-            await _visitsService.RemoveVisit(visit);
+            await _visitsService.RemoveVisit(request);
             return Ok();
         }
         catch (Exception ex)
