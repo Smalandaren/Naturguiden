@@ -17,7 +17,7 @@ public class VisitsService
         return await _context.PlaceVisits.FindAsync(placeID, userID) != null; //Returnerar true om den finns, annars false
     }
 
-    public async Task<bool> RegisterVisit(VisitRequest visit)
+    public async Task<bool> RegisterVisit(PlaceVisit visit)
     {
         if(await _context.PlaceVisits.FindAsync(visit.PlaceId, visit.UserId) != null)
         {
@@ -28,13 +28,13 @@ public class VisitsService
         return true;
     }
 
-    public async Task<bool> RemoveVisit(VisitRequest request)
+    public async Task<bool> RemoveVisit(PlaceVisit request)
     {
         if (await _context.PlaceVisits.FindAsync(request.PlaceId, request.UserId) == null)
         {
             return false;
         }
-        _context.PlaceVisits.Remove(new PlaceVisit { PlaceId = request.PlaceId, UserId = request.UserId });
+        _context.PlaceVisits.Remove(await _context.PlaceVisits.FindAsync(request.PlaceId, request.UserId));
         await _context.SaveChangesAsync();
         return true;
     }

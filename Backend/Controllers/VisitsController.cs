@@ -1,7 +1,10 @@
 ﻿using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Text.Json;
 
 
@@ -35,11 +38,16 @@ public class VisitsController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> RegisterVisit([FromBody] VisitRequest request)
+    public async Task<IActionResult> RegisterVisit([FromBody] string placeId)
     {
         try
         {
-            await _visitsService.RegisterVisit(request);
+            int placeIdInt = Int32.Parse(placeId);
+            ClaimsPrincipal currentUser = this.User;
+            int currentUserID = Int32.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value);
+            Console.WriteLine(currentUserID);
+
+            await _visitsService.RegisterVisit(new PlaceVisit { PlaceId = placeIdInt, UserId = currentUserID });
             return Ok();
         }
         catch (Exception ex)
@@ -50,11 +58,15 @@ public class VisitsController : ControllerBase
 
     [Authorize]
     [HttpDelete]
-    public async Task<IActionResult> RemoveVisit([FromBody] VisitRequest request)
+    public async Task<IActionResult> RemoveVisit([FromBody] string placeId)
     {
         try
         {
-            await _visitsService.RemoveVisit(request);
+            int placeIdInt = Int32.Parse(placeId);
+            ClaimsPrincipal currentUser = this.User;
+            int currentUserID = Int32.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            await _visitsService.RemoveVisit(new PlaceVisit { PlaceId = placeIdInt, UserId = currentUserID});
             return Ok();
         }
         catch (Exception ex)
