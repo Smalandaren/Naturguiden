@@ -20,7 +20,12 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetBasicProfileInfo()
         {
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int userId = Int32.Parse(userIdString);
+
+            if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
+            {
+                return Unauthorized("Invalid user id");
+            }
+
             var profile = await _profileService.GetBasicProfileInfoAsync(userId);
             return Ok(profile);
         }
