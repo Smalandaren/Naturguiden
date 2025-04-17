@@ -69,6 +69,13 @@ public class AuthController : ControllerBase
             return Conflict(new { Message = "A user with this email already exists." });
         }
 
+        // Logga in användaren efter lyckad registrering
+        var claims = new List<Claim> {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) // Koppla användarens ID till sessionen (cookien)
+        };
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal); // Skapa sessionen
         return Ok(new { Message = "Registration successful" });
     }
 
