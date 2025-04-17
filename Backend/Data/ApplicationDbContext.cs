@@ -209,7 +209,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.Email, "Users_email_key").IsUnique();
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.CreatedTimestamp)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")

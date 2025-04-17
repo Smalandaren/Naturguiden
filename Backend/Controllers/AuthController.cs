@@ -52,6 +52,24 @@ public class AuthController : ControllerBase
         return Ok(new { Message = "Login successful" });
     }
 
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest register)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var user = await _authService.RegisterAsync(register.Email, register.Password, register.FirstName, register.LastName);
+
+        if (user == null)
+        {
+            return Conflict(new { Message = "A user with this email already exists." });
+        }
+
+        return Ok(new { Message = "Registration successful" });
+    }
+
     [Authorize]
     [HttpPost("log-out")]
     public async Task<IActionResult> Logout()
