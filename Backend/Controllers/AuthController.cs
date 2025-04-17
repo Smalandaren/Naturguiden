@@ -27,6 +27,7 @@ public class AuthController : ControllerBase
         return Ok(new { Message = "User is authenticated and authorized" });
     }
 
+    [UnauthorizedOnly]
     [HttpPost("log-in")]
     public async Task<IActionResult> Login([FromBody] LoginRequest login)
     {
@@ -52,6 +53,7 @@ public class AuthController : ControllerBase
         return Ok(new { Message = "Login successful" });
     }
 
+    [UnauthorizedOnly]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest register)
     {
