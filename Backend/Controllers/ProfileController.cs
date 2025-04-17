@@ -17,7 +17,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBasicProfileInfo()
+        public async Task<ActionResult<ProfileBasicsDTO>> GetBasicProfileInfo()
         {
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 

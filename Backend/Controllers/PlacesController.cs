@@ -14,14 +14,14 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllNatureSpots()
+        public async Task<ActionResult<List<PlaceDTO>>> GetAllNatureSpots()
         {
             var places = await _placesService.GetAllAsync();
             return Ok(places);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<PlaceDTO>> Get(int id)
         {
             var place = await _placesService.GetAsync(id);
             if (place != null)
