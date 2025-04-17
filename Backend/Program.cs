@@ -2,6 +2,7 @@ using Backend.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NaturguidenServerPrototype.Services;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
@@ -64,8 +65,11 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(options =>
+    {
+        options.RouteTemplate = "/openapi/{documentName}.json";
+    });
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
