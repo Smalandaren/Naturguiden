@@ -34,7 +34,7 @@ export default function RegisterPage() {
       if (!response.ok) {
         throw new Error(`Fetch error: ${response.statusText}`);
       }
-      router.replace("login");
+      router.replace("/");
       router.refresh();
     } catch (error: any) {
       console.log(error);
