@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
+import Link from "next/link";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ClientPage() {
@@ -46,7 +47,7 @@ export default function ClientPage() {
       <div className="w-[90%] md:w-[50%] 2xl:w-[25%]">
         <div className="flex flex-col items-center gap-4">
           <h1 className="font-bold tracking-tight text-3xl sm:text-4xl">
-            Authentication
+            Inloggning
           </h1>
           <Input
             type="email"
@@ -72,9 +73,15 @@ export default function ClientPage() {
             {isLoading ? (
               <LoaderCircle className="animate-spin h-5 w-5" />
             ) : (
-              "Log in"
+              "Logga in"
             )}
           </Button>
+          <p className="text-muted-foreground">eller</p>
+          <Link className="w-full" href="register">
+            <Button className="w-full" variant="outline">
+              Skapa konto
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

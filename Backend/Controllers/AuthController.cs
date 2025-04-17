@@ -27,6 +27,7 @@ public class AuthController : ControllerBase
         return Ok(new { Message = "User is authenticated and authorized" });
     }
 
+    [UnauthorizedOnly]
     [HttpPost("log-in")]
     public async Task<IActionResult> Login([FromBody] LoginRequest login)
     {
@@ -50,6 +51,32 @@ public class AuthController : ControllerBase
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal); // Skapa sessionen
         return Ok(new { Message = "Login successful" });
+    }
+
+    [UnauthorizedOnly]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest register)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var user = await _authService.RegisterAsync(register.Email, register.Password, register.FirstName, register.LastName);
+
+        if (user == null)
+        {
+            return Conflict(new { Message = "A user with this email already exists." });
+        }
+
+        // Logga in användaren efter lyckad registrering
+        var claims = new List<Claim> {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) // Koppla användarens ID till sessionen (cookien)
+        };
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal); // Skapa sessionen
+        return Ok(new { Message = "Registration successful" });
     }
 
     [Authorize]
