@@ -27,7 +27,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const authenticated = await checkAuth();
+  const authCheck = await checkAuth();
   return (
     <html lang="sv" suppressHydrationWarning>
       <body
@@ -40,7 +40,10 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className="absolute sm:fixed flex gap-4 top-5 right-5">
-            <TopRightAuthButton authenticated={authenticated} />
+            <TopRightAuthButton
+              authenticated={authCheck.authenticated}
+              user={authCheck.user}
+            />
             <ThemeSwitcher />
           </div>
           <TooltipProvider>{children}</TooltipProvider>

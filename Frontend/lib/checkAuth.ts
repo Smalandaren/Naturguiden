@@ -1,33 +1,38 @@
+import { AuthCheckResponse } from "@/types/AuthCheckResponse";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export async function checkAuth(): Promise<boolean> {
-  const cookieStore = await cookies();
-
-  const sessionCookie = cookieStore.get("NaturguidenCookie");
-
-  if (!sessionCookie) {
-    return false;
-  }
-
+export async function checkAuth(): Promise<AuthCheckResponse> {
+  const sessionCookie = await getSessionCookie();
   try {
     const response = await fetch(`${apiUrl}/auth/check-auth`, {
       cache: "no-cache",
       method: "GET",
       headers: {
-        Cookie: `${sessionCookie.name}=${sessionCookie.value}`,
+        Cookie: `${sessionCookie?.name}=${sessionCookie?.value}`,
       },
     });
 
     if (!response.ok) {
-      return false;
+      return {
+        authenticated: false,
+        user: null,
+      };
     }
 
-    return true;
+    const json = (await response.json()) as AuthCheckResponse;
+
+    return {
+      authenticated: json.authenticated,
+      user: json.user,
+    };
   } catch (error: any) {
     console.log(error.message);
-    return false;
+    return {
+      authenticated: false,
+      user: null,
+    };
   }
 }
 

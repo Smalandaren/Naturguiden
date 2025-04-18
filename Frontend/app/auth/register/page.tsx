@@ -6,9 +6,9 @@ export default async function AuthPage() {
   let isAuthenticated = false;
 
   try {
-    const authenticated = await checkAuth();
+    const authCheck = await checkAuth();
 
-    if (authenticated) {
+    if (authCheck.authenticated) {
       isAuthenticated = true;
     }
   } catch (error: any) {

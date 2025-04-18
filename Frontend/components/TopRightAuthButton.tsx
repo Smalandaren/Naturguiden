@@ -1,14 +1,25 @@
 "use client";
-import { LogIn, LogOut, User } from "lucide-react";
+import { LogIn, LogOut, UserCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ProfileBasics } from "@/types/ProfileBasics";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function TopRightAuthButton({
   authenticated,
+  user,
 }: {
   authenticated: boolean;
+  user: ProfileBasics | null;
 }) {
   const router = useRouter();
 
@@ -31,13 +42,34 @@ export default function TopRightAuthButton({
     }
   }
 
-  if (authenticated) {
+  function InitialsAvatar({ user }: { user: ProfileBasics | null }) {
     return (
-      <Button variant="outline" onClick={handleLogOut}>
-        <LogOut />
-        Logga ut
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button className="bg-primary" size="icon">
+            <UserCircle />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>
+            {user?.firstName} {user?.lastName}
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <Link href="/profile">
+            <DropdownMenuItem>Min profil</DropdownMenuItem>
+          </Link>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleLogOut}>
+            <LogOut />
+            <span>Logga ut</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
+  }
+
+  if (authenticated) {
+    return <InitialsAvatar user={user} />;
   } else {
     return (
       <Link href="/auth/login">
