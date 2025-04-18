@@ -13,18 +13,32 @@ namespace NaturguidenServerPrototype.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
+    private readonly ProfileService _profileService;
 
-    public AuthController(AuthService authService)
+    public AuthController(AuthService authService, ProfileService profileService)
     {
         _authService = authService;
+        _profileService = profileService;
     }
 
     [Authorize]
     [HttpGet("check-auth")]
-    public IActionResult CheckAuth()
+    public async Task<ActionResult<AuthCheckResponse>> CheckAuth()
     {
         // Endast autentiserade användare kan nå den här punkten
-        return Ok(new { Message = "User is authenticated and authorized" });
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
+        {
+            return Unauthorized("Invalid user id");
+        }
+
+        var profileInfo = await _profileService.GetBasicProfileInfoAsync(userId);
+        var response = new AuthCheckResponse
+        {
+            Authenticated = true,
+            User = profileInfo
+        };
+        return response;
     }
 
     [UnauthorizedOnly]

@@ -54,9 +54,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         c.Response.StatusCode = StatusCodes.Status401Unauthorized;
         c.Response.ContentType = "application/json";
-        return c.Response.WriteAsJsonAsync(new
+        return c.Response.WriteAsJsonAsync(new AuthCheckResponse
         {
-            message = "Unauthorized"
+            Authenticated = false
         });
     };
 });
