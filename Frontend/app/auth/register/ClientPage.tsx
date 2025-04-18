@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function RegisterPage() {
@@ -31,14 +32,17 @@ export default function RegisterPage() {
           "Content-Type": "application/json",
         },
       });
+      if (response.status == 409) {
+        throw new Error("E-postadressen är redan kopplad till ett konto");
+      }
       if (!response.ok) {
-        throw new Error(`Fetch error: ${response.statusText}`);
+        throw new Error(`Ett fel uppstod`);
       }
       router.replace("/");
       router.refresh();
     } catch (error: any) {
       console.log(error);
-      alert("Error: " + error.message);
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ClientPage() {
@@ -24,14 +25,16 @@ export default function ClientPage() {
           "Content-Type": "application/json",
         },
       });
-      if (!response.ok) {
-        throw new Error(`Fetch error: ${response.statusText}`);
+      if (response.status == 401) {
+        throw new Error("Felaktig e-post eller lösenord");
       }
-      router.replace("/");
-      router.refresh();
+      if (response.ok) {
+        router.replace("/");
+        router.refresh();
+      }
     } catch (error: any) {
       console.log(error);
-      alert("Error: " + error.message);
+      toast.error(error.message);
     }
     setIsLoading(false);
   }

@@ -1,6 +1,7 @@
 import { Place } from "@/types/Place";
 import ClientPage from "./ClientPage";
 import { getSessionCookie } from "@/lib/checkAuth";
+import { ErrorScreen } from "@/components/ErrorScreen";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 async function getPlace(id: string): Promise<Place | null> {
@@ -39,9 +40,14 @@ export default async function ViewPlace({
       return <ClientPage place={place} />;
     }
 
-    return <p>ERROR!</p>;
+    throw new Error("Could not get place");
   } catch (error: any) {
     console.error("Error fetching courts:", error);
-    return <p>ERROR! (catch)</p>;
+    return (
+      <ErrorScreen
+        title="Ett fel uppstod"
+        subtitle="Platsen kunde inte visas"
+      />
+    );
   }
 }

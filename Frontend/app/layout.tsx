@@ -6,6 +6,7 @@ import ThemeSwitcher from "@/components/theme-switcher";
 import TopRightAuthButton from "@/components/TopRightAuthButton";
 import { checkAuth } from "@/lib/checkAuth";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default async function RootLayout({
             <ThemeSwitcher />
           </div>
           <TooltipProvider>{children}</TooltipProvider>
+          <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>
     </html>

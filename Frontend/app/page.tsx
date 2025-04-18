@@ -1,3 +1,4 @@
+import { ErrorScreen } from "@/components/ErrorScreen";
 import ClientPage from "./ClientPage";
 import { Place } from "@/types/Place";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -29,9 +30,14 @@ export default async function Home() {
       return <ClientPage places={places} />;
     }
 
-    return <p>ERROR!</p>;
+    throw new Error("Could not fetch places");
   } catch (error: any) {
     console.error("Error fetching places:", error);
-    return <p>ERROR! (catch)</p>;
+    return (
+      <ErrorScreen
+        title="Ett fel uppstod"
+        subtitle="Platserna kunde inte hämtas"
+      />
+    );
   }
 }
