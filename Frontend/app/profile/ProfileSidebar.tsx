@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { TreePine, UserCircle } from "lucide-react";
+import { Cog, TreePine, UserCircle } from "lucide-react";
 
 import {
   Sidebar,
@@ -18,6 +18,11 @@ export const items = [
     title: "Min profil",
     url: "",
     icon: UserCircle,
+  },
+  {
+    title: "Inställningar",
+    url: "settings",
+    icon: Cog,
   },
   {
     title: "Exempel",
