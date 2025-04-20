@@ -7,6 +7,7 @@ import { ProfileBasics } from "@/types/ProfileBasics";
 import ThemeSwitcher from "@/components/theme-switcher";
 import { useEffect, useState } from "react";
 import { ErrorScreen } from "@/components/ErrorScreen";
+import { Separator } from "@/components/ui/separator";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ProfilePage() {
@@ -58,39 +59,31 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center p-4">
-      <Card className="w-full max-w-md p-0">
-        <CardHeader className="flex flex-col items-center gap-4 p-2 bg-primary text-white">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold">
-              {profile.firstName} {profile.lastName}
-            </h1>
-            <p className="text-sm opacity-90">ID: {profile.id}</p>
+    <div className="mx-6 pt-16">
+      <h1 className="text-3xl font-bold mb-4">Min profil</h1>
+      <Separator />
+      <div className="mt-4 max-w-2xl">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-row gap-6">
+            <LabelAndInput title="Förnamn" value={profile.firstName} />
+            <LabelAndInput title="Efternamn" value={profile.lastName} />
           </div>
-        </CardHeader>
-        <CardContent className="space-y-4 p-6">
-          <div className="space-y-8">
-            <div className="flex flex-col gap-2">
-              <Label>Ditt namn</Label>
-              <Input
-                disabled
-                value={`${profile.firstName} ${profile.lastName}`}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label>Din e-post</Label>
-              <Input disabled value={profile.email} />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label>Konto skapat</Label>
-              <Input
-                disabled
-                value={format(new Date(profile.createdAt), "d MMMM yyyy")}
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          <LabelAndInput title="E-postadress" value={profile.email} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LabelAndInput({ title, value }: { title: string; value: string }) {
+  return (
+    <div className="w-full flex flex-col gap-1">
+      <Label className="text-md">{title}</Label>
+      <Input
+        disabled
+        className="h-11 px-4 !text-lg !opacity-100"
+        defaultValue={value}
+      />
     </div>
   );
 }
