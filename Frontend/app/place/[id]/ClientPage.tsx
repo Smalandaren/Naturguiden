@@ -8,8 +8,10 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { Place } from "@/types/Place";
 import UtilityBadge from "@/components/UtilityBadge";
+import RegisterVisitButton from "@/components/RegisterVisitButton"; 
+import { ProfileBasics } from "@/types/ProfileBasics";
 
-export default function NatureSpotDetail({ place }: { place: Place }) {
+export default function NatureSpotDetail({ place, user }: { place: Place, user: ProfileBasics | null }) {
   const openInMaps = () => {
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`,
@@ -34,6 +36,8 @@ export default function NatureSpotDetail({ place }: { place: Place }) {
           <div className="flex gap-3 items-center flex-row">
             <TreePine size={32} color="green" />
             <h1 className="text-3xl font-bold">{place.name}</h1>
+            <RegisterVisitButton place={place} user={user}>
+            </RegisterVisitButton>
           </div>
         </div>
 

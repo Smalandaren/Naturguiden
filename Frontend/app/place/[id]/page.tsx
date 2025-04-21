@@ -2,7 +2,10 @@ import { Place } from "@/types/Place";
 import ClientPage from "./ClientPage";
 import { getSessionCookie } from "@/lib/checkAuth";
 import { ErrorScreen } from "@/components/ErrorScreen";
+import { checkAuth } from "@/lib/checkAuth";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+const authCheck = await checkAuth();
 
 async function getPlace(id: string): Promise<Place | null> {
   try {
@@ -37,7 +40,7 @@ export default async function ViewPlace({
     const place = await getPlace(id);
 
     if (place) {
-      return <ClientPage place={place} />;
+      return <ClientPage place={place} user={authCheck.user} />;
     }
 
     throw new Error("Could not get place");
