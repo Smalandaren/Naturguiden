@@ -5,17 +5,17 @@ import { ProfileBasics } from "@/types/ProfileBasics";
 import { Island_Moments } from "next/font/google";
 import { get } from "http";
 import { error } from "console";
+import { resolve } from "path";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function RegisterVisitButton({place, user}: {place: Place, user: ProfileBasics | null}) {
-    const [isVisited, setIsVisited] = useState(Boolean);
-    getIsVisited();
+    const [isVisited, setIsVisited] = useState(getIsVisited());
 
-    async function getIsVisited() {
+    async function getIsVisited(): Promise<Boolean | null> {
         try{
             if (user === null) {
-                return;
+                return false;
             }
 
             const response = await fetch(`${apiUrl}/visits/check-visit`, {
@@ -36,20 +36,16 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
                     throw new Error(`Ett fel uppstod`);
                 }
 
-                if (response.text.toString() == "true") {
-                    setIsVisited(true);
-                } else {
-                    setIsVisited(false);
-                }
-                
+                const json = await response.json();
+                return json;
         } catch (error:any) {
             console.log(error)
-            setIsVisited(false);
+            return false;
         }
     }
 
     async function HandleClick() {
-        if (isVisited == false) {            
+        if (isVisited == Promise.resolve(false)) {            
             try {
                 const response = await fetch(`${apiUrl}/visits`, {
                 method: "POST",
@@ -64,7 +60,7 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
                 });
 
                 if (response.ok) {
-                    setIsVisited(true);
+                    setIsVisited(Promise.resolve(true));
                 }
 
                 if (!response.ok) {
@@ -83,7 +79,7 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
             <></>
         ) : (
         <Button onClick={HandleClick}>
-            Besökt {isVisited === false ? (<></>) : (<>✓</>)}
+            Besökt {isVisited == Promise.resolve(false) ? (<></>) : (<>✓</>)}
         </Button>
     )}
     </>
