@@ -15,16 +15,27 @@ public class SearchService
 
     public async Task<List<PlaceDTO>> Search(String searchTerm)
     {
-        List<Place> matches = new List<Place>();
+        List<Place> nameMatches = new List<Place>();
+        List<Place> descMatches = new List<Place>();
+
         List<PlaceDTO> matchesDTO = new List<PlaceDTO>();
 
-        matches = _context.Places.Where(p => p.Name.Contains(searchTerm)).ToList();
+        nameMatches = _context.Places.Where(p => p.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+        descMatches = _context.Places.Where(p => p.Description.ToLower().Contains(searchTerm.ToLower()) && !nameMatches.Contains(p)).ToList();
 
-        if (matches.Count > 0)
+
+        if (nameMatches.Count > 0)
         {
-            for (int i = 0; i < matches.Count; i++)
+            for (int i = 0; i < nameMatches.Count; i++)
             {
-                matchesDTO.Add(await _placesService.GetAsync(matches[i].Id));
+                matchesDTO.Add(await _placesService.GetAsync(nameMatches[i].Id));
+            }
+        }
+        if (descMatches.Count > 0)
+        {
+            for(int i = 0; i < descMatches.Count; i++)
+            {
+                matchesDTO.Add(await _placesService.GetAsync(descMatches[i].Id));
             }
         }
         return matchesDTO;
