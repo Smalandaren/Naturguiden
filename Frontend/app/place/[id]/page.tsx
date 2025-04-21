@@ -5,7 +5,7 @@ import { ErrorScreen } from "@/components/ErrorScreen";
 import { checkAuth } from "@/lib/checkAuth";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const authCheck = await checkAuth();
+
 
 async function getPlace(id: string): Promise<Place | null> {
   try {
@@ -38,7 +38,7 @@ export default async function ViewPlace({
   const { id } = await params;
   try {
     const place = await getPlace(id);
-
+    const authCheck = await checkAuth();
     if (place) {
       return <ClientPage place={place} user={authCheck.user} />;
     }

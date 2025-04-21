@@ -12,7 +12,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export default function RegisterVisitButton({place, user}: {place: Place, user: ProfileBasics | null}) {
     const [isVisited, setIsVisited] = useState(getIsVisited());
 
-    async function getIsVisited(): Promise<Boolean | null> {
+    async function getIsVisited(): Promise<boolean | null> {
         try{
             if (user === null) {
                 return false;
@@ -22,16 +22,14 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
                 method: "POST",
                 credentials: "include",
                 body: JSON.stringify({
-                    UserId: user?.id,
+                    UserId: user.id,
                     PlaceId: place.id 
                 }),
                 headers: {
                     "Content-Type": "application/json",
                 },
                 });
-    
-                console.log(response.text.toString());
-    
+        
                 if (!response.ok) {
                     throw new Error(`Ett fel uppstod`);
                 }
@@ -78,8 +76,9 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
         user === null ? (
             <></>
         ) : (
+            
         <Button onClick={HandleClick}>
-            Besökt {isVisited == Promise.resolve(false) ? (<></>) : (<>✓</>)}
+            Besökt {isVisited == Promise.resolve(false) ? (<></>) : (<>✓</>)} 
         </Button>
     )}
     </>

@@ -20,7 +20,7 @@ public class VisitsController : ControllerBase
     }
 
     [HttpPost("check-visit")]
-    public async Task<IActionResult> HasVisited([FromBody] VisitRequest request)
+    public async Task<ActionResult<bool>> HasVisited([FromBody] VisitRequest request)
     {
         try
         {
