@@ -59,6 +59,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             Authenticated = false
         });
     };
+}).AddGoogle(options =>
+{
+    options.ClientId = "698761536465-nm4jtj1nb4oadfiginkcls1597dv6bni.apps.googleusercontent.com";
+    options.ClientSecret = "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";
 });
 
 var app = builder.Build();
