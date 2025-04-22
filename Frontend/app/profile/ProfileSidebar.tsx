@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Cog, TreePine, UserCircle } from "lucide-react";
+import { ArrowLeft, Cog, TreePine, UserCircle } from "lucide-react";
 
 import {
   Sidebar,
@@ -41,6 +41,22 @@ export function ProfileSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarMenuItem className="mb-8">
+                <SidebarMenuButton
+                  size="lg"
+                  className="[&>svg]:size-5 transition"
+                  asChild
+                >
+                  <Link href="/">
+                    <>
+                      <ArrowLeft />
+                      <span className="text-lg font-semibold">
+                        Till startsidan
+                      </span>
+                    </>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               {items.map((item) => {
                 const fullPath = item.url
                   ? `${basePath}/${item.url}`
