@@ -14,12 +14,12 @@ public class VisitsService
 
     public async Task<bool> HasVisited(int placeID, int userID)
     {
-        return await _context.PlaceVisits.FindAsync(placeID, userID) != null; //Returnerar true om den finns, annars false
+        return await _context.PlaceVisits.FindAsync(userID, placeID) != null; //Returnerar true om den finns, annars false
     }
 
     public async Task<bool> RegisterVisit(PlaceVisit visit)
     {
-        if(await _context.PlaceVisits.FindAsync(visit.PlaceId, visit.UserId) != null)
+        if(await _context.PlaceVisits.FindAsync(visit.UserId, visit.PlaceId) != null)
         {
             return false;
         }
@@ -30,11 +30,11 @@ public class VisitsService
 
     public async Task<bool> RemoveVisit(PlaceVisit request)
     {
-        if (await _context.PlaceVisits.FindAsync(request.PlaceId, request.UserId) == null)
+        if (await _context.PlaceVisits.FindAsync(request.UserId, request.PlaceId) == null)
         {
             return false;
         }
-        _context.PlaceVisits.Remove(await _context.PlaceVisits.FindAsync(request.PlaceId, request.UserId));
+        _context.PlaceVisits.Remove(await _context.PlaceVisits.FindAsync(request.UserId, request.PlaceId));
         await _context.SaveChangesAsync();
         return true;
     }
