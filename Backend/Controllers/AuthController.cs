@@ -50,6 +50,11 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
+        if (!EmailValidator.IsValidEmail(login.Email))
+        {
+            return BadRequest(new { message = "Invalid email format" });
+        }
+
         var user = await _authService.AuthenticateAsync(login.Email, login.Password);
 
         if (user == null)
@@ -74,6 +79,11 @@ public class AuthController : ControllerBase
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
+        }
+
+        if (!EmailValidator.IsValidEmail(register.Email))
+        {
+            return BadRequest(new { message = "Invalid email format" });
         }
 
         var user = await _authService.RegisterAsync(register.Email, register.Password, register.FirstName, register.LastName);
