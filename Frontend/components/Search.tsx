@@ -9,14 +9,10 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 export default function Search(){
-
-    const [query, setQuery] = useState(String);
-
     function search(formData: { get: (arg0: string) => any; }){
-        setQuery(formData.get("query"));
+        var query = formData.get("query")
         getSearched(query);
     }
-
     return(
         <>
             <form action={search}>
@@ -36,7 +32,7 @@ async function getSearched(query: string): Promise<Place[] | null> {
             method: "POST",
             credentials: "include",
             body: JSON.stringify({
-                searchTerm: 'L'
+                searchTerm: query
             }),
             headers: {
                 "Content-Type": "application/json",
