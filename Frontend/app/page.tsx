@@ -22,9 +22,14 @@ async function getPlaces(): Promise<Place[] | null> {
   }
 }
 
-export default async function Home() {
+export default async function Home({searchPlaces}: {searchPlaces: Place[]}) {
   try {
-    const places = await getPlaces();
+    var places;
+    if(searchPlaces == null){
+      places = await getPlaces();
+    } else{
+      places = searchPlaces;
+    }
 
     if (places) {
       return <ClientPage places={places} />;

@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/card";
 import { Place } from "@/types/Place";
 import UtilityBadge from "@/components/UtilityBadge";
+import Search from "@/components/Search";
+
+
 
 export default function Home({ places }: { places: Place[] }) {
   return (
@@ -24,12 +27,15 @@ export default function Home({ places }: { places: Place[] }) {
         </p>
       </div>
 
+      
+
       {places.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-muted-foreground">Inga naturplatser hittades.</p>
         </div>
       ) : (
         <div className="flex flex-col space-y-4 max-w-3xl mx-auto">
+          <Search></Search>
           {places.map((place) => (
             <Link href={`/place/${place.id}`} key={place.id}>
               <Card className="w-full gap-0 hover:border-primary transition">
