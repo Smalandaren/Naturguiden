@@ -10,7 +10,6 @@ export function VisitedPlaceCard({ place }: { place: Place }) {
       <div className="flex items-center px-3 gap-3">
         <TreePine size={30} color="green" />
 
-        {/* Title and subtitle */}
         <div className="flex-grow min-w-0">
           <h3 className="font-medium text-base truncate">{place.name}</h3>
           <p className="text-sm text-muted-foreground truncate">
@@ -18,7 +17,6 @@ export function VisitedPlaceCard({ place }: { place: Place }) {
           </p>
         </div>
 
-        {/* Button on the right */}
         <Link href={`/place/${place.id}`}>
           <Button size="sm">Visa platsen</Button>
         </Link>
