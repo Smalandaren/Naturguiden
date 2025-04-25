@@ -29,11 +29,6 @@ export const items = [
     url: "settings",
     icon: Cog,
   },
-  {
-    title: "Exempel",
-    url: "example",
-    icon: TreePine,
-  },
 ];
 
 export function ProfileSidebar() {
