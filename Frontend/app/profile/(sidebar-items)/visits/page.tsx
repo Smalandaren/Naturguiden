@@ -59,7 +59,7 @@ export default function ProfilePage() {
     <div className="mx-6 pt-16">
       <h1 className="text-3xl font-bold mb-4">Mina besök</h1>
       <Separator />
-      <div className="mt-4 max-w-2xl">
+      <div className="flex flex-col gap-6 mt-4 max-w-2xl">
         {visitedPlaces.map((place) => {
           return <VisitedPlaceCard key={place.id} place={place} />;
         })}
