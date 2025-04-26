@@ -55,6 +55,18 @@ export default function ProfilePage() {
     );
   }
 
+  if (visitedPlaces != null && visitedPlaces.length < 1) {
+    return (
+      <div className="my-auto">
+        <ErrorScreen
+          title="Inga besökta platser"
+          subtitle="Du har inte markerat några platser som besökta än"
+          showIcon={false}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-6 pt-16">
       <h1 className="text-3xl font-bold mb-4">Mina besök</h1>
