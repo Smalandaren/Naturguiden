@@ -41,7 +41,7 @@ public class GoogleAuthController : ControllerBase
         if (!result.Succeeded)
         {
             await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
-            return Unauthorized("Google authentication failed");
+            return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
         }
 
         var externalPrincipal = result.Principal;
@@ -55,20 +55,27 @@ public class GoogleAuthController : ControllerBase
 
         if (email != null && googleId != null && firstName != null && lastName != null)
         {
-            User user = await _authService.AuthenticateGoogleAsync(googleId, email, firstName, lastName);
-            var claims = new List<Claim>
+            try
+            {
+                User user = await _authService.AuthenticateGoogleAsync(googleId, email, firstName, lastName);
+                var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+            }
+            catch (Exception)
+            {
+                return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
+            }
         }
         else
         {
             // Något gick fel, all nödvändig data för inloggning mottogs ej från Google
             await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
-            return Unauthorized("Google authentication failed");
+            return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
         }
 
         return Redirect("https://localhost:3000");
