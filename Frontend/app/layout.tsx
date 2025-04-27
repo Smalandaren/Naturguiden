@@ -47,8 +47,8 @@ export default async function RootLayout({
             />
             <ThemeSwitcher />
           </div>
-          <TooltipProvider>{children}</TooltipProvider>
           <Toaster position="top-center" richColors />
+          <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
