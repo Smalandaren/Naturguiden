@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import validator from "email-validator";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function RegisterPage() {
@@ -34,6 +35,9 @@ export default function RegisterPage() {
       });
       if (response.status == 409) {
         throw new Error("E-postadressen är redan kopplad till ett konto");
+      }
+      if (response.status == 400) {
+        throw new Error("Ogiltigt format på förfrågan");
       }
       if (!response.ok) {
         throw new Error(`Ett fel uppstod`);
@@ -113,6 +117,7 @@ export default function RegisterPage() {
 
           <Button
             disabled={
+              !validator.validate(emailInput) ||
               !emailInput ||
               !passwordInput ||
               !firstNameInput ||

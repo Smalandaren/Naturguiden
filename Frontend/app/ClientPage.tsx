@@ -10,8 +10,29 @@ import {
 } from "@/components/ui/card";
 import { Place } from "@/types/Place";
 import UtilityBadge from "@/components/UtilityBadge";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function Home({ places }: { places: Place[] }) {
+  const searchParams = useSearchParams();
+
+  // Detta tillåter oss bl.a visa felmeddelande vid Google inloggning. Fråga Thor om mer info.
+  useEffect(() => {
+    const authError = searchParams.get("authError");
+    if (authError) {
+      const errorMessages: Record<string, string> = {
+        GoogleLoginFailed: "Ett fel uppstod under Google-inloggning",
+      };
+
+      const message =
+        errorMessages[authError] || "Ett fel inträffade vid inloggning";
+      toast.error(message);
+
+      window.history.replaceState({}, document.title, window.location.pathname); // Tar bort felkoden från URL
+    }
+  }, [searchParams]);
+
   return (
     <main className="container mx-auto py-8 px-4">
       <div className="text-center mb-10">

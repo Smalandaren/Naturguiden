@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import validator from "email-validator";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ClientPage() {
   const router = useRouter();
-  const [emailInput, setEmailInput] = useState("demo");
-  const [passwordInput, setPasswordInput] = useState("demo");
+  const [emailInput, setEmailInput] = useState("demo@demo.com");
+  const [passwordInput, setPasswordInput] = useState("123");
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleLogin() {
@@ -28,9 +29,14 @@ export default function ClientPage() {
       if (response.status == 401) {
         throw new Error("Felaktig e-post eller lösenord");
       }
+      if (response.status == 400) {
+        throw new Error("Ogiltigt format på förfrågan");
+      }
       if (response.ok) {
         router.replace("/");
         router.refresh();
+      } else {
+        throw new Error("Ett fel uppstod");
       }
     } catch (error: any) {
       console.log(error);
@@ -68,7 +74,10 @@ export default function ClientPage() {
           />
           <Button
             disabled={
-              emailInput.length < 1 || passwordInput.length < 1 || isLoading
+              !validator.validate(emailInput) ||
+              emailInput.length < 1 ||
+              passwordInput.length < 1 ||
+              isLoading
             }
             onClick={handleLogin}
             className="w-full"

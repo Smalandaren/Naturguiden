@@ -20,7 +20,7 @@ public class VisitsController : ControllerBase
     }
 
     [HttpPost("check-visit")]
-    public async Task<IActionResult> HasVisited([FromBody] VisitRequest request)
+    public async Task<ActionResult<bool>> HasVisited([FromBody] VisitRequest request)
     {
         try
         {
@@ -38,16 +38,15 @@ public class VisitsController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> RegisterVisit([FromBody] string placeId)
+    public async Task<IActionResult> RegisterVisit([FromBody] VisitRequest request)
     {
         try
         {
-            int placeIdInt = Int32.Parse(placeId);
             ClaimsPrincipal currentUser = this.User;
             int currentUserID = Int32.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value);
             Console.WriteLine(currentUserID);
 
-            await _visitsService.RegisterVisit(new PlaceVisit { PlaceId = placeIdInt, UserId = currentUserID });
+            await _visitsService.RegisterVisit(new PlaceVisit { PlaceId = request.PlaceId, UserId = currentUserID });
             return Ok();
         }
         catch (Exception ex)
@@ -58,15 +57,14 @@ public class VisitsController : ControllerBase
 
     [Authorize]
     [HttpDelete]
-    public async Task<IActionResult> RemoveVisit([FromBody] string placeId)
+    public async Task<IActionResult> RemoveVisit([FromBody] VisitRequest request)
     {
         try
         {
-            int placeIdInt = Int32.Parse(placeId);
             ClaimsPrincipal currentUser = this.User;
             int currentUserID = Int32.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            await _visitsService.RemoveVisit(new PlaceVisit { PlaceId = placeIdInt, UserId = currentUserID});
+            await _visitsService.RemoveVisit(new PlaceVisit { PlaceId = request.PlaceId, UserId = currentUserID});
             return Ok();
         }
         catch (Exception ex)

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
+using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
 
 public class PlacesService
 {
@@ -89,6 +90,35 @@ public class PlacesService
                             .Select(u => u.Description)
                             .FirstOrDefaultAsync();
         return description;
+    }
+
+    // Hämtar alla platser som en viss användare har besökt
+    public async Task<List<VisitedPlaceDTO>> GetVisitedPlacesByUserIdAsync(int userId)
+    {
+        var visitedPlaces = await _context.PlaceVisits
+                                .Where(pv => pv.UserId == userId)
+                                .Include(pv => pv.Place)
+                                .ToListAsync();
+
+        var result = new List<VisitedPlaceDTO>();
+
+        foreach (var pv in visitedPlaces)
+        {
+            var visitedPlaceDTO = new VisitedPlaceDTO
+            {
+                Id = pv.Place.Id,
+                Name = pv.Place.Name,
+                Description = pv.Place.Description,
+                Latitude = pv.Place.Latitude,
+                Longitude = pv.Place.Longitude,
+                CreatedAt = pv.Place.CreatedTimestamp,
+                VisitedAt = pv.CreatedTimestamp,
+                PlaceUtilities = await GetPlaceUtilitiesAsync(pv.Place.Id)
+            };
+            result.Add(visitedPlaceDTO);
+        }
+
+        return result;
     }
 
 }
