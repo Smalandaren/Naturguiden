@@ -51,13 +51,18 @@ public class GoogleAuthController : ControllerBase
         var firstName = externalPrincipal?.FindFirst(ClaimTypes.GivenName)?.Value;
         var lastName = externalPrincipal?.FindFirst(ClaimTypes.Surname)?.Value;
 
-        Console.WriteLine($"Logged in with Google! Email: {email}, Google ID: {googleId}, First name: {firstName}, Last name: {lastName}");
-
         if (email != null && googleId != null && firstName != null && lastName != null)
         {
             try
             {
-                User user = await _authService.AuthenticateGoogleAsync(googleId, email, firstName, lastName);
+                User? user = await _authService.AuthenticateGoogleAsync(googleId, email, firstName, lastName);
+                if (user == null)
+                {
+                    // Detta är kanske en ful lösning!
+                    // Om AuthenticateGoogleAsync returnerar null så betyder det att
+                    // Google-kontons epost redan finns i databasen, fast inte som ett Google konto
+                    return Redirect("https://localhost:3000?authError=GoogleEmailBelongsToExistingAccount");
+                }
                 var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
@@ -79,6 +84,12 @@ public class GoogleAuthController : ControllerBase
         }
 
         return Redirect("https://localhost:3000");
+    }
+
+    [HttpGet("GoogleLoginDeniedByUser")]
+    public IActionResult GoogleLoginDeniedByUser()
+    {
+        return Redirect("https://localhost:3000?authError=GoogleLoginDeniedByUser");
     }
 
 }

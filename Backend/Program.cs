@@ -62,6 +62,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     };
 }).AddGoogle(options =>
 {
+    options.AccessDeniedPath = "/api/GoogleAuth/GoogleLoginDeniedByUser";
     options.ClientId = "698761536465-nm4jtj1nb4oadfiginkcls1597dv6bni.apps.googleusercontent.com";
     options.ClientSecret = "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";
 });

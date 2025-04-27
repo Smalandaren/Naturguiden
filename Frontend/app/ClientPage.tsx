@@ -23,6 +23,9 @@ export default function Home({ places }: { places: Place[] }) {
     if (authError) {
       const errorMessages: Record<string, string> = {
         GoogleLoginFailed: "Ett fel uppstod under Google-inloggning",
+        GoogleEmailBelongsToExistingAccount:
+          "Google kontots e-postadress är redan kopplad till ett Naturguiden konto",
+        GoogleLoginDeniedByUser: "Google-inloggning nekades av användaren",
       };
 
       const message =

@@ -60,31 +60,37 @@ public class AuthService
         return newUser;
     }
 
-    public async Task<User> AuthenticateGoogleAsync(string googleId, string email, string firstName, string lastName)
+    public async Task<User?> AuthenticateGoogleAsync(string googleId, string email, string firstName, string lastName)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Provider == "google");
-        if (user != null)
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user != null && user.Provider == "google")
         {
             // Användaren finns redan och har loggat in med Google tidigare
             return user;
         }
-        else
+
+        if (user != null && user.Provider != "google")
         {
-            var newUser = new User
-            {
-                Email = email,
-                PasswordHash = null,
-                FirstName = firstName,
-                LastName = lastName,
-                Provider = "google",
-                ProviderId = googleId
-            };
-
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
-
-            return newUser;
+            // E-postadressen finns redan men är inte en Google-inloggning
+            return null;
         }
+
+        // Om inga av fallen ovan stämmer så skapas en ny användare med Google anslutning
+        var newUser = new User
+        {
+            Email = email,
+            PasswordHash = null,
+            FirstName = firstName,
+            LastName = lastName,
+            Provider = "google",
+            ProviderId = googleId
+        };
+
+        _context.Users.Add(newUser);
+        await _context.SaveChangesAsync();
+
+        return newUser;
+
     }
 
 }
