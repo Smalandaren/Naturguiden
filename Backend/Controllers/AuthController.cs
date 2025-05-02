@@ -33,10 +33,12 @@ public class AuthController : ControllerBase
         }
 
         var profileInfo = await _profileService.GetBasicProfileInfoAsync(userId);
+        bool isAdmin = await _profileService.GetUserAdminStatusAsync(userId);
         var response = new AuthCheckResponse
         {
             Authenticated = true,
-            User = profileInfo
+            User = profileInfo,
+            IsAdmin = isAdmin ? true : null
         };
         return response;
     }
