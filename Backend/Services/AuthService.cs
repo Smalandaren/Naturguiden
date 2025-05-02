@@ -51,7 +51,8 @@ public class AuthService
             PasswordHash = hashedPassword,
             FirstName = firstName,
             LastName = lastName,
-            Provider = "local" // "local" används för konton som är registerade med email/pwd. För auth med t.ex Google hade här stått "google"
+            Provider = "local", // "local" används för konton som är registerade med email/pwd. För auth med t.ex Google hade här stått "google"
+            IsAdmin = false
         };
 
         _context.Users.Add(newUser);
@@ -85,7 +86,8 @@ public class AuthService
                 FirstName = firstName,
                 LastName = lastName,
                 Provider = "google",
-                ProviderId = googleId
+                ProviderId = googleId,
+                IsAdmin = false
             };
 
             _context.Users.Add(newUser);
