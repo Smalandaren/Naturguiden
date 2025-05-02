@@ -62,35 +62,40 @@ public class AuthService
 
     public async Task<User?> AuthenticateGoogleAsync(string googleId, string email, string firstName, string lastName)
     {
-        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-        if (user != null && user.Provider == "google")
+        try
         {
-            // Användaren finns redan och har loggat in med Google tidigare
-            return user;
-        }
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user != null && user.Provider == "google")
+            {
+                // Användaren finns redan och har loggat in med Google tidigare
+                return user;
+            }
 
-        if (user != null && user.Provider != "google")
+            if (user != null && user.Provider != "google")
+            {
+                // E-postadressen finns redan men är inte en Google-inloggning
+                return null;
+            }
+
+            // Om inga av fallen ovan stämmer så skapas en ny användare med Google anslutning
+            User newUser = new User
+            {
+                Email = email,
+                PasswordHash = null,
+                FirstName = firstName,
+                LastName = lastName,
+                Provider = "google",
+                ProviderId = googleId
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            return newUser;
+        }
+        catch (Exception)
         {
-            // E-postadressen finns redan men är inte en Google-inloggning
             return null;
         }
-
-        // Om inga av fallen ovan stämmer så skapas en ny användare med Google anslutning
-        User newUser = new User
-        {
-            Email = email,
-            PasswordHash = null,
-            FirstName = firstName,
-            LastName = lastName,
-            Provider = "google",
-            ProviderId = googleId
-        };
-
-        _context.Users.Add(newUser);
-        await _context.SaveChangesAsync();
-
-        return newUser;
-
     }
-
 }
