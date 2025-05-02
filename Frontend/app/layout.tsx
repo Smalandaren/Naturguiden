@@ -44,6 +44,7 @@ export default async function RootLayout({
             <TopRightAuthButton
               authenticated={authCheck.authenticated}
               user={authCheck.user}
+              isAdmin={authCheck.isAdmin}
             />
             <ThemeSwitcher />
           </div>

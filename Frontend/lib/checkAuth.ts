@@ -26,6 +26,7 @@ export async function checkAuth(): Promise<AuthCheckResponse> {
     return {
       authenticated: json.authenticated,
       user: json.user,
+      isAdmin: json.isAdmin,
     };
   } catch (error: any) {
     console.log(error.message);

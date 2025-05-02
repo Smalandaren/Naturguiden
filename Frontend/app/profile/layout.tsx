@@ -14,12 +14,17 @@ export default async function ProfileLayout({
   children: React.ReactNode;
 }>) {
   let isAuthenticated = false;
+  let isAdmin = false;
 
   try {
     const authCheck = await checkAuth();
 
     if (authCheck.authenticated) {
       isAuthenticated = true;
+    }
+
+    if (authCheck.isAdmin) {
+      isAdmin = true;
     }
   } catch (error: any) {
     console.error("Error during authentication check:", error.message);
@@ -29,7 +34,7 @@ export default async function ProfileLayout({
     return (
       <>
         <SidebarProvider>
-          <ProfileSidebar />
+          <ProfileSidebar showAdminItems={isAdmin} />
           <SidebarInset>
             <div className="absolute m-4">
               <SidebarTrigger />

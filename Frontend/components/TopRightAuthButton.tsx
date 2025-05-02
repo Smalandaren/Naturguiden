@@ -1,5 +1,5 @@
 "use client";
-import { LogIn, LogOut, UserCircle } from "lucide-react";
+import { Crown, LogIn, LogOut, UserCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,9 +17,11 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export default function TopRightAuthButton({
   authenticated,
   user,
+  isAdmin,
 }: {
   authenticated: boolean;
   user: ProfileBasics | null;
+  isAdmin?: boolean;
 }) {
   const router = useRouter();
 
@@ -51,13 +53,21 @@ export default function TopRightAuthButton({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>
-            {user?.firstName} {user?.lastName}
-          </DropdownMenuLabel>
+          <div className="flex flex-row items-center">
+            <DropdownMenuLabel>
+              {user?.firstName} {user?.lastName}
+            </DropdownMenuLabel>
+            {isAdmin ? <Crown size={20} color="green" /> : null}
+          </div>
           <DropdownMenuSeparator />
           <Link href="/profile">
             <DropdownMenuItem>Min profil</DropdownMenuItem>
           </Link>
+          {isAdmin ? (
+            <Link href="/profile/admin">
+              <DropdownMenuItem>Administration</DropdownMenuItem>
+            </Link>
+          ) : null}
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogOut}>
             <LogOut />

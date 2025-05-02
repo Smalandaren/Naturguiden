@@ -1,7 +1,16 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Cog, ListCheck, TreePine, UserCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronRight,
+  Cog,
+  Crown,
+  ListCheck,
+  Settings,
+  TreePine,
+  UserCircle,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -11,7 +20,15 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export const items = [
   {
@@ -31,7 +48,18 @@ export const items = [
   },
 ];
 
-export function ProfileSidebar() {
+const adminItems = [
+  {
+    title: "Alla profiler",
+    url: "admin/profiles",
+  },
+];
+
+export function ProfileSidebar({
+  showAdminItems,
+}: {
+  showAdminItems: boolean;
+}) {
   const pathname = usePathname();
   const basePath = "/profile";
 
@@ -57,14 +85,14 @@ export function ProfileSidebar() {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              {items.map((item) => {
+              {items.map((item, index) => {
                 const fullPath = item.url
                   ? `${basePath}/${item.url}`
                   : basePath;
                 const isActive = pathname === fullPath;
 
                 return (
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem key={index}>
                     <SidebarMenuButton
                       isActive={isActive}
                       size="lg"
@@ -83,10 +111,54 @@ export function ProfileSidebar() {
                   </SidebarMenuItem>
                 );
               })}
+              {showAdminItems ? <AdminMenuItems /> : null}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
+  );
+}
+
+function AdminMenuItems() {
+  const pathname = usePathname();
+  const basePath = "/profile";
+  return (
+    <Collapsible className="group/collapsible" defaultOpen={true}>
+      <SidebarMenuItem>
+        <CollapsibleTrigger asChild>
+          <SidebarMenuButton
+            size="lg"
+            className="[&>svg]:size-5 transition hover:cursor-pointer"
+          >
+            <>
+              <Crown />
+              <span className="text-lg font-semibold">Administration</span>
+            </>
+            <ChevronRight className="transition-transform ml-auto group-data-[state=open]/collapsible:rotate-90" />
+          </SidebarMenuButton>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <SidebarMenuSub>
+            {adminItems.map((item, index) => {
+              const fullPath = item.url ? `${basePath}/${item.url}` : basePath;
+              const isActive = pathname === fullPath;
+
+              return (
+                <SidebarMenuSubItem key={index}>
+                  <SidebarMenuSubButton isActive={isActive} asChild>
+                    <Link href={fullPath}>
+                      <span className="text-md font-semibold">
+                        {item.title}
+                      </span>
+                    </Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              );
+            })}
+          </SidebarMenuSub>
+        </CollapsibleContent>
+      </SidebarMenuItem>
+    </Collapsible>
   );
 }
