@@ -15,7 +15,7 @@ public class AuthService
 
     public async Task<User?> AuthenticateAsync(string email, string password)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user != null && user.PasswordHash != null && user.Provider == "local") // logga endast in "local" användare via denna metod
         {
             if (VerifyPassword(password, user.PasswordHash))
@@ -37,15 +37,15 @@ public class AuthService
 
     public async Task<User?> RegisterAsync(string email, string password, string firstName, string lastName)
     {
-        var existingUser = await _context.Users.AnyAsync(u => u.Email == email);
+        bool existingUser = await _context.Users.AnyAsync(u => u.Email == email);
         if (existingUser)
         {
             return null;
         }
 
-        var hashedPassword = SecretHasher.Hash(password);
+        string hashedPassword = SecretHasher.Hash(password);
 
-        var newUser = new User
+        User newUser = new User
         {
             Email = email,
             PasswordHash = hashedPassword,
@@ -62,7 +62,7 @@ public class AuthService
 
     public async Task<User?> AuthenticateGoogleAsync(string googleId, string email, string firstName, string lastName)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user != null && user.Provider == "google")
         {
             // Användaren finns redan och har loggat in med Google tidigare
@@ -76,7 +76,7 @@ public class AuthService
         }
 
         // Om inga av fallen ovan stämmer så skapas en ny användare med Google anslutning
-        var newUser = new User
+        User newUser = new User
         {
             Email = email,
             PasswordHash = null,
