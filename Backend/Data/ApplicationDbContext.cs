@@ -216,6 +216,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("created_timestamp");
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.FirstName).HasColumnName("first_name");
+            entity.Property(e => e.IsAdmin).HasColumnName("is_admin");
             entity.Property(e => e.LastName).HasColumnName("last_name");
             entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
             entity.Property(e => e.Provider)

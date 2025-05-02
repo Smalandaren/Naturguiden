@@ -25,6 +25,8 @@ public partial class User
     /// </summary>
     public string? ProviderId { get; set; }
 
+    public bool IsAdmin { get; set; }
+
     public DateTime CreatedTimestamp { get; set; }
 
     public virtual ICollection<Friend> FriendReceivers { get; set; } = new List<Friend>();
