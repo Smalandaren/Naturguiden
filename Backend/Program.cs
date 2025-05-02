@@ -60,6 +60,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             Authenticated = false
         });
     };
+}).AddGoogle(options =>
+{
+    options.AccessDeniedPath = "/api/GoogleAuth/GoogleLoginDeniedByUser";
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
 });
 
 var app = builder.Build();

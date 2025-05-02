@@ -88,6 +88,12 @@ export default function ClientPage() {
               "Logga in"
             )}
           </Button>
+          <Link
+            className="w-full"
+            href="https://localhost:7055/api/GoogleAuth/log-in"
+          >
+            <Button className="w-full">Logga in med Google</Button>
+          </Link>
           <p className="text-muted-foreground">eller</p>
           <Link className="w-full" href="register">
             <Button className="w-full" variant="outline">

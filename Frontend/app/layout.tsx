@@ -47,7 +47,11 @@ export default async function RootLayout({
             />
             <ThemeSwitcher />
           </div>
-          <Toaster position="top-center" richColors />
+          <Toaster
+            position="top-center"
+            richColors
+            toastOptions={{ duration: 6000 }}
+          />
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>
