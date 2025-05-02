@@ -51,7 +51,13 @@ public class GoogleAuthController : ControllerBase
         var firstName = externalPrincipal?.FindFirst(ClaimTypes.GivenName)?.Value;
         var lastName = externalPrincipal?.FindFirst(ClaimTypes.Surname)?.Value;
 
-        if (email != null && googleId != null && firstName != null && lastName != null)
+        if (email == null || googleId == null || firstName == null || lastName == null)
+        {
+            // Något gick fel, all nödvändig data för inloggning mottogs ej från Google
+            await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
+            return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
+        }
+        else
         {
             try
             {
@@ -75,12 +81,6 @@ public class GoogleAuthController : ControllerBase
             {
                 return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
             }
-        }
-        else
-        {
-            // Något gick fel, all nödvändig data för inloggning mottogs ej från Google
-            await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
-            return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
         }
 
         return Redirect("https://localhost:3000");
