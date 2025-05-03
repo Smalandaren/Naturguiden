@@ -32,6 +32,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<AnnouncementBanner> AnnouncementBanners { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AvailableCategory>(entity =>
@@ -244,6 +246,24 @@ public partial class ApplicationDbContext : DbContext
                         j.IndexerProperty<int>("UserId").HasColumnName("user_id");
                         j.IndexerProperty<int>("PlaceId").HasColumnName("place_id");
                     });
+        });
+
+        modelBuilder.Entity<AnnouncementBanner>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("AnnouncementBanner_pkey");
+
+            entity.ToTable("AnnouncementBanner");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ButtonLink).HasColumnName("button_link");
+            entity.Property(e => e.ButtonText).HasColumnName("button_text");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.ShowButton).HasColumnName("show_button");
+            entity.Property(e => e.Subtitle).HasColumnName("subtitle");
+            entity.Property(e => e.Title).HasColumnName("title");
+            entity.Property(e => e.Type)
+                .HasComment("'information' or 'danger'")
+                .HasColumnName("type");
         });
 
         OnModelCreatingPartial(modelBuilder);
