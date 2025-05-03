@@ -17,6 +17,12 @@ public class AnnouncementBannerService
         return announcementBanner;
     }
 
+    public async Task<AnnouncementBanner?> GetActiveAnnouncementBannerAsync()
+    {
+        AnnouncementBanner? announcementBanner = await _context.AnnouncementBanners.FirstOrDefaultAsync(ab => ab.Id == 1 && ab.IsActive);
+        return announcementBanner;
+    }
+
     public async Task<AnnouncementBanner?> CreateOrUpdateAnnouncementBannerAsync(AnnouncementBannerDTO dto)
     {
         AnnouncementBanner? banner = await _context.AnnouncementBanners.FirstOrDefaultAsync(ab => ab.Id == 1);
