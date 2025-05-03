@@ -36,7 +36,7 @@ export default async function ProfileLayout({
         <SidebarProvider>
           <ProfileSidebar showAdminItems={isAdmin} />
           <SidebarInset>
-            <div className="absolute m-4">
+            <div className="absolute m-4 block md:hidden">
               <SidebarTrigger />
             </div>
 

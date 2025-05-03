@@ -7,8 +7,6 @@ import {
   Cog,
   Crown,
   ListCheck,
-  Settings,
-  TreePine,
   UserCircle,
 } from "lucide-react";
 
@@ -53,6 +51,10 @@ const adminItems = [
     title: "Alla profiler",
     url: "admin/profiles",
   },
+  {
+    title: "Viktigt meddelande",
+    url: "admin/announcement",
+  },
 ];
 
 export function ProfileSidebar({
@@ -64,7 +66,7 @@ export function ProfileSidebar({
   const basePath = "/profile";
 
   return (
-    <Sidebar variant="inset">
+    <Sidebar variant="inset" className="sticky">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
