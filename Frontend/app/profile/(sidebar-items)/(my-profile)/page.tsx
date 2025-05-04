@@ -8,6 +8,7 @@ import ThemeSwitcher from "@/components/theme-switcher";
 import { useEffect, useState } from "react";
 import { ErrorScreen } from "@/components/ErrorScreen";
 import { Separator } from "@/components/ui/separator";
+import ProviderIcon from "./ProviderIcon";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ProfilePage() {
@@ -60,7 +61,10 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-6 pt-16">
-      <h1 className="text-3xl font-bold mb-4">Min profil</h1>
+      <div className="flex flex-row gap-3 items-center mb-4">
+        <h1 className="text-3xl font-bold">Min profil</h1>
+        <ProviderIcon provider={profile.provider} />
+      </div>
       <Separator />
       <div className="mt-4 max-w-2xl">
         <div className="flex flex-col gap-6">

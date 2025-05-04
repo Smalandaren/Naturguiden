@@ -3,5 +3,6 @@ export interface ProfileBasics {
   firstName: string;
   lastName: string;
   email: string;
+  provider: string;
   createdAt: Date;
 }
