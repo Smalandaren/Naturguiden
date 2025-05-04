@@ -1,14 +1,11 @@
 "use client";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { format } from "date-fns";
 import { ProfileBasics } from "@/types/ProfileBasics";
-import ThemeSwitcher from "@/components/theme-switcher";
 import { useEffect, useState } from "react";
 import { ErrorScreen } from "@/components/ErrorScreen";
 import { Separator } from "@/components/ui/separator";
-import ProviderIcon from "./ProviderIcon";
+import ProviderIcon from "@/components/ProviderIcon";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ProfilePage() {
