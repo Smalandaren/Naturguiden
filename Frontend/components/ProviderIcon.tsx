@@ -5,8 +5,16 @@ import {
 } from "@/components/ui/tooltip";
 import { FcGoogle } from "react-icons/fc";
 
-export default function ProviderIcon({ provider }: { provider: string }) {
-  const iconSize = 25;
+export default function ProviderIcon({
+  provider,
+  size,
+  disableTooltip = false,
+}: {
+  provider: string;
+  size: number;
+  disableTooltip?: boolean;
+}) {
+  const iconSize = size;
   switch (provider) {
     case "google":
       return <Google />;
@@ -15,6 +23,9 @@ export default function ProviderIcon({ provider }: { provider: string }) {
   }
 
   function Google() {
+    if (disableTooltip) {
+      return <FcGoogle size={iconSize} />;
+    }
     return (
       <Tooltip>
         <TooltipTrigger asChild>

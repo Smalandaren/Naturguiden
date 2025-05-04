@@ -60,7 +60,7 @@ export default function ProfilePage() {
     <div className="mx-6 pt-16">
       <div className="flex flex-row gap-3 items-center mb-4">
         <h1 className="text-3xl font-bold">Min profil</h1>
-        <ProviderIcon provider={profile.provider} />
+        <ProviderIcon provider={profile.provider} size={25} />
       </div>
       <Separator />
       <div className="mt-4 max-w-2xl">
