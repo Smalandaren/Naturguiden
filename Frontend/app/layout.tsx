@@ -45,8 +45,8 @@ export default async function RootLayout({
         >
           {announcementBanner ? <Banner data={announcementBanner} /> : null}
           <div
-            className={`absolute sm:fixed flex gap-4 top-${
-              announcementBanner ? "20" : "5"
+            className={`absolute sm:fixed flex gap-4 ${
+              announcementBanner ? "top-20" : "top-5"
             } right-5`}
           >
             <TopRightAuthButton
