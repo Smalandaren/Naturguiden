@@ -32,7 +32,7 @@ export default function ProviderIcon({
           <FcGoogle size={iconSize} />
         </TooltipTrigger>
         <TooltipContent>
-          <p>Ditt konto är kopplat till Google</p>
+          <p>Kontot är kopplat till Google</p>
         </TooltipContent>
       </Tooltip>
     );
