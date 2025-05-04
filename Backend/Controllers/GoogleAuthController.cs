@@ -14,10 +14,12 @@ namespace NaturguidenServerPrototype.Controllers;
 public class GoogleAuthController : ControllerBase
 {
     private readonly AuthService _authService;
+    private readonly IConfiguration _configuration; // Behövs för att hämta vår frontend-adress från appsettings.json
 
-    public GoogleAuthController(AuthService authService)
+    public GoogleAuthController(AuthService authService, IConfiguration configuration)
     {
         _authService = authService;
+        _configuration = configuration;
     }
 
     // Man kan tycka att detta borde vara en POST route men inte enl Google: https://developers.google.com/identity/oauth2/web/guides/use-code-model
@@ -41,7 +43,7 @@ public class GoogleAuthController : ControllerBase
         if (!result.Succeeded)
         {
             await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
-            return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
+            return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleLoginFailed");
         }
 
         var externalPrincipal = result.Principal;
@@ -55,7 +57,7 @@ public class GoogleAuthController : ControllerBase
         {
             // Något gick fel, all nödvändig data för inloggning mottogs ej från Google
             await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
-            return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
+            return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleLoginFailed");
         }
         else
         {
@@ -67,7 +69,7 @@ public class GoogleAuthController : ControllerBase
                     // Detta är kanske en ful lösning!
                     // Om AuthenticateGoogleAsync returnerar null så betyder det att
                     // Google-kontons epost redan finns i databasen, fast inte som ett Google konto
-                    return Redirect("https://localhost:3000?authError=GoogleEmailBelongsToExistingAccount");
+                    return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleEmailBelongsToExistingAccount");
                 }
                 var claims = new List<Claim>
             {
@@ -79,17 +81,17 @@ public class GoogleAuthController : ControllerBase
             }
             catch (Exception)
             {
-                return Redirect("https://localhost:3000?authError=GoogleLoginFailed");
+                return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleLoginFailed");
             }
         }
 
-        return Redirect("https://localhost:3000");
+        return Redirect($"{_configuration["Frontend:BaseUrl"]}");
     }
 
     [HttpGet("GoogleLoginDeniedByUser")]
     public IActionResult GoogleLoginDeniedByUser()
     {
-        return Redirect("https://localhost:3000?authError=GoogleLoginDeniedByUser");
+        return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleLoginDeniedByUser");
     }
 
 }
