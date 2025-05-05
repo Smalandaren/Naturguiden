@@ -10,6 +10,7 @@ import { Place } from "@/types/Place";
 import UtilityBadge from "@/components/UtilityBadge";
 import RegisterVisitButton from "@/components/RegisterVisitButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
+import Map from "@/components/Map";
 
 export default function NatureSpotDetail({ place, user }: { place: Place, user: ProfileBasics | null }) {
   const openInMaps = () => {
@@ -75,6 +76,10 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
                 >
                   Öppna i Google Maps
                 </Button>
+              </div>
+
+              <div>
+                {<Map></Map>}
               </div>
 
               <Separator />
