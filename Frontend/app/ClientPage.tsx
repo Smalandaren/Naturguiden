@@ -13,9 +13,18 @@ import UtilityBadge from "@/components/UtilityBadge";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 export default function Home({ places }: { places: Place[] }) {
   const searchParams = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredPlaces = places.filter(
+    (place) =>
+      place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      place.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Detta tillåter oss bl.a visa felmeddelande vid Google inloggning. Fråga Thor om mer info.
   useEffect(() => {
@@ -48,13 +57,23 @@ export default function Home({ places }: { places: Place[] }) {
         </p>
       </div>
 
-      {places.length === 0 ? (
+      <div className="flex flex-col space-y-4 max-w-3xl mx-auto mb-4">        
+        <Input type="text"          
+          placeholder="Sök"
+          className="hover:border-primary transition"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}>
+        </Input>
+      </div>
+
+      {filteredPlaces.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-muted-foreground">Inga naturplatser hittades.</p>
         </div>
       ) : (
         <div className="flex flex-col space-y-4 max-w-3xl mx-auto">
-          {places.map((place) => (
+
+          {filteredPlaces.map((place) => (
             <Link href={`/place/${place.id}`} key={place.id}>
               <Card className="w-full gap-0 hover:border-primary transition">
                 <CardHeader>
