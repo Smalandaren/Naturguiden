@@ -9,7 +9,11 @@ import { toast } from "sonner";
 import validator from "email-validator";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export default function ClientPage() {
+export default function ClientPage({
+  googleAuthAvailable,
+}: {
+  googleAuthAvailable: boolean;
+}) {
   const router = useRouter();
   const [emailInput, setEmailInput] = useState("demo@demo.com");
   const [passwordInput, setPasswordInput] = useState("123");
@@ -88,12 +92,20 @@ export default function ClientPage() {
               "Logga in"
             )}
           </Button>
-          <Link
-            className="w-full"
-            href="https://localhost:7055/api/GoogleAuth/log-in"
-          >
-            <Button className="w-full">Logga in med Google</Button>
-          </Link>
+          {!googleAuthAvailable ? (
+            <Button disabled={!googleAuthAvailable} className="w-full">
+              Logga in med Google
+            </Button>
+          ) : (
+            <Link
+              className="w-full"
+              href="https://localhost:7055/api/GoogleAuth/log-in"
+            >
+              <Button disabled={!googleAuthAvailable} className="w-full">
+                Logga in med Google
+              </Button>
+            </Link>
+          )}
           <p className="text-muted-foreground">eller</p>
           <Link className="w-full" href="register">
             <Button className="w-full" variant="outline">
