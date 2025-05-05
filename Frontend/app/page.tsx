@@ -25,11 +25,9 @@ async function getPlaces(): Promise<Place[] | null> {
 export default async function Home({searchPlaces}: {searchPlaces: Place[]}) {
   try {
     var places;
-    if(searchPlaces == null){
-      places = await getPlaces();
-    } else{
-      places = searchPlaces;
-    }
+    
+    places = await getPlaces();
+    
 
     if (places) {
       return <ClientPage places={places} />;

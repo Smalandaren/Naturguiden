@@ -10,8 +10,9 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Search(){
     function search(formData: { get: (arg0: string) => any; }){
-        var query = formData.get("query")
-        getSearched(query);
+        var query = formData.get("query");
+        return getSearched(query);
+        
     }
     return(
         <>

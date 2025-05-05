@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
 using Backend.Services;
+using Backend.DTO;
 
 
 [Route("api/[controller]")]
@@ -16,9 +17,15 @@ public class SearchController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<List<PlaceDTO>>> Search([FromBody] String searchTerm)
+    public async Task<ActionResult<List<PlaceDTO>>> Search([FromBody] SearchTerm searchTerm)
     {
-        var matches = await _searchService.Search(searchTerm);
+        Console.WriteLine(searchTerm.SearchWord);
+        Console.WriteLine("Wtf bro");
+        if (searchTerm.SearchWord == null || searchTerm.SearchWord.Length == 0) //Kan utvecklas om man lägger till kategorier/attribut i SearchTerm
+        {
+            return BadRequest();
+        }
+        var matches = await _searchService.Search(searchTerm.SearchWord);
         if (matches != null && matches.Count > 0)
         {
             return Ok(matches);
