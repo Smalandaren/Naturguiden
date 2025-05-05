@@ -95,4 +95,15 @@ public class GoogleAuthController : ControllerBase
         return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleLoginDeniedByUser");
     }
 
+    [HttpGet("available")]
+    public ActionResult<bool> IsGoogleAuthAvailable()
+    {
+        var clientId = _configuration["Authentication:Google:ClientId"];
+        var clientSecret = _configuration["Authentication:Google:ClientSecret"];
+
+        bool isEnabled = !string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(clientSecret);
+
+        return Ok(isEnabled);
+    }
+
 }

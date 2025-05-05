@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Backend.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -61,12 +62,26 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             Authenticated = false
         });
     };
-}).AddGoogle(options =>
-{
-    options.AccessDeniedPath = "/api/GoogleAuth/GoogleLoginDeniedByUser";
-    options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
-    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
 });
+
+// Google autentisering registreras bara om man har lagt till credentials i sin appsettings.dev.json (eller enviroment variable)
+var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
+var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+
+if (!string.IsNullOrWhiteSpace(googleClientId) && !string.IsNullOrWhiteSpace(googleClientSecret))
+{
+    builder.Services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+            options.AccessDeniedPath = "/api/GoogleAuth/GoogleLoginDeniedByUser";
+            options.ClientId = googleClientId;
+            options.ClientSecret = googleClientSecret;
+        });
+}
+else
+{
+    CustomConsoleLog.Log(CustomConsoleLog.Types.CriticalError, "Google auth not possible due to missing credentials. Make sure you have entered the ClientId and ClientSecret in either appsettings.dev.json or in your enviroment variables");
+}
 
 var app = builder.Build();
 
