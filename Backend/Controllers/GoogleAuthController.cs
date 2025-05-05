@@ -42,7 +42,7 @@ public class GoogleAuthController : ControllerBase
 
         if (!result.Succeeded)
         {
-            await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync();
             return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleLoginFailed");
         }
 
@@ -56,7 +56,7 @@ public class GoogleAuthController : ControllerBase
         if (email == null || googleId == null || firstName == null || lastName == null)
         {
             // Något gick fel, all nödvändig data för inloggning mottogs ej från Google
-            await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync();
             return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleLoginFailed");
         }
         else
@@ -69,6 +69,7 @@ public class GoogleAuthController : ControllerBase
                     // Detta är kanske en ful lösning!
                     // Om AuthenticateGoogleAsync returnerar null så betyder det att
                     // Google-kontons epost redan finns i databasen, fast inte som ett Google konto
+                    await HttpContext.SignOutAsync();
                     return Redirect($"{_configuration["Frontend:BaseUrl"]}?authError=GoogleEmailBelongsToExistingAccount");
                 }
                 var claims = new List<Claim>
