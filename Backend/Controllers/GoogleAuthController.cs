@@ -63,7 +63,7 @@ public class GoogleAuthController : ControllerBase
         {
             try
             {
-                User? user = await _authService.AuthenticateGoogleAsync(googleId, email, firstName, lastName);
+                User? user = await _authService.AuthenticateOAuthAsync("google", googleId, email, firstName, lastName);
                 if (user == null)
                 {
                     // Detta är kanske en ful lösning!
