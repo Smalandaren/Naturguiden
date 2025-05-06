@@ -21,8 +21,17 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
   };
 
   return (
+    
     <main className="container mx-auto py-8 px-4">
-      <Link href="/">
+      
+      <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossOrigin=""
+      />
+      
+      {/*<Link href="/">
         <Button
           variant="ghost"
           className="mb-6 pl-2 flex items-center gap-2 hover:cursor-pointer"
@@ -30,7 +39,7 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
           <ArrowLeft size={16} />
           Tillbaka till listan
         </Button>
-      </Link>
+      </Link>*/}
 
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center mb-6 justify-between">
@@ -79,7 +88,7 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
               </div>
 
               <div>
-                {<Map></Map>}
+                {<Map/>}
               </div>
 
               <Separator />
