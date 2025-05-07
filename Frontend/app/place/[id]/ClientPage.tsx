@@ -83,7 +83,7 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
               </div>
 
               <div>
-                <NextJsMap/>
+                <NextJsMap place={place}/>
               </div>
 
               <Separator />

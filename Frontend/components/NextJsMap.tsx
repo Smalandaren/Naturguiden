@@ -1,16 +1,14 @@
 'use client'
 import dynamic from "next/dynamic";
+import { Place } from "@/types/Place";
 
 // Gör om Map till klientkomponent
-export const NextJsMap = dynamic(
-  () => import("./Map")
-    .then((mod) => mod.default),
-  {
-    // Stoppar server-side rendering
-    ssr: false,
-  }
-);
 
-export default function NextJsMapexport(){
-  return <NextJsMap/>;
+const Map = dynamic(() => import("./Map"), {
+  // Stoppar server-side rendering
+  ssr: false,
+});
+
+export default function NextJsMap({ place }: { place: Place }) {
+  return <Map place={place} />;
 }
