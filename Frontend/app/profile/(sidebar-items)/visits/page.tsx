@@ -57,13 +57,11 @@ export default function ProfilePage() {
 
   if (visitedPlaces != null && visitedPlaces.length < 1) {
     return (
-      <div className="my-auto">
-        <ErrorScreen
-          title="Inga besökta platser"
-          subtitle="Du har inte markerat några platser som besökta än"
-          showIcon={false}
-        />
-      </div>
+      <ErrorScreen
+        title="Inga besökta platser"
+        subtitle="Du har inte markerat några platser som besökta än"
+        showIcon={false}
+      />
     );
   }
 
