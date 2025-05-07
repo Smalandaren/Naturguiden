@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Place } from "@/types/Place";
+import { PlaceUtility } from "@/types/PlaceUtility";
 import UtilityBadge from "@/components/UtilityBadge";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -17,9 +18,10 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import NextJsFullMap from "@/components/NextJsFullMap";
 
-export default function Home({ places }: { places: Place[] }) {
+export default function Home({ places, availableUtil }: { places: Place[], availableUtil : PlaceUtility[] | null }) {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
+  
 
   const filteredPlaces = places.filter(
     (place) =>

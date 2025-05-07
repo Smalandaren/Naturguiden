@@ -26,4 +26,11 @@ public class SearchController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("utilities")]
+    public async Task<ActionResult<List<AvailableUtility>>> GetAllUtilities()
+    {
+        List<AvailableUtility> result = await _searchService.GetAllUtilities();
+        if(result != null && result.Count > 0) { return Ok(result); }
+        return Ok();
+    }
 }
