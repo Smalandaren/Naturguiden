@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import NextJsFullMap from "@/components/NextJsFullMap";
 
 export default function Home({ places }: { places: Place[] }) {
   const searchParams = useSearchParams();
@@ -106,6 +107,7 @@ export default function Home({ places }: { places: Place[] }) {
               </Card>
             </Link>
           ))}
+          <NextJsFullMap places={places}/>
         </div>
       )}
     </main>

@@ -18,7 +18,9 @@ export default function Map({ place }: { place: Place }){
 
             <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} >
             <Popup>
-                This is a popup
+                {place.name}
+                <br/>
+                {/*platsförfattare?*/}
             </Popup>
             </Marker>
         </MapContainer>
