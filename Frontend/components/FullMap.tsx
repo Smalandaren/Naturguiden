@@ -11,14 +11,6 @@ import { Place } from "@/types/Place";
 import { Link } from "lucide-react";
 
 export default function FullMap({ places }: { places: Place[] }){
-
-    function goToPlace({ place }: {place: Place}){
-        return window.open(
-            `/place/${place.id}`,
-            "_blank"
-          );
-    }
-
     return <div>
         <MapContainer center={[55.92875, 13.6231121]} zoom={8} scrollWheelZoom={false} className="h-100 w-full justify-self-center px-10 m-0 z-0 rounded-xl border">
             <TileLayer
@@ -27,12 +19,12 @@ export default function FullMap({ places }: { places: Place[] }){
             />
 
             {places.map((place) => (
-                <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} >
+                <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} key={place.id}>
                     <Popup>
                         <div>
                             <h1 className="text-xl">{place.name}</h1>
                             <br/>
-                            <a href={`/place/${place.id}`}>
+                            <a href={`/place/${place.id}`} key={place.id}>
                                 <Button >Öppna plats</Button>
                             </a>
                         </div>
