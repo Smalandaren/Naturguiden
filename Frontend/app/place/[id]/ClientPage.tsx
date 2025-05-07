@@ -11,6 +11,8 @@ import UtilityBadge from "@/components/UtilityBadge";
 import RegisterVisitButton from "@/components/RegisterVisitButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
 import Map from "@/components/Map";
+import NextJsMap from "@/components/NextJsMap";
+
 
 export default function NatureSpotDetail({ place, user }: { place: Place, user: ProfileBasics | null }) {
   const openInMaps = () => {
@@ -24,14 +26,7 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
     
     <main className="container mx-auto py-8 px-4">
       
-      <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-        crossOrigin=""
-      />
-      
-      {/*<Link href="/">
+      <Link href="/">
         <Button
           variant="ghost"
           className="mb-6 pl-2 flex items-center gap-2 hover:cursor-pointer"
@@ -39,7 +34,7 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
           <ArrowLeft size={16} />
           Tillbaka till listan
         </Button>
-      </Link>*/}
+      </Link>
 
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center mb-6 justify-between">
@@ -88,7 +83,7 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
               </div>
 
               <div>
-                {<Map/>}
+                <NextJsMap/>
               </div>
 
               <Separator />
