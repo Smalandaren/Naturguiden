@@ -71,7 +71,8 @@ namespace Backend.Services
             {
                 SenderId = senderId,
                 ReceiverId = receiverId,
-                Confirmed = false
+                Confirmed = false,
+                TimeSent = DateTime.Now
             });
             await _context.SaveChangesAsync();
             return true;
