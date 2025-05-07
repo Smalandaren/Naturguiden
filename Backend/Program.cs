@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Backend.Data;
+using Backend.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NaturguidenServerPrototype.Services;
@@ -47,6 +48,7 @@ builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<VisitsService>();
 builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<AnnouncementBannerService>();
+builder.Services.AddScoped<FriendsService>();
 
 // Registrera cookie autentisering
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
