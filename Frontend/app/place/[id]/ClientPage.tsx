@@ -10,6 +10,9 @@ import { Place } from "@/types/Place";
 import UtilityBadge from "@/components/UtilityBadge";
 import RegisterVisitButton from "@/components/RegisterVisitButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
+import Map from "@/components/Map";
+import NextJsMap from "@/components/NextJsMap";
+
 
 export default function NatureSpotDetail({ place, user }: { place: Place, user: ProfileBasics | null }) {
   const openInMaps = () => {
@@ -20,7 +23,9 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
   };
 
   return (
+    
     <main className="container mx-auto py-8 px-4">
+      
       <Link href="/">
         <Button
           variant="ghost"
@@ -75,6 +80,10 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
                 >
                   Öppna i Google Maps
                 </Button>
+              </div>
+
+              <div>
+                <NextJsMap place={place}/>
               </div>
 
               <Separator />
