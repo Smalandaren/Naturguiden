@@ -32,6 +32,18 @@ namespace Backend.Controllers
             return Ok(profile);
         }
 
+        // Anropas när "Användare A" vill se information om "Användare B"
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<ForeignProfileDTO>> GetForeignProfileInfo(int userId)
+        {
+            ForeignProfileDTO? profile = await _profileService.GetForeignProfileInfoAsync(userId);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+            return Ok(profile);
+        }
+
         [HttpGet("visited-places")]
         public async Task<ActionResult<List<VisitedPlaceDTO>>> GetVisitedPlaces()
         {

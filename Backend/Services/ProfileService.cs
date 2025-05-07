@@ -5,10 +5,12 @@ using Backend.Models;
 public class ProfileService
 {
     private readonly ApplicationDbContext _context;
+    private readonly PlacesService _placesService;
 
-    public ProfileService(ApplicationDbContext context)
+    public ProfileService(ApplicationDbContext context, PlacesService placesService)
     {
         _context = context;
+        _placesService = placesService;
     }
 
     // Returnerar enkel information om en användare, se ProfileBasicsDTO för innehållet
@@ -67,6 +69,29 @@ public class ProfileService
             return isAdmin;
         }
         return false;
+    }
+
+    // Skall användas när "Användare A" vill se information om "Användare B"
+    // Skall inte returnera ProfileBasicsDTO då den kan innehålla information som man inte vill dela med andra, typ e-post
+    public async Task<ForeignProfileDTO?> GetForeignProfileInfoAsync(int id)
+    {
+        var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+        if (user != null)
+        {
+            List<VisitedPlaceDTO> visitedPlaces = await _placesService.GetVisitedPlacesByUserIdAsync(user.Id);
+            int numberOfVisitedPlaces = visitedPlaces.Count;
+            var foreignProfileDTO = new ForeignProfileDTO
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                VisitedPlaces = numberOfVisitedPlaces,
+                CreatedAt = user.CreatedTimestamp
+            };
+
+            return foreignProfileDTO;
+        }
+        return null;
     }
 
 }
