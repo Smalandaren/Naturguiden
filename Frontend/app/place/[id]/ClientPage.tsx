@@ -7,11 +7,15 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Place } from "@/types/Place";
+import { Review } from "@/types/Review";
 import UtilityBadge from "@/components/UtilityBadge";
 import RegisterVisitButton from "@/components/RegisterVisitButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
+import Map from "@/components/Map";
+import NextJsMap from "@/components/NextJsMap";
 
-export default function NatureSpotDetail({ place, user }: { place: Place, user: ProfileBasics | null }) {
+
+export default function NatureSpotDetail({ place, user, reviews }: { place: Place, user: ProfileBasics | null, reviews: Review[] }) {
   const openInMaps = () => {
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`,
@@ -20,7 +24,9 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
   };
 
   return (
+    
     <main className="container mx-auto py-8 px-4">
+      
       <Link href="/">
         <Button
           variant="ghost"
@@ -77,6 +83,10 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
                 </Button>
               </div>
 
+              <div>
+                <NextJsMap place={place}/>
+              </div>
+
               <Separator />
 
               <div>
@@ -86,6 +96,34 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
                 </p>
               </div>
             </div>
+          </CardContent>
+        </Card>
+        <Card className="gap-5">
+          <CardHeader>
+            <CardTitle>
+              Recensioner
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+          {
+          (reviews.length === 0) ? (
+            <h1>{place.name} har inga recensioner än</h1>
+          ) : (
+            reviews.map((review) => 
+            <Card key={review.id}>
+              <CardHeader className="flex content-between flex-row flex-wrap">
+                <CardTitle className="w-full text-xl gap-2">
+                  <div>{review.userName}</div> 
+                  ★
+                  {(review.rating > 1) ? (<>★</>) : (<>☆</>)}
+                  {(review.rating > 2) ? (<>★</>) : (<>☆</>)}
+                  {(review.rating > 3) ? (<>★</>) : (<>☆</>)}
+                  {(review.rating > 4) ? (<>★</>) : (<>☆</>)}
+                </CardTitle>
+                <div>{review.comment}</div>
+              </CardHeader>
+            </Card>
+            ))}
           </CardContent>
         </Card>
       </div>
