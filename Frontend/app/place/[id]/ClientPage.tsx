@@ -107,8 +107,8 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
             <CardTitle>
               Recensioner
             </CardTitle>
-            <ReviewForm place={place}/>
-
+            {user != null ? (<ReviewForm place={place}/>) : (<></>)}
+          
           </CardHeader>
           <CardContent>
           {
