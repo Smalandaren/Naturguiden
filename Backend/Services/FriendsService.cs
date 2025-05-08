@@ -63,7 +63,7 @@ namespace Backend.Services
 
         public async Task<bool> AddRequest(int senderId, int receiverId) 
         {
-            if (await _context.Friends.FindAsync(receiverId, senderId) != null)
+            if (await _context.Friends.FindAsync(receiverId, senderId) != null || await _context.Friends.FindAsync(senderId, receiverId) != null)
             { 
                 return false;
             }
@@ -74,6 +74,24 @@ namespace Backend.Services
                 Confirmed = false,
                 TimeSent = DateTime.Now
             });
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> AcceptRequest(int senderId, int receiverId)
+        {
+            Friend? friend = await _context.Friends.FirstOrDefaultAsync(f => f.SenderId == senderId && f.ReceiverId == receiverId);
+
+            if (friend == null)
+            {
+                Console.WriteLine("grr");
+                return false;
+            }
+
+            friend.Confirmed = true;
+            friend.TimeConfirmed = DateTime.Now;
+            
+            _context.Friends.Update(friend);
             await _context.SaveChangesAsync();
             return true;
         }

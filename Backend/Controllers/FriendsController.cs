@@ -11,14 +11,14 @@ namespace Backend.Controllers
     public class FriendsController : ControllerBase
     {
         private readonly FriendsService _friendsService;
-        public FriendsController(FriendsService friendsService) 
+        public FriendsController(FriendsService friendsService)
         {
             _friendsService = friendsService;
         }
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<List<FriendDTO>>> GetFriends() 
+        public async Task<ActionResult<List<FriendDTO>>> GetFriends()
         {
             int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -28,7 +28,7 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpGet("get-requests")]
-        public async Task<ActionResult<List<FriendDTO>>> GetFriendRequests() 
+        public async Task<ActionResult<List<FriendDTO>>> GetFriendRequests()
         {
             int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -38,9 +38,17 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpPost("send-request")]
-        public async Task<IActionResult> AddRequest([FromBody] FriendReqDTO request) 
+        public async Task<IActionResult> AddRequest([FromBody] FriendReqDTO request)
         {
             await _friendsService.AddRequest(request.SenderId, request.ReceiverId);
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPut("accept-request")]
+        public async Task<IActionResult> AcceptRequest([FromBody] FriendReqDTO request) 
+        {
+            await _friendsService.AcceptRequest(request.SenderId, request.ReceiverId);
             return Ok();
         }
     }
