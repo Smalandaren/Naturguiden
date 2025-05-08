@@ -98,7 +98,7 @@ namespace Backend.Services
             return true;
         }
 
-        public async Task<bool> RemoveRequestOrFriend(int senderId, int receiverId) 
+        public async Task<bool> RemoveRequest(int senderId, int receiverId) 
         {
             Friend? friend = await _context.Friends.FirstOrDefaultAsync(f => (f.SenderId == senderId && f.ReceiverId == receiverId) || (f.SenderId == receiverId && f.ReceiverId == senderId));
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ErrorScreen } from "@/components/ErrorScreen";
 import { FriendCard, FriendReqCard } from "./FriendCard";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function FriendsPage() {

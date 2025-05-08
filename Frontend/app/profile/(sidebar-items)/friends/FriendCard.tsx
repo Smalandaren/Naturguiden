@@ -6,6 +6,8 @@ import {
     CircleCheck,
     CircleX
   } from "lucide-react";
+import { resolve } from "path";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export function FriendCard({friend}: {friend: Friend}) {
     return (    
@@ -38,8 +40,8 @@ export function FriendCard({friend}: {friend: Friend}) {
 export function FriendReqCard({friend}: {friend: Friend}) {
     return (    
     <Card className="w-full gap-3">
-        <div className="flex items-center px-3 gap-3">
-            <div>
+        <div className="flex items-center justify-between">
+            <div className="w-full">
                 <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex flex-row gap-2 items-center">
                     <CardTitle className="text-xl font-bold">
@@ -63,11 +65,60 @@ export function FriendReqCard({friend}: {friend: Friend}) {
                 </CardContent>
             </div>
 
-            <div className="flex flex-col items-center gap-5">
-                <Button><CircleCheck /></Button>
-                <Button><CircleX /></Button>
+            <div className="flex flex-col items-center px-10 gap-5">
+                <Button onClick={() => AcceptRequest()}><CircleCheck /></Button>
+                <Button className="bg-red-600 hover:bg-red-500" onClick={() => DenyRequest()}><CircleX /></Button>
             </div>
         </div>
       </Card>
     );
+
+    async function AcceptRequest() {
+        try {
+            const response = await fetch(`${apiUrl}/friends/accept-request`, {
+            method: "PUT",
+            credentials: "include",
+            body: JSON.stringify({
+                UserId : friend.id
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            });
+
+            window.location.reload();
+
+            if (!response.ok) {
+            throw new Error(`Ett fel uppstod`);
+            }
+            
+        } catch (error: any) {
+            console.log(error);
+        }
+        window.location.reload;
+    }
+    
+    async function DenyRequest() {
+        try {
+            const response = await fetch(`${apiUrl}/friends/remove`, {
+            method: "DELETE",
+            credentials: "include",
+            body: JSON.stringify({
+                UserId : friend.id
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            });
+
+            window.location.reload();
+    
+            if (!response.ok) {
+            throw new Error(`Ett fel uppstod`);
+            }
+            
+        } catch (error: any) {
+            console.log(error);
+        }
+    }
 }

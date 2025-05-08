@@ -40,7 +40,9 @@ namespace Backend.Controllers
         [HttpPost("send-request")]
         public async Task<IActionResult> AddRequest([FromBody] FriendReqDTO request)
         {
-            await _friendsService.AddRequest(request.SenderId, request.ReceiverId);
+            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            await _friendsService.AddRequest(currentUserID, request.UserId);
             return Ok();
         }
 
@@ -48,15 +50,19 @@ namespace Backend.Controllers
         [HttpPut("accept-request")]
         public async Task<IActionResult> AcceptRequest([FromBody] FriendReqDTO request) 
         {
-            await _friendsService.AcceptRequest(request.SenderId, request.ReceiverId);
+            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            await _friendsService.AcceptRequest(request.UserId, currentUserID);
             return Ok();
         }
 
         [Authorize]
         [HttpDelete("remove")]
-        public async Task<IActionResult> RemoveRequestOrFriend([FromBody] FriendReqDTO request)
+        public async Task<IActionResult> RemoveRequest([FromBody] FriendReqDTO request)
         {
-            await _friendsService.RemoveRequestOrFriend(request.SenderId, request.ReceiverId);
+            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            await _friendsService.RemoveRequest(request.UserId, currentUserID);
             return Ok();
         }
     }
