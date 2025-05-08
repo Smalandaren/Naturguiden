@@ -41,7 +41,7 @@ public class SearchService
         return matchesDTO;
     }
 
-    public async Task<List<AvailableUtility>> GetAllUtilities()
+    public List<AvailableUtility> GetAllUtilities()
     {
         try
         {

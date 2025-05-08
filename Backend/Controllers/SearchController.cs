@@ -27,10 +27,10 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet("utilities")]
-    public async Task<ActionResult<List<AvailableUtility>>> GetAllUtilities()
+    public ActionResult<List<AvailableUtility>> GetAllUtilities()
     {
-        List<AvailableUtility> result = await _searchService.GetAllUtilities();
-        if(result != null && result.Count > 0) { return Ok(result); }
-        return Ok();
+        List<AvailableUtility> result = _searchService.GetAllUtilities(); 
+        if (result != null && result.Count > 0) {return Ok(result); }
+        return new EmptyResult();
     }
 }

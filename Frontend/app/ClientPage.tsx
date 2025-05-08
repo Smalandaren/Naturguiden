@@ -17,17 +17,28 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import NextJsFullMap from "@/components/NextJsFullMap";
+import { Label } from "recharts";
 
 export default function Home({ places, availableUtil }: { places: Place[], availableUtil : PlaceUtility[] | null }) {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
-  
+  const filteredUtil : PlaceUtility[] = []
 
   const filteredPlaces = places.filter(
     (place) =>
       place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      place.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      place.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      place.placeUtilities.some(x => filteredUtil.includes(x))
   );
+
+  function ChangeUtilFilter({util}: {util : PlaceUtility}){
+    if(filteredUtil.includes(util)){
+      delete filteredUtil[filteredUtil.indexOf(util)];
+    } else{
+      filteredUtil.push(util);
+    }
+    console.log(filteredUtil[filteredUtil.indexOf(util)])
+  }
 
   // Detta tillåter oss bl.a visa felmeddelande vid Google inloggning. Fråga Thor om mer info.
   useEffect(() => {
@@ -69,13 +80,35 @@ export default function Home({ places, availableUtil }: { places: Place[], avail
         </Input>
       </div>
 
+
+
+
       {filteredPlaces.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-muted-foreground">Inga naturplatser hittades.</p>
         </div>
       ) : (
         <div className="flex flex-col space-y-4 max-w-3xl mx-auto">
+        <Card className="w-full gap-0 hover:border-primary transition">
+          <CardHeader>
+            <CardTitle className="text-xl">
+              Filter
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {availableUtil?.map((util) => (
+              <div key={util.name} className="flex justify-between items-center">
+                  <h1>{util.name}</h1>
+                  <Input type="checkbox" className="w-30"
+                    onChange={(e) => ChangeUtilFilter({util})}
+                    >
+                  </Input>
+              </div>
 
+            ))}
+            
+          </CardContent>
+        </Card>
           {filteredPlaces.map((place) => (
             <Link href={`/place/${place.id}`} key={place.id}>
               <Card className="w-full gap-0 hover:border-primary transition">
