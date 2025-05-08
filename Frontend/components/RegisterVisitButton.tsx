@@ -7,6 +7,10 @@ import { get } from "http";
 import { error } from "console";
 import { resolve } from "path";
 import { pl } from "date-fns/locale";
+import {
+    Circle,
+    CircleCheckBig
+} from "lucide-react";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -105,7 +109,7 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
         ) : (
             
         <Button onClick={HandleClick}>
-            Besökt {isVisited == false ? (<>🌕︎</>) : (<>🌑︎</>)} 
+            Besökt {isVisited == false ? (<><Circle/></>) : (<><CircleCheckBig/></>)} 
         </Button>
     )}
     </>
