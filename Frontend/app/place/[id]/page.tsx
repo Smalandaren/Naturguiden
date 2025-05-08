@@ -1,4 +1,5 @@
 import { Place } from "@/types/Place";
+import { Review } from "@/types/Review";
 import ClientPage from "./ClientPage";
 import { getSessionCookie } from "@/lib/checkAuth";
 import { ErrorScreen } from "@/components/ErrorScreen";
@@ -30,6 +31,31 @@ async function getPlace(id: string): Promise<Place | null> {
   }
 }
 
+async function getReviews(id: string): Promise<Review[]>{
+  try {
+    const response = await fetch(`${apiUrl}/review`, {
+      cache: "no-cache",
+      method: "POST",
+      body: JSON.stringify({
+        "PlaceId" : id
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      return [] as Review[];
+    }
+
+    const json = await response.json();
+    return json;
+  } catch (error: any) {
+    console.log(error.message);
+    return [] as Review[];
+  }
+}
+
 export default async function ViewPlace({
   params,
 }: {
@@ -38,9 +64,10 @@ export default async function ViewPlace({
   const { id } = await params;
   try {
     const place = await getPlace(id);
+    const reviews = await getReviews(id);
     const authCheck = await checkAuth();
     if (place) {
-      return <ClientPage place={place} user={authCheck.user} />;
+      return <ClientPage place={place} user={authCheck.user} reviews={reviews} />;
     }
 
     throw new Error("Could not get place");
