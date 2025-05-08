@@ -84,7 +84,6 @@ namespace Backend.Services
 
             if (friend == null)
             {
-                Console.WriteLine("grr");
                 return false;
             }
 
