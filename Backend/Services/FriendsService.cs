@@ -2,6 +2,7 @@
 using Backend.DTO;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.Serialization;
 
 namespace Backend.Services
 {
@@ -91,6 +92,20 @@ namespace Backend.Services
             friend.TimeConfirmed = DateTime.Now;
             
             _context.Friends.Update(friend);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveRequestOrFriend(int senderId, int receiverId) 
+        {
+            Friend? friend = await _context.Friends.FirstOrDefaultAsync(f => (f.SenderId == senderId && f.ReceiverId == receiverId) || (f.SenderId == receiverId && f.ReceiverId == senderId));
+
+            if (friend == null) 
+            {
+                return false;
+            }
+
+            _context.Friends.Remove(friend);
             await _context.SaveChangesAsync();
             return true;
         }

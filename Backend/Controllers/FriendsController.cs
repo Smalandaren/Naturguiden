@@ -51,5 +51,13 @@ namespace Backend.Controllers
             await _friendsService.AcceptRequest(request.SenderId, request.ReceiverId);
             return Ok();
         }
+
+        [Authorize]
+        [HttpDelete("remove")]
+        public async Task<IActionResult> RemoveRequestOrFriend([FromBody] FriendReqDTO request)
+        {
+            await _friendsService.RemoveRequestOrFriend(request.SenderId, request.ReceiverId);
+            return Ok();
+        }
     }
 }
