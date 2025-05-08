@@ -29,6 +29,7 @@ namespace Backend.Services
 
                 FriendDTO friendDTO = new FriendDTO
                 {
+                    Id = friendId,
                     FirstName = friend.FirstName,
                     LastName = friend.LastName,
                     Email = friend.Email,
@@ -51,6 +52,7 @@ namespace Backend.Services
 
                 FriendDTO friendDTO = new FriendDTO
                 {
+                    Id = f.SenderId,
                     FirstName = sender.FirstName,
                     LastName = sender.LastName,
                     Email = sender.Email,
