@@ -14,7 +14,6 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
     const [isVisited, setIsVisited] = useState(Boolean);
     getIsVisited().then(val => setIsVisited(val))
 
-
     async function getIsVisited(): Promise<boolean> {
         try{
             if (user === null) {
@@ -106,7 +105,7 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
         ) : (
             
         <Button onClick={HandleClick}>
-            Besökt {isVisited == false ? (<></>) : (<>✓</>)} 
+            Besökt {isVisited == false ? (<>🌕︎</>) : (<>🌑︎</>)} 
         </Button>
     )}
     </>
