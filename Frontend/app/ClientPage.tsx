@@ -17,7 +17,13 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import NextJsFullMap from "@/components/NextJsFullMap";
 
-export default function Home({ places }: { places: Place[] }) {
+export default function Home({
+  places,
+  isAuthenticated,
+}: {
+  places: Place[];
+  isAuthenticated: boolean;
+}) {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -27,7 +33,6 @@ export default function Home({ places }: { places: Place[] }) {
       place.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Detta tillåter oss bl.a visa felmeddelande vid Google inloggning. Fråga Thor om mer info.
   useEffect(() => {
     const authError = searchParams.get("authError");
     if (authError) {
@@ -42,7 +47,7 @@ export default function Home({ places }: { places: Place[] }) {
         errorMessages[authError] || "Ett fel inträffade vid inloggning";
       toast.error(message);
 
-      window.history.replaceState({}, document.title, window.location.pathname); // Tar bort felkoden från URL
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, [searchParams]);
 
@@ -56,6 +61,17 @@ export default function Home({ places }: { places: Place[] }) {
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Samling av naturplatser i Skåne
         </p>
+
+        {isAuthenticated && (
+          <div className="mt-6">
+            <Link
+              href="/place/suggest"
+              className="inline-block bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
+            >
+              Föreslå en ny plats
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col space-y-4 max-w-3xl mx-auto mb-4">        
@@ -79,9 +95,6 @@ export default function Home({ places }: { places: Place[] }) {
               <Card className="w-full gap-0 hover:border-primary transition">
                 <CardHeader>
                   <CardTitle className="text-xl">{place.name}</CardTitle>
-                  {/* <CardDescription>
-                    {place.createdAt.toLocaleString()}
-                  </CardDescription> */}
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
@@ -94,14 +107,12 @@ export default function Home({ places }: { places: Place[] }) {
                 </CardContent>
                 <CardFooter>
                   <div className="flex flex-wrap gap-2">
-                    {place.placeUtilities.map((utility) => {
-                      return (
-                        <UtilityBadge
-                          key={utility.name}
-                          placeUtility={utility}
-                        />
-                      );
-                    })}
+                    {place.placeUtilities.map((utility) => (
+                      <UtilityBadge
+                        key={utility.name}
+                        placeUtility={utility}
+                      />
+                    ))}
                   </div>
                 </CardFooter>
               </Card>

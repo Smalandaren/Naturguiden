@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Backend.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Models;
-
-public partial class AvailableCategory
+public class AvailableCategory
 {
-    public string Name { get; set; } = null!;
-
+    [Key]
+    public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
-
     public virtual ICollection<PlaceCategory> PlaceCategories { get; set; } = new List<PlaceCategory>();
 }
