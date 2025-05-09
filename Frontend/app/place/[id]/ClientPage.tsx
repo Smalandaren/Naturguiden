@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Place } from "@/types/Place";
+import { Review } from "@/types/Review";
 import UtilityBadge from "@/components/UtilityBadge";
 import RegisterVisitButton from "@/components/RegisterVisitButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
@@ -14,7 +15,7 @@ import Map from "@/components/Map";
 import NextJsMap from "@/components/NextJsMap";
 
 
-export default function NatureSpotDetail({ place, user }: { place: Place, user: ProfileBasics | null }) {
+export default function NatureSpotDetail({ place, user, reviews }: { place: Place, user: ProfileBasics | null, reviews: Review[] }) {
   const openInMaps = () => {
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`,
@@ -36,7 +37,7 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
         </Button>
       </Link>
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto flex flex-col gap-3">
         <div className="flex items-center mb-6 justify-between">
           <div className="flex gap-3 space-between flex-row">
             <TreePine size={32} color="green" />
@@ -95,6 +96,34 @@ export default function NatureSpotDetail({ place, user }: { place: Place, user: 
                 </p>
               </div>
             </div>
+          </CardContent>
+        </Card>
+        <Card className="gap-5">
+          <CardHeader>
+            <CardTitle>
+              Recensioner
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+          {
+          (reviews.length === 0) ? (
+            <h1>{place.name} har inga recensioner än</h1>
+          ) : (
+            reviews.map((review) => 
+            <Card key={review.id}>
+              <CardHeader className="flex content-between flex-row flex-wrap">
+                <CardTitle className="w-full text-xl gap-2">
+                  <div>{review.userName}</div> 
+                  ★
+                  {(review.rating > 1) ? (<>★</>) : (<>☆</>)}
+                  {(review.rating > 2) ? (<>★</>) : (<>☆</>)}
+                  {(review.rating > 3) ? (<>★</>) : (<>☆</>)}
+                  {(review.rating > 4) ? (<>★</>) : (<>☆</>)}
+                </CardTitle>
+                <div>{review.comment}</div>
+              </CardHeader>
+            </Card>
+            ))}
           </CardContent>
         </Card>
       </div>

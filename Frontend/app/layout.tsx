@@ -9,6 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { getAnnouncementBanner } from "@/lib/getAnnouncementBanner";
 import Banner from "@/components/Banner";
+import Onboarding from "@/components/Onboarding";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,7 @@ export default async function RootLayout({
             richColors
             toastOptions={{ duration: 6000 }}
           />
+          <Onboarding />
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>
