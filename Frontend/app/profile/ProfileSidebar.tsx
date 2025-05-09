@@ -8,6 +8,7 @@ import {
   Crown,
   ListCheck,
   UserCircle,
+  Heart
 } from "lucide-react";
 
 import {
@@ -38,6 +39,11 @@ export const items = [
     title: "Mina besök",
     url: "visits",
     icon: ListCheck,
+  },
+  {
+    title: "Vänner",
+    url: "friends",
+    icon: Heart,
   },
   {
     title: "Inställningar",

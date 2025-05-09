@@ -3,8 +3,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getSessionCookie } from "@/lib/checkAuth";
 import { ForeignProfile } from "@/types/ForeignProfile";
-import { format } from "date-fns";
+import { format, isLastDayOfMonth } from "date-fns";
 import { MapPin } from "lucide-react";
+import FriendRequestButton from "@/components/FriendRequestButton"
+import { checkAuth } from "@/lib/checkAuth";
+import { is } from "date-fns/locale";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 async function getProfile(id: string): Promise<ForeignProfile | null> {
@@ -54,6 +57,7 @@ export default async function ViewForeignProfile({
                 {profile.firstName} {profile.lastName}
               </h1>
             </CardHeader>
+
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-center gap-2 text-muted-foreground">
@@ -62,6 +66,10 @@ export default async function ViewForeignProfile({
                     Besökt {profile.visitedPlaces}{" "}
                     {profile.visitedPlaces === 1 ? "plats" : "platser"}
                   </span>
+                </div>
+
+                <div className="flex items-center justify-center">
+                  <FriendRequestButton friendId={profile.id} self={(await checkAuth()).user}></FriendRequestButton>
                 </div>
 
                 <div className="pt-4 border-t text-center text-sm text-muted-foreground">
