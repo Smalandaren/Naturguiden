@@ -65,5 +65,18 @@ namespace Backend.Controllers
             await _friendsService.RemoveRequest(request.UserId, currentUserID);
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost("check-friends")]
+        public async Task<ActionResult<bool>> IsFriends([FromBody] FriendReqDTO request)
+        {
+            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            
+            if (await _friendsService.IsFriends(request.UserId, currentUserID))
+            {
+                return Ok(true);
+            }
+            return Ok(false);
+        }
     }
 }

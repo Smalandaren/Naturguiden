@@ -111,5 +111,17 @@ namespace Backend.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> IsFriends(int friendId, int userId)
+        {
+            if (await _context.Friends.FindAsync(friendId, userId) != null || await _context.Friends.FindAsync(userId, friendId) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
