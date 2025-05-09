@@ -1,14 +1,13 @@
-﻿using Backend.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-public class Image
+namespace Backend.Models;
+
+public partial class Image
 {
-    [Key]
-    public int Id { get; set; }
-    public string Url { get; set; } = string.Empty;
-    public int? PlaceId { get; set; }
-    public Place? Place { get; set; }
-    public string? Filename { get; set; }
-    public int? PlaceSuggestionId { get; set; }
-    public PlaceSuggestion? PlaceSuggestion { get; set; }
+    public int PlaceId { get; set; }
+
+    public string Filename { get; set; } = null!;
+
+    public virtual Place Place { get; set; } = null!;
 }

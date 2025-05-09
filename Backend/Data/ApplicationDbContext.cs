@@ -33,7 +33,6 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<AnnouncementBanner> AnnouncementBanners { get; set; }
-    public virtual DbSet<PlaceSuggestion> PlaceSuggestions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,6 +43,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Description).HasColumnName("description");
         });
+
         modelBuilder.Entity<AvailableUtility>(entity =>
         {
             entity.HasKey(e => e.Name).HasName("AvailableUtilities_pkey");
@@ -79,12 +79,11 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Image>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("Images_pkey");
+            entity.HasKey(e => e.Filename).HasName("Images_pkey");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Url).HasColumnName("url");
             entity.Property(e => e.Filename).HasColumnName("filename");
             entity.Property(e => e.PlaceId).HasColumnName("place_id");
+
             entity.HasOne(d => d.Place).WithMany(p => p.Images)
                 .HasForeignKey(d => d.PlaceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -115,15 +114,6 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Name).HasColumnName("name");
         });
 
-        modelBuilder.Entity<Place>()
-            .HasMany<AvailableCategory>("Categories")
-            .WithMany()
-            .UsingEntity(j => j.ToTable("PlaceAvailableCategories"));
-
-        modelBuilder.Entity<Place>()
-            .HasMany<AvailableUtility>("Attributes")
-            .WithMany()
-            .UsingEntity(j => j.ToTable("PlaceAvailableUtilities"));
         modelBuilder.Entity<PlaceCategory>(entity =>
         {
             entity.HasKey(e => new { e.PlaceId, e.CategoryName }).HasName("PlaceCategories_pkey");
@@ -275,61 +265,6 @@ public partial class ApplicationDbContext : DbContext
                 .HasComment("'information' or 'danger'")
                 .HasColumnName("type");
         });
-
-        modelBuilder.Entity<Place>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("Places_pkey");
-
-            entity.Property(e => e.Id)
-                .HasColumnName("id")
-                .ValueGeneratedOnAdd();
-
-            entity.Property(e => e.Address).HasColumnName("address");
-            entity.Property(e => e.Approved).HasColumnName("approved");
-            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
-            entity.Property(e => e.CreatedTimestamp)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("created_timestamp");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Latitude)
-                .HasPrecision(9, 6)
-                .HasColumnName("latitude");
-            entity.Property(e => e.Longitude)
-                .HasPrecision(9, 6)
-                .HasColumnName("longitude");
-            entity.Property(e => e.Name).HasColumnName("name");
-        });
-
-        modelBuilder.Entity<PlaceSuggestion>()
-     .HasMany(p => p.Categories)
-     .WithMany()
-     .UsingEntity<Dictionary<string, object>>(
-         "PlaceSuggestionCategories",
-         r => r.HasOne<AvailableCategory>()
-               .WithMany()
-               .HasForeignKey("AvailableCategoryName")
-               .HasConstraintName("FK_PlaceSuggestionCategories_Category"),
-         l => l.HasOne<PlaceSuggestion>()
-               .WithMany()
-               .HasForeignKey("PlaceSuggestionId")
-               .HasConstraintName("FK_PlaceSuggestionCategories_Suggestion")
-     );
-
-        modelBuilder.Entity<PlaceSuggestion>()
-            .HasMany(p => p.Attributes)
-            .WithMany()
-            .UsingEntity<Dictionary<string, object>>(
-                "PlaceSuggestionAttributes",
-                r => r.HasOne<AvailableUtility>()
-                      .WithMany()
-                      .HasForeignKey("AvailableUtilityName")
-                      .HasConstraintName("FK_PlaceSuggestionAttributes_Utility"),
-                l => l.HasOne<PlaceSuggestion>()
-                      .WithMany()
-                      .HasForeignKey("PlaceSuggestionId")
-                      .HasConstraintName("FK_PlaceSuggestionAttributes_Suggestion")
-            );
 
         OnModelCreatingPartial(modelBuilder);
     }

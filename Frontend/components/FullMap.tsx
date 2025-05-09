@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-const markerIconPng = require("leaflet/dist/images/marker-icon.png") as string;
+import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import {Icon} from 'leaflet'
 import "../node_modules/leaflet/dist/leaflet.css"
 //import 'leaflet-defaulticon-compatibility';
