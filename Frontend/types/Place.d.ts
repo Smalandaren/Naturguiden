@@ -6,6 +6,13 @@ export interface Place {
   description: string;
   latitude: number;
   longitude: number;
-  placeUtilities: PlaceUtility[];
+  address?: string;
+  approved: boolean;
+  createdBy?: number;
   createdAt: Date;
+  placeUtilities: PlaceUtility[];
+
+  categories?: { name: string; description?: string }[];
+  attributes?: { name: string; description?: string }[];
+  imageUrls: string[];
 }

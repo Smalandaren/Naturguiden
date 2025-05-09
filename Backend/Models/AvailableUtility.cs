@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Backend.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Models;
-
-public partial class AvailableUtility
+public class AvailableUtility
 {
-    public string Name { get; set; } = null!;
-
-    public string Description { get; set; } = null!;
-
+    [Key]
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public virtual ICollection<PlaceUtility> PlaceUtilities { get; set; } = new List<PlaceUtility>();
+
 }

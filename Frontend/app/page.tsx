@@ -1,5 +1,6 @@
-import { ErrorScreen } from "@/components/ErrorScreen";
+import { checkAuth } from "@/lib/checkAuth";
 import ClientPage from "./ClientPage";
+import { ErrorScreen } from "@/components/ErrorScreen";
 import { Place } from "@/types/Place";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -10,29 +11,18 @@ async function getPlaces(): Promise<Place[] | null> {
       method: "GET",
     });
 
-    if (!response.ok) {
-      return null;
-    }
-
-    const json = await response.json();
-    return json;
-  } catch (error: any) {
-    console.log(error);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
     return null;
   }
 }
 
 export default async function Home() {
-  try {
-    const places = await getPlaces();
+  const places = await getPlaces();
+  const auth = await checkAuth();
 
-    if (places) {
-      return <ClientPage places={places} />;
-    }
-
-    throw new Error("Could not fetch places");
-  } catch (error: any) {
-    console.error("Error fetching places:", error);
+  if (!places) {
     return (
       <ErrorScreen
         title="Ett fel uppstod"
@@ -40,4 +30,5 @@ export default async function Home() {
       />
     );
   }
+  return <ClientPage places={places} isAuthenticated={auth.authenticated} />;
 }
