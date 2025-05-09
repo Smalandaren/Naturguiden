@@ -37,7 +37,7 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
         </Button>
       </Link>
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto flex flex-col gap-3">
         <div className="flex items-center mb-6 justify-between">
           <div className="flex gap-3 space-between flex-row">
             <TreePine size={32} color="green" />
