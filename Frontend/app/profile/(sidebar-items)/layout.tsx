@@ -5,8 +5,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { ProfileSidebar } from "./ProfileSidebar";
 import { checkAuth } from "@/lib/checkAuth";
+import { ProfileSidebar } from "../ProfileSidebar";
 
 export default async function ProfileLayout({
   children,
