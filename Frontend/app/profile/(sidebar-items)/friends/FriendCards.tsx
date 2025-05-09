@@ -2,10 +2,7 @@ import { Friend } from "@/types/Friend";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import {
-    CircleCheck,
-    CircleX
-  } from "lucide-react";
+import AcceptDenyButtons from "@/components/AcceptDenyRequestButtons";
 import Link from "next/link";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -78,59 +75,9 @@ export function FriendReqCard({friend}: {friend: Friend}) {
             </div>
 
             <div className="flex flex-col items-center px-10 gap-5">
-                <Button onClick={() => AcceptRequest()}><CircleCheck /></Button>
-                <Button className="bg-red-600 hover:bg-red-500" onClick={() => DenyRequest()}><CircleX /></Button>
+              <AcceptDenyButtons friendId={friend.id}/>
             </div>
         </div>
       </Card>
     );
-
-    async function AcceptRequest() {
-        try {
-            const response = await fetch(`${apiUrl}/friends/accept-request`, {
-            method: "PUT",
-            credentials: "include",
-            body: JSON.stringify({
-                UserId : friend.id
-            }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-            });
-
-            window.location.reload();
-
-            if (!response.ok) {
-            throw new Error(`Ett fel uppstod`);
-            }
-            
-        } catch (error: any) {
-            console.log(error);
-        }
-        window.location.reload;
-    }
-    
-    async function DenyRequest() {
-        try {
-            const response = await fetch(`${apiUrl}/friends/remove`, {
-            method: "DELETE",
-            credentials: "include",
-            body: JSON.stringify({
-                UserId : friend.id
-            }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-            });
-
-            window.location.reload();
-    
-            if (!response.ok) {
-            throw new Error(`Ett fel uppstod`);
-            }
-            
-        } catch (error: any) {
-            console.log(error);
-        }
-    }
 }

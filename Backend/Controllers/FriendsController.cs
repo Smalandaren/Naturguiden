@@ -78,5 +78,14 @@ namespace Backend.Controllers
             }
             return Ok(false);
         }
+
+        [Authorize]
+        [HttpPost("check-request")]
+        public async Task<ActionResult<int>> IsRequested([FromBody] FriendReqDTO request)
+        {
+            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            
+            return Ok(await _friendsService.IsRequested(request.UserId, currentUserID));
+        }
     }
 }

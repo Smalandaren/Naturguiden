@@ -69,7 +69,7 @@ export default async function ViewForeignProfile({
                 </div>
 
                 <div className="flex items-center justify-center">
-                  <FriendRequestButton userId={profile.id} isLoggedIn={(await checkAuth()).authenticated}></FriendRequestButton>
+                  <FriendRequestButton friendId={profile.id} self={(await checkAuth()).user}></FriendRequestButton>
                 </div>
 
                 <div className="pt-4 border-t text-center text-sm text-muted-foreground">

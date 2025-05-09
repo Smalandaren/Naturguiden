@@ -114,13 +114,31 @@ namespace Backend.Services
 
         public async Task<bool> IsFriends(int friendId, int userId)
         {
-            if (await _context.Friends.FindAsync(friendId, userId) != null || await _context.Friends.FindAsync(userId, friendId) != null)
+            Friend? friend =
+                await _context.Friends.FirstOrDefaultAsync(f => (f.SenderId == friendId && f.ReceiverId == userId && f.Confirmed) || (f.SenderId == userId && f.ReceiverId == friendId && f.Confirmed));
+
+            if (friend != null)
             {
                 return true;
             }
             else
             {
                 return false;
+            }
+        }
+
+        public async Task<int> IsRequested(int friendId, int userId)
+        {
+            Friend? friend = 
+                await _context.Friends.FirstOrDefaultAsync(f => (f.SenderId == friendId && f.ReceiverId == userId && !f.Confirmed) || (f.SenderId == userId && f.ReceiverId == friendId && !f.Confirmed));
+
+            if (friend != null)
+            {
+                return friend.SenderId;
+            }
+            else
+            {
+                return -1;
             }
         }
     }
