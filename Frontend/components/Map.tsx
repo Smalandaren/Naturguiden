@@ -4,7 +4,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import {Icon} from 'leaflet'
-import "../node_modules/leaflet/dist/leaflet.css"
+import "leaflet/dist/leaflet.css";
 //import 'leaflet-defaulticon-compatibility';
 import { Place } from "@/types/Place";
 
@@ -16,7 +16,7 @@ export default function Map({ place }: { place: Place }){
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} >
+            <Marker position={[place.latitude, place.longitude]}>
             <Popup>
                 {place.name}
                 <br/>

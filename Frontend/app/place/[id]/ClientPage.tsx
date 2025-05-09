@@ -11,18 +11,27 @@ import RegisterVisitButton from "@/components/RegisterVisitButton";
 import { ProfileBasics } from "@/types/ProfileBasics";
 import Map from "@/components/Map";
 import NextJsMap from "@/components/NextJsMap";
+import { Review } from "@/types/Review";
 
-export default function NatureSpotDetail({ place, user }: { place: Place; user: ProfileBasics | null }) {
+
+export default function NatureSpotDetail({
+  place,
+  user,
+  reviews,
+}: {
+  place: Place;
+  user: ProfileBasics | null;
+  reviews: Review[] | null;
+}) {
   const openInMaps = () => {
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`,
       "_blank"
     );
   };
+
   return (
-    
     <main className="container mx-auto py-8 px-4">
-      
       <Link href="/">
         <Button
           variant="ghost"
@@ -88,24 +97,24 @@ export default function NatureSpotDetail({ place, user }: { place: Place; user: 
                 </>
               )}
 
-                  {place.imageUrls && place.imageUrls.length > 0 && (
-                    <>
-                      <Separator />
-                      <div>
-                        <h3 className="font-medium mb-2">Bilder</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          {place.imageUrls.map((url, index) => (
-                            <img
-                              key={index}
-                              src={url}
-                              alt={`Bild ${index + 1}`}
-                              className="rounded-lg border object-cover max-h-60 w-full"
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    </>
-                  )}
+              {place.imageUrls && place.imageUrls.length > 0 && (
+                <>
+                  <Separator />
+                  <div>
+                    <h3 className="font-medium mb-2">Bilder</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {place.imageUrls.map((url, index) => (
+                        <img
+                          key={index}
+                          src={url}
+                          alt={`Bild ${index + 1}`}
+                          className="rounded-lg border object-cover max-h-60 w-full"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
 
               <Separator />
 
@@ -126,7 +135,7 @@ export default function NatureSpotDetail({ place, user }: { place: Place; user: 
               </div>
 
               <div>
-                <NextJsMap place={place}/>
+                <NextJsMap place={place} />
               </div>
 
               <Separator />
@@ -140,32 +149,31 @@ export default function NatureSpotDetail({ place, user }: { place: Place; user: 
             </div>
           </CardContent>
         </Card>
+
         <Card className="gap-5">
           <CardHeader>
-            <CardTitle>
-              Recensioner
-            </CardTitle>
+            <CardTitle>Recensioner</CardTitle>
           </CardHeader>
           <CardContent>
-          {
-          (reviews.length === 0) ? (
-            <h1>{place.name} har inga recensioner än</h1>
-          ) : (
-            reviews.map((review) => 
-            <Card key={review.id}>
-              <CardHeader className="flex content-between flex-row flex-wrap">
-                <CardTitle className="w-full text-xl gap-2">
-                  <div>{review.userName}</div> 
-                  ★
-                  {(review.rating > 1) ? (<>★</>) : (<>☆</>)}
-                  {(review.rating > 2) ? (<>★</>) : (<>☆</>)}
-                  {(review.rating > 3) ? (<>★</>) : (<>☆</>)}
-                  {(review.rating > 4) ? (<>★</>) : (<>☆</>)}
-                </CardTitle>
-                <div>{review.comment}</div>
-              </CardHeader>
-            </Card>
-            ))}
+            {!reviews || reviews.length === 0 ? (
+              <h1>{place.name} har inga recensioner än</h1>
+            ) : (
+              reviews.map((review) => (
+                <Card key={review.id}>
+                  <CardHeader className="flex content-between flex-row flex-wrap">
+                    <CardTitle className="w-full text-xl gap-2">
+                      <div>{review.userName}</div>
+                      ★
+                      {review.rating > 1 ? <>★</> : <>☆</>}
+                      {review.rating > 2 ? <>★</> : <>☆</>}
+                      {review.rating > 3 ? <>★</> : <>☆</>}
+                      {review.rating > 4 ? <>★</> : <>☆</>}
+                    </CardTitle>
+                    <div>{review.comment}</div>
+                  </CardHeader>
+                </Card>
+              ))
+            )}
           </CardContent>
         </Card>
       </div>
