@@ -15,7 +15,7 @@ namespace Backend.Services
             _placesService = new PlacesService(context);
         }
 
-        /*
+        
         public async Task<List<PlaceDTO>> GetWishlist(int userId) 
         {
             List<Wishlist> wishlistItems = await _context.Wishlist.Where(w => w.UserId == userId).ToListAsync();
@@ -24,6 +24,7 @@ namespace Backend.Services
             foreach (Wishlist w in wishlistItems) 
             { 
                 Place place = await _context.Places.FindAsync(w.PlaceId);
+
                 PlaceDTO placeDTO = new PlaceDTO
                 {
                     Id = place.Id,
@@ -38,6 +39,6 @@ namespace Backend.Services
             }
             return returnlist;
         }
-        */
+
     }
 }

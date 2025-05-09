@@ -33,6 +33,8 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<AnnouncementBanner> AnnouncementBanners { get; set; }
+    
+    public virtual DbSet<Wishlist> Wishlist { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -227,25 +229,6 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.ProviderId)
                 .HasComment("Id from the provider, for example a Google user id if the user is registered via Google.")
                 .HasColumnName("provider_id");
-
-            entity.HasMany(d => d.Places).WithMany(p => p.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "Wishlist",
-                    r => r.HasOne<Place>().WithMany()
-                        .HasForeignKey("PlaceId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("Wishlist_place_id_fkey"),
-                    l => l.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("Wishlist_user_id_fkey"),
-                    j =>
-                    {
-                        j.HasKey("UserId", "PlaceId").HasName("Wishlist_pkey");
-                        j.ToTable("Wishlist");
-                        j.IndexerProperty<int>("UserId").HasColumnName("user_id");
-                        j.IndexerProperty<int>("PlaceId").HasColumnName("place_id");
-                    });
         });
 
         modelBuilder.Entity<AnnouncementBanner>(entity =>
@@ -264,6 +247,24 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Type)
                 .HasComment("'information' or 'danger'")
                 .HasColumnName("type");
+        });
+
+        modelBuilder.Entity<Wishlist>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.PlaceId }).HasName("Wishlist_pkey");
+
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.PlaceId).HasColumnName("place_id");
+
+            entity.HasOne(d => d.Place).WithMany(p => p.Wishlist)
+                .HasForeignKey(d => d.PlaceId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Wishlist_place_id_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Wishlist)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Wishlist_user_id_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

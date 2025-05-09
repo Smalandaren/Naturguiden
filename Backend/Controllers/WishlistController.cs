@@ -15,15 +15,13 @@ namespace Backend.Controllers
             _wishlistService = wishlistService;
         }
 
-        /*
         [HttpGet]
-        public async Task<ActionResult<List<PlaceDTO>>> GetAllNatureSpots()
+        public async Task<ActionResult<List<PlaceDTO>>> GetWishlist()
         {
             int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             var places = await _wishlistService.GetWishlist(currentUserID);
             return Ok(places);
         }
-        */
     }
 }
