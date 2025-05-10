@@ -40,5 +40,33 @@ namespace Backend.Services
             return returnlist;
         }
 
+        public async Task<bool> AddToWishlist(int userId, int placeId)
+        {
+            if (await _context.Wishlist.FindAsync(userId, placeId) != null)
+            {
+                return false;
+            }
+            _context.Wishlist.Add(new Wishlist { UserId = userId, PlaceId = placeId});
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveFromWishlist(int userId, int placeId)
+        {
+            Wishlist wishlist = await _context.Wishlist.FirstOrDefaultAsync(w => w.UserId == userId && w.PlaceId == placeId);
+
+            if (wishlist == null)
+            {
+                return false;
+            }
+            _context.Wishlist.Remove(wishlist);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> CheckWishlist(int userId, int placeId)
+        {
+            return await _context.Wishlist.FindAsync(userId, placeId) != null;
+        }
     }
 }
