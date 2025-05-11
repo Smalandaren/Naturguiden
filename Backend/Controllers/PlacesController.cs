@@ -1,3 +1,4 @@
+using Backend.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -6,9 +7,9 @@ namespace Backend.Controllers
     [ApiController]
     public class PlacesController : ControllerBase
     {
-        private readonly PlacesService _placesService;
+        private readonly IPlacesService _placesService;
 
-        public PlacesController(PlacesService placesService)
+        public PlacesController(IPlacesService placesService)
         {
             _placesService = placesService;
         }

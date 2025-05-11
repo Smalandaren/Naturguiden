@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
+using Backend.Interfaces;
 
 public class ProfileService
 {
     private readonly ApplicationDbContext _context;
-    private readonly PlacesService _placesService;
+    private readonly IPlacesService _placesService;
 
-    public ProfileService(ApplicationDbContext context, PlacesService placesService)
+    public ProfileService(ApplicationDbContext context, IPlacesService placesService)
     {
         _context = context;
         _placesService = placesService;

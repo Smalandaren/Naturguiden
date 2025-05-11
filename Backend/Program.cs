@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Backend.Data;
+using Backend.Interfaces;
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registrera våra egna services
-builder.Services.AddScoped<PlacesService>();
+builder.Services.AddScoped<IPlacesService, PlacesService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<VisitsService>();
