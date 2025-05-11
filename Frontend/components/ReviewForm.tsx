@@ -17,20 +17,20 @@ export default function ReviewForm({place}: {place: Place}){
         event.preventDefault();
         const form = event.currentTarget
         const formElements = form.elements as typeof form.elements & {
-        rating: {value: number},
+        rating: {value: string},
         comment:{value: string}
         }
         sendReview({rating: formElements.rating.value, comment: formElements.comment.value});
     }
 
-    async function sendReview({rating, comment}: {rating: number, comment: string}){
+    async function sendReview({rating, comment}: {rating: string, comment: string}){
         try{
             const response = await fetch(`${apiUrl}/review/create`, {
                 method: "POST",
                 credentials: "include",
                 body: JSON.stringify({
                     placeId: place.id,
-                    rating: rating,
+                    rating: parseInt(rating),
                     comment: comment
                 }),
                 headers: {

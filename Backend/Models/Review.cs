@@ -5,7 +5,7 @@ namespace Backend.Models;
 
 public partial class Review
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     /// <summary>
     /// Can be null due to deleted users
