@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { TreePine } from "lucide-react";
+import { FoldHorizontal, TreePine } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -22,23 +22,72 @@ import { Label } from "recharts";
 export default function Home({ places, availableUtil }: { places: Place[], availableUtil : PlaceUtility[] | null }) {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
-  const filteredUtil : PlaceUtility[] = []
+  const [filteredUtil, setFilteredUtil] = useState(availableUtil?.map((util) => ({name: util.name, checked: false})));
 
   const filteredPlaces = places.filter(
     (place) =>
-      place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      place.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      place.placeUtilities.some(x => filteredUtil.includes(x))
+      CheckSearch(place)
   );
 
-  function ChangeUtilFilter({util}: {util : PlaceUtility}){
-    if(filteredUtil.includes(util)){
-      delete filteredUtil[filteredUtil.indexOf(util)];
-    } else{
-      filteredUtil.push(util);
+  function CheckSearch(place: Place): boolean {
+    if (IsFiltered() && searchTerm == "") {
+      console.log("Filter och inget sökt")
+      return CheckFilter(place.placeUtilities);
     }
-    console.log(filteredUtil[filteredUtil.indexOf(util)])
+
+    if (searchTerm != "" && IsFiltered()) {
+      console.log("Filter och något sökt")
+      return (place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      place.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      CheckFilter(place.placeUtilities);
+    }
+
+    if (!IsFiltered() && searchTerm != "") {
+      console.log("Inget filter och något sökt")
+      return (place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      place.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+
+    return true; 
   }
+
+  function IsFiltered(): boolean {
+    var isFiltered = false;
+
+    filteredUtil?.forEach(element => {
+      if (element.checked) {
+        console.log(element.name)
+        isFiltered = true;
+      }
+    });
+
+    console.log(isFiltered  )
+    return isFiltered;
+  }
+
+ function CheckFilter(placeUtilities: PlaceUtility[]): boolean {
+  var yes = false;
+  
+  placeUtilities.forEach(util => {
+    filteredUtil?.forEach(element => {
+      if (util.name === element.name && element.checked) {
+        yes = true;
+      }
+    });
+  });
+
+  return yes;
+ }
+
+ function updateFilter(name: string) {
+      setFilteredUtil(
+        filteredUtil?.map((util) =>
+          util.name === name
+            ? { ...util, checked: !util.checked }
+            : util
+      )
+    )
+ }
 
   // Detta tillåter oss bl.a visa felmeddelande vid Google inloggning. Fråga Thor om mer info.
   useEffect(() => {
@@ -78,17 +127,7 @@ export default function Home({ places, availableUtil }: { places: Place[], avail
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}>
         </Input>
-      </div>
-
-
-
-
-      {filteredPlaces.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-muted-foreground">Inga naturplatser hittades.</p>
-        </div>
-      ) : (
-        <div className="flex flex-col space-y-4 max-w-3xl mx-auto">
+      
         <Card className="w-full gap-0 hover:border-primary transition">
           <CardHeader>
             <CardTitle className="text-xl">
@@ -99,16 +138,22 @@ export default function Home({ places, availableUtil }: { places: Place[], avail
             {availableUtil?.map((util) => (
               <div key={util.name} className="flex justify-between items-center">
                   <h1>{util.name}</h1>
-                  <Input type="checkbox" className="w-30"
-                    onChange={(e) => ChangeUtilFilter({util})}
-                    >
-                  </Input>
+                  <input 
+                    type="checkbox"
+                    onChange={() => updateFilter(util.name)}
+                  />
               </div>
-
             ))}
-            
           </CardContent>
         </Card>
+      </div>
+
+      {filteredPlaces.length === 0 ? (
+        <div className="text-center py-10">
+          <p className="text-muted-foreground">Inga naturplatser hittades.</p>
+        </div>
+      ) : (
+        <div className="flex flex-col space-y-4 max-w-3xl mx-auto">
           {filteredPlaces.map((place) => (
             <Link href={`/place/${place.id}`} key={place.id}>
               <Card className="w-full gap-0 hover:border-primary transition">
