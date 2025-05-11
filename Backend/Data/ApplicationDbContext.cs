@@ -179,7 +179,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("Reviews_pkey");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.Comment).HasColumnName("comment");
             entity.Property(e => e.CreatedTimestamp)

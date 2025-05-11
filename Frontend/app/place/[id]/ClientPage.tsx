@@ -2,6 +2,8 @@
 
 import { ArrowLeft, MapPin, TreePine } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
@@ -13,7 +15,7 @@ import RegisterVisitButton from "@/components/RegisterVisitButton";
 import { ProfileBasics } from "@/types/ProfileBasics";
 import Map from "@/components/Map";
 import NextJsMap from "@/components/NextJsMap";
-
+import ReviewForm from "@/components/ReviewForm";
 
 export default function NatureSpotDetail({ place, user, reviews }: { place: Place, user: ProfileBasics | null, reviews: Review[] }) {
   const openInMaps = () => {
@@ -22,6 +24,8 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
       "_blank"
     );
   };
+
+
 
   return (
     
@@ -103,6 +107,8 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
             <CardTitle>
               Recensioner
             </CardTitle>
+            {user != null ? (<ReviewForm place={place}/>) : (<></>)}
+          
           </CardHeader>
           <CardContent>
           {
