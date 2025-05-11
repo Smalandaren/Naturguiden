@@ -31,19 +31,16 @@ export default function Home({ places, availableUtil }: { places: Place[], avail
 
   function CheckSearch(place: Place): boolean {
     if (IsFiltered() && searchTerm == "") {
-      console.log("Filter och inget sökt")
       return CheckFilter(place.placeUtilities);
     }
 
     if (searchTerm != "" && IsFiltered()) {
-      console.log("Filter och något sökt")
       return (place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       place.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
       CheckFilter(place.placeUtilities);
     }
 
     if (!IsFiltered() && searchTerm != "") {
-      console.log("Inget filter och något sökt")
       return (place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       place.description.toLowerCase().includes(searchTerm.toLowerCase()));
     }
@@ -56,12 +53,9 @@ export default function Home({ places, availableUtil }: { places: Place[], avail
 
     filteredUtil?.forEach(element => {
       if (element.checked) {
-        console.log(element.name)
         isFiltered = true;
       }
     });
-
-    console.log(isFiltered  )
     return isFiltered;
   }
 
