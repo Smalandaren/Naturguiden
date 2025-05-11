@@ -6,7 +6,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export default function ReviewForm({place}: {place: Place}){
     return <form onSubmit={handleSubmit}>
         <div className="flex justify-center gap-1">
-            <Input id="rating" type="number" max={5} min={0} className="w-20"></Input>
+            <Input id="rating" type="number" max={5} min={1} className="w-20"></Input>
             <Input id="comment" type="text" required={true} placeholder="Kommentar"></Input>
             <Button type="submit">Skapa recension</Button>
         </div>
