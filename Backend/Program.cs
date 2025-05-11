@@ -48,7 +48,9 @@ builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<VisitsService>();
 builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<AnnouncementBannerService>();
+builder.Services.AddScoped<FriendsService>();
 builder.Services.AddScoped<ReviewService>();
+
 
 // Registrera cookie autentisering
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
