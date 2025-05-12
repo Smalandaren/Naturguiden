@@ -12,11 +12,14 @@ import { Place } from "@/types/Place";
 import { Review } from "@/types/Review";
 import UtilityBadge from "@/components/UtilityBadge";
 import RegisterVisitButton from "@/components/RegisterVisitButton"; 
+import WishlistButton from "@/components/WishlistButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
 import Map from "@/components/Map";
 import NextJsMap from "@/components/NextJsMap";
 import ReviewForm from "@/components/ReviewForm";
 import {Star} from "lucide-react"
+import { pl } from "date-fns/locale";
+
 
 export default function NatureSpotDetail({ place, user, reviews }: { place: Place, user: ProfileBasics | null, reviews: Review[] }) {
   const openInMaps = () => {
@@ -48,7 +51,10 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
             <TreePine size={32} color="green" />
             <h1 className="text-3xl font-bold">{place.name}</h1>
           </div>
-          <RegisterVisitButton place={place} user={user}></RegisterVisitButton>
+          <div className="flex gap-3">
+            <WishlistButton place={place} user={user}></WishlistButton>
+            <RegisterVisitButton place={place} user={user}></RegisterVisitButton>
+          </div>
         </div>
 
         <Card className="gap-1">
