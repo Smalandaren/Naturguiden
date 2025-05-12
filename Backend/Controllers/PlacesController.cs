@@ -15,7 +15,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PlaceDTO>>> GetAllNatureSpots()
+        public async Task<ActionResult<List<PlaceDTO>>> GetAll()
         {
             var places = await _placesService.GetAllAsync();
             return Ok(places);

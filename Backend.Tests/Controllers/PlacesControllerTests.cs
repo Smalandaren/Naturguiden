@@ -20,6 +20,56 @@ namespace Backend.Tests.Controllers
         }
 
         [Fact]
+        public async Task GetAll_ReturnsOkResult_WhenMoreThanZeroPlaces()
+        {
+            // Arrange
+            var places = new List<PlaceDTO>
+            {
+                new PlaceDTO
+            {
+                Id = 1,
+                Name = "Test ställe 1",
+                Description = "Test beskrivning 1",
+                Latitude = 1.23M, // "M" omvanldar från double till decimal
+                Longitude = 4.56M,
+                CreatedAt = DateTime.UtcNow,
+            },
+                new PlaceDTO
+            {
+                Id = 1,
+                Name = "Test ställe 2",
+                Description = "Test beskrivning 2",
+                Latitude = 1.23M, // "M" omvanldar från double till decimal
+                Longitude = 4.56M,
+                CreatedAt = DateTime.UtcNow,
+            }
+            };
+            
+            A.CallTo(() => _placesService.GetAllAsync()).Returns(places);
+
+            // Act
+            var result = await _placesController.GetAll();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task GetAll_ReturnsOkResult_WhenZeroPlaces()
+        {
+            // Arrange
+            var places = new List<PlaceDTO>();
+
+            A.CallTo(() => _placesService.GetAllAsync()).Returns(places);
+
+            // Act
+            var result = await _placesController.GetAll();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        }
+
+        [Fact]
         public async Task Get_ReturnsOkResult_WhenPlaceExists()
         {
             // Arrange
