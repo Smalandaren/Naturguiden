@@ -12,10 +12,14 @@ import { Place } from "@/types/Place";
 import { Review } from "@/types/Review";
 import UtilityBadge from "@/components/UtilityBadge";
 import RegisterVisitButton from "@/components/RegisterVisitButton"; 
+import WishlistButton from "@/components/WishlistButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
 import Map from "@/components/Map";
 import NextJsMap from "@/components/NextJsMap";
 import ReviewForm from "@/components/ReviewForm";
+import {Star} from "lucide-react"
+import { pl } from "date-fns/locale";
+
 
 export default function NatureSpotDetail({ place, user, reviews }: { place: Place, user: ProfileBasics | null, reviews: Review[] }) {
   const openInMaps = () => {
@@ -47,7 +51,10 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
             <TreePine size={32} color="green" />
             <h1 className="text-3xl font-bold">{place.name}</h1>
           </div>
-          <RegisterVisitButton place={place} user={user}></RegisterVisitButton>
+          <div className="flex gap-3">
+            <WishlistButton place={place} user={user}></WishlistButton>
+            <RegisterVisitButton place={place} user={user}></RegisterVisitButton>
+          </div>
         </div>
 
         <Card className="gap-1">
@@ -111,6 +118,7 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
           
           </CardHeader>
           <CardContent>
+          <div className="flex flex-col gap-3">
           {
           (reviews.length === 0) ? (
             <h1>{place.name} har inga recensioner än</h1>
@@ -119,17 +127,20 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
             <Card key={review.id}>
               <CardHeader className="flex content-between flex-row flex-wrap">
                 <CardTitle className="w-full text-xl gap-2">
-                  <div>{review.userName}</div> 
-                  ★
-                  {(review.rating > 1) ? (<>★</>) : (<>☆</>)}
-                  {(review.rating > 2) ? (<>★</>) : (<>☆</>)}
-                  {(review.rating > 3) ? (<>★</>) : (<>☆</>)}
-                  {(review.rating > 4) ? (<>★</>) : (<>☆</>)}
+                  <div>{review.userName}</div>
+                  <div className="flex">
+                  <Star fill="green" color="white"/>
+                  {(review.rating > 1) ? (<Star fill="green" color="white"/>) : (<Star fill="grey" color="white"/>)}
+                  {(review.rating > 2) ? (<Star fill="green" color="white"/>) : (<Star fill="grey" color="white"/>)}
+                  {(review.rating > 3) ? (<Star fill="green" color="white"/>) : (<Star fill="grey" color="white"/>)}
+                  {(review.rating > 4) ? (<Star fill="green" color="white"/>) : (<Star fill="grey" color="white"/>)}
+                  </div>
                 </CardTitle>
                 <div>{review.comment}</div>
               </CardHeader>
             </Card>
-            ))}
+            ))} 
+            </div>
           </CardContent>
         </Card>
       </div>
