@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import NextJsFullMap from "@/components/NextJsFullMap";
 import { Label } from "recharts";
+import DropDownFilterButton from "@/components/DropDownFilterButton";
 
 export default function Home({ places, availableUtil }: { places: Place[], availableUtil : PlaceUtility[] | null }) {
   const searchParams = useSearchParams();
@@ -114,32 +115,15 @@ export default function Home({ places, availableUtil }: { places: Place[], avail
         </p>
       </div>
 
-      <div className="flex flex-col space-y-4 max-w-3xl mx-auto mb-4">        
+      <div className="flex space-y-4 max-w-3xl mx-auto mb-4 gap-2">
+        <DropDownFilterButton utilities={availableUtil} handleChange={updateFilter}/>
+
         <Input type="text"          
           placeholder="Sök"
           className="hover:border-primary transition"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}>
         </Input>
-      
-        <Card className="w-full gap-0 hover:border-primary transition">
-          <CardHeader>
-            <CardTitle className="text-xl">
-              Filter
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {availableUtil?.map((util) => (
-              <div key={util.name} className="flex justify-between items-center">
-                  <h1>{util.name}</h1>
-                  <input 
-                    type="checkbox"
-                    onChange={() => updateFilter(util.name)}
-                  />
-              </div>
-            ))}
-          </CardContent>
-        </Card>
       </div>
 
       {filteredPlaces.length === 0 ? (
