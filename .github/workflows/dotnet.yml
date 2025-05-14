@@ -45,4 +45,4 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Run tests
-        run: dotnet test Backend.Tests/Backend.Tests.csproj --no-build --verbosity normal
+        run: dotnet test Backend.Tests/Backend.Tests.csproj --verbosity normal
