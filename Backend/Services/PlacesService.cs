@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
-using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
+using Backend.Interfaces;
 
-public class PlacesService
+public class PlacesService : IPlacesService
 {
     private readonly ApplicationDbContext _context;
 
