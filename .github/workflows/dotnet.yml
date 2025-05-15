@@ -1,14 +1,14 @@
-name: Naturguiden Backend - Build & Test
+name: Naturguiden - Build & Test (main)
 
 on:
   push:
-    branches: [unit-testing]
+    branches: [main]
     paths:
       - "Backend/**"
       - "Backend.Tests/**"
       - ".github/workflows/dotnet.yml"
   pull_request:
-    branches: [unit-testing]
+    branches: [main]
     paths:
       - "Backend/**"
       - "Backend.Tests/**"
