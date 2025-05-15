@@ -1,3 +1,19 @@
+name: Naturguiden Backend - Build & Test
+
+on:
+  push:
+    branches: [unit-testing]
+    paths:
+      - "Backend/**"
+      - "Backend.Tests/**"
+      - ".github/workflows/dotnet.yml"
+  pull_request:
+    branches: [unit-testing]
+    paths:
+      - "Backend/**"
+      - "Backend.Tests/**"
+      - ".github/workflows/dotnet.yml"
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
