@@ -33,7 +33,7 @@ async function getPlace(id: string): Promise<Place | null> {
 
 async function getReviews(id: string): Promise<Review[]>{
   try {
-    const response = await fetch(`${apiUrl}/review`, {
+    const response = await fetch(`${apiUrl}/review/getall`, {
       cache: "no-cache",
       method: "POST",
       body: JSON.stringify({

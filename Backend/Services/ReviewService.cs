@@ -35,5 +35,19 @@ namespace Backend.Services
             }
             return reviewDTOs;
         }
+
+        public async Task<bool> Create(Review review){
+            try
+            {
+                await _context.Reviews.AddAsync(review);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
     }
 }

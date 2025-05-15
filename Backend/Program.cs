@@ -51,6 +51,7 @@ builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<AnnouncementBannerService>();
 builder.Services.AddScoped<FriendsService>();
 builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<WishlistService>();
 
 
 // Registrera cookie autentisering
