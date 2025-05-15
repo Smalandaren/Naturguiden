@@ -128,12 +128,12 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
               <CardHeader className="flex content-between flex-row flex-wrap">
                 <CardTitle className="w-full text-xl gap-2">
                   <div>{review.userName}</div>
-                  <div className="flex">
-                  <Star fill="green" color="white"/>
-                  {(review.rating > 1) ? (<Star fill="green" color="white"/>) : (<Star fill="grey" color="white"/>)}
-                  {(review.rating > 2) ? (<Star fill="green" color="white"/>) : (<Star fill="grey" color="white"/>)}
-                  {(review.rating > 3) ? (<Star fill="green" color="white"/>) : (<Star fill="grey" color="white"/>)}
-                  {(review.rating > 4) ? (<Star fill="green" color="white"/>) : (<Star fill="grey" color="white"/>)}
+                  <div className="flex gap-0.5">
+                  <Star size={20} fill="green" color="transparent"/>
+                  {(review.rating > 1) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
+                  {(review.rating > 2) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
+                  {(review.rating > 3) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
+                  {(review.rating > 4) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
                   </div>
                 </CardTitle>
                 <div>{review.comment}</div>

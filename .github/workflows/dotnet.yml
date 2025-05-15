@@ -1,0 +1,63 @@
+name: Naturguiden - Build & Test (main)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Backend/**"
+      - "Backend.Tests/**"
+      - ".github/workflows/dotnet.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "Backend/**"
+      - "Backend.Tests/**"
+      - ".github/workflows/dotnet.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore Backend/Backend.sln
+
+      - name: Build
+        run: dotnet build Backend/Backend.sln --configuration Release --no-restore
+
+      - name: Publish test project (compiled output)
+        run: dotnet publish Backend.Tests/Backend.Tests.csproj --configuration Release --output ./test-artifacts
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: ./test-artifacts
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Download test artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: test-artifacts
+          path: ./test-artifacts
+
+      - name: Run tests from compiled output
+        run: dotnet test ./test-artifacts/Backend.Tests.dll --no-build --verbosity normal

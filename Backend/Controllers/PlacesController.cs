@@ -1,3 +1,4 @@
+using Backend.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -6,15 +7,15 @@ namespace Backend.Controllers
     [ApiController]
     public class PlacesController : ControllerBase
     {
-        private readonly PlacesService _placesService;
+        private readonly IPlacesService _placesService;
 
-        public PlacesController(PlacesService placesService)
+        public PlacesController(IPlacesService placesService)
         {
             _placesService = placesService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PlaceDTO>>> GetAllNatureSpots()
+        public async Task<ActionResult<List<PlaceDTO>>> GetAll()
         {
             var places = await _placesService.GetAllAsync();
             return Ok(places);
