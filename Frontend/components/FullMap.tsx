@@ -12,7 +12,7 @@ import { Link } from "lucide-react";
 
 export default function FullMap({ places }: { places: Place[] }){
     return <div>
-        <MapContainer center={[55.92875, 13.6231121]} zoom={8} scrollWheelZoom={false} className="h-100 w-full justify-self-center px-10 m-0 z-0 rounded-xl border">
+        <MapContainer center={[55.92875, 13.6231121]} zoom={8} scrollWheelZoom={true} className="h-100 w-full justify-self-center px-10 m-0 z-0 rounded-xl border">
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
