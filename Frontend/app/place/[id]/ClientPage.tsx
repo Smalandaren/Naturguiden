@@ -127,7 +127,7 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
             <Card key={review.id}>
               <CardHeader className="flex content-between flex-row flex-wrap">
                 <CardTitle className="w-full text-xl gap-2">
-                  <div>{review.userName}</div>
+                  <div><Link href={`/profile/${review.userId}`}>{review.userName}</Link></div>
                   <div className="flex gap-0.5">
                   <Star size={20} fill="green" color="transparent"/>
                   {(review.rating > 1) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
