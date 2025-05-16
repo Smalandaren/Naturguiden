@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Backend.Interfaces;
+using Backend.Services;
 
 namespace Backend.Controllers
 {
@@ -10,9 +12,9 @@ namespace Backend.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly ProfileService _profileService;
-        private readonly PlacesService _placesService;
+        private readonly IPlacesService _placesService;
 
-        public ProfileController(ProfileService profileService, PlacesService placesService)
+        public ProfileController(ProfileService profileService, IPlacesService placesService)
         {
             _profileService = profileService;
             _placesService = placesService;

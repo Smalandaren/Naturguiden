@@ -15,8 +15,8 @@ export default function ClientPage({
   googleAuthAvailable: boolean;
 }) {
   const router = useRouter();
-  const [emailInput, setEmailInput] = useState("demo@demo.com");
-  const [passwordInput, setPasswordInput] = useState("123");
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleLogin() {
