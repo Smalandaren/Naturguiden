@@ -59,5 +59,19 @@ namespace Backend.Controllers
             var visitedPlaces = await _placesService.GetVisitedPlacesByUserIdAsync(userId);
             return Ok(visitedPlaces);
         }
+
+        [HttpPut("update")]
+        public async Task<ActionResult<ProfileBasicsDTO>> UpdateProfile([FromBody] UpdateProfileRequest request)
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
+            {
+                return Unauthorized("Invalid user id");
+            }
+
+            var profile = await _profileService.UpdateProfileAsync(userId, request.FirstName, request.LastName);
+            return Ok(profile);
+        }
     }
 }
