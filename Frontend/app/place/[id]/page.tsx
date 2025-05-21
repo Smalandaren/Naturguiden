@@ -6,8 +6,6 @@ import { ErrorScreen } from "@/components/ErrorScreen";
 import { checkAuth } from "@/lib/checkAuth";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-
-
 async function getPlace(id: string): Promise<Place | null> {
   try {
     const cookie = await getSessionCookie();
@@ -31,13 +29,13 @@ async function getPlace(id: string): Promise<Place | null> {
   }
 }
 
-async function getReviews(id: string): Promise<Review[]>{
+async function getReviews(id: string): Promise<Review[]> {
   try {
     const response = await fetch(`${apiUrl}/review/getall`, {
       cache: "no-cache",
       method: "POST",
       body: JSON.stringify({
-        "PlaceId" : id
+        PlaceId: id,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -67,17 +65,21 @@ export default async function ViewPlace({
     const reviews = await getReviews(id);
     const authCheck = await checkAuth();
     if (place) {
-      return <ClientPage place={place} user={authCheck.user} reviews={reviews} />;
+      return (
+        <ClientPage place={place} user={authCheck.user} reviews={reviews} />
+      );
     }
 
     throw new Error("Could not get place");
   } catch (error: any) {
     console.error("Error fetching courts:", error);
     return (
-      <ErrorScreen
-        title="Ett fel uppstod"
-        subtitle="Platsen kunde inte visas"
-      />
+      <div className="h-screen">
+        <ErrorScreen
+          title="Ett fel uppstod"
+          subtitle="Platsen kunde inte visas"
+        />
+      </div>
     );
   }
 }

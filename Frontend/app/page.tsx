@@ -34,10 +34,12 @@ export default async function Home() {
   } catch (error: any) {
     console.error("Error fetching places:", error);
     return (
-      <ErrorScreen
-        title="Ett fel uppstod"
-        subtitle="Platserna kunde inte hämtas"
-      />
+      <div className="h-screen">
+        <ErrorScreen
+          title="Ett fel uppstod"
+          subtitle="Platserna kunde inte hämtas"
+        />
+      </div>
     );
   }
 }
