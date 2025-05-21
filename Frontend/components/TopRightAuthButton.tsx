@@ -46,7 +46,7 @@ export default function TopRightAuthButton({
 
   function InitialsAvatar({ user }: { user: ProfileBasics | null }) {
     return (
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button className="bg-primary" size="icon">
             <UserCircle />
