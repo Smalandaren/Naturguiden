@@ -11,10 +11,10 @@ namespace Backend.Controllers
     [ApiController]
     public class ProfileController : ControllerBase
     {
-        private readonly ProfileService _profileService;
+        private readonly IProfileService _profileService;
         private readonly IPlacesService _placesService;
 
-        public ProfileController(ProfileService profileService, IPlacesService placesService)
+        public ProfileController(IProfileService profileService, IPlacesService placesService)
         {
             _profileService = profileService;
             _placesService = placesService;

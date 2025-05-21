@@ -3,7 +3,7 @@ using Backend.Data;
 using Backend.Models;
 using Backend.Interfaces;
 
-public class ProfileService
+public class ProfileService : IProfileService
 {
     private readonly ApplicationDbContext _context;
     private readonly IPlacesService _placesService;
