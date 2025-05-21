@@ -9,6 +9,7 @@ import ProviderIcon from "@/components/ProviderIcon";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle, Lock, Save } from "lucide-react";
 import { toast } from "sonner";
+import CenteredLoadingIndicator from "@/components/CenteredLoadingIndicator";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ProfilePage() {
@@ -82,7 +83,7 @@ export default function ProfilePage() {
   }, []);
 
   if (isLoading) {
-    return <p>loading</p>;
+    return <CenteredLoadingIndicator />;
   }
   if (profile == null || editedProfile == null) {
     return (

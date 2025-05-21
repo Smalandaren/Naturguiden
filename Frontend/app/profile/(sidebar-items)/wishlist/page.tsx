@@ -5,6 +5,7 @@ import { ErrorScreen } from "@/components/ErrorScreen";
 import { Separator } from "@/components/ui/separator";
 import { WishlistCard } from "./WishlistCard";
 import { Place } from "@/types/Place";
+import CenteredLoadingIndicator from "@/components/CenteredLoadingIndicator";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ProfilePage() {
@@ -44,7 +45,7 @@ export default function ProfilePage() {
   }, []);
 
   if (isLoading) {
-    return <p>loading</p>;
+    return <CenteredLoadingIndicator />;
   }
   if (wishlistItems == null) {
     return (

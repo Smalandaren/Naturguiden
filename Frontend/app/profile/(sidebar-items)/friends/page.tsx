@@ -5,6 +5,7 @@ import { ErrorScreen } from "@/components/ErrorScreen";
 import { FriendCard, FriendReqCard } from "./FriendCards";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import CenteredLoadingIndicator from "@/components/CenteredLoadingIndicator";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function FriendsPage() {
@@ -79,7 +80,7 @@ export default function FriendsPage() {
       }, []);
       
       if (isLoading) {
-        return <p>loading</p>;
+        return <CenteredLoadingIndicator />;
       }
 
       if (friends == null || friendRequests == null) {
