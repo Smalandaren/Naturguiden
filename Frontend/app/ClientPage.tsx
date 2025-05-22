@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Place } from "@/types/Place";
 import UtilityBadge from "@/components/UtilityBadge";
+import CategoryBadge from "@/components/CategoryBadge";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -93,15 +94,31 @@ export default function Home({ places }: { places: Place[] }) {
                   </p>
                 </CardContent>
                 <CardFooter>
-                  <div className="flex flex-wrap gap-2">
-                    {place.placeUtilities.map((utility) => {
-                      return (
-                        <UtilityBadge
-                          key={utility.name}
-                          placeUtility={utility}
-                        />
-                      );
-                    })}
+                  <div className="flex gap-1 flex-wrap">
+                    <div className="flex flex-wrap gap-2 w-full">
+                      {(place.placeCategories != null) ?
+                        (place.placeCategories.map((category) => {
+                          return (
+                            <CategoryBadge
+                              key={category.name}
+                              placeCategory={category}
+                            />
+                          );
+                        })) : (<></>)
+                      }
+                    </div>
+                    <div className="flex flex-wrap gap-2 w-full">
+                      {(place.placeUtilities != null) ?
+                        (place.placeUtilities.map((utility) => {
+                          return (
+                            <UtilityBadge
+                              key={utility.name}
+                              placeUtility={utility}
+                            />
+                          );
+                        })) : (<></>)
+                      }
+                    </div>
                   </div>
                 </CardFooter>
               </Card>

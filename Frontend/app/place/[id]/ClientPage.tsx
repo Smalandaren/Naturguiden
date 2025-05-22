@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { Place } from "@/types/Place";
 import { Review } from "@/types/Review";
 import UtilityBadge from "@/components/UtilityBadge";
+import CategoryBadge from "@/components/CategoryBadge";
 import RegisterVisitButton from "@/components/RegisterVisitButton"; 
 import WishlistButton from "@/components/WishlistButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
@@ -66,6 +67,31 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
 
             <div className="flex flex-col gap-6">
               <div>
+                <div className="flex gap-1 flex-wrap">
+                  <div className="flex flex-wrap gap-2 w-full">
+                    {(place.placeCategories != null) ?
+                      (place.placeCategories.map((category) => {
+                        return (
+                          <CategoryBadge
+                            key={category.name}
+                            placeCategory={category}
+                          />
+                        );
+                      })) : (<></>)}
+                  </div>
+                  <div className="flex flex-wrap gap-2 w-full">
+                    {(place.placeUtilities != null) ?
+                      (place.placeUtilities.map((utility) => {
+                        return (
+                          <UtilityBadge
+                            key={utility.name}
+                            placeUtility={utility}
+                          />
+                        );
+                      })) : (<></>)}
+                  </div>
+                </div>
+                {/*
                 <h3 className="font-medium mb-2">Bekvämligheter</h3>
                 <div className="flex flex-wrap gap-2">
                   {place.placeUtilities.map((utility) => {
@@ -73,7 +99,7 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
                       <UtilityBadge key={utility.name} placeUtility={utility} />
                     );
                   })}
-                </div>
+                </div>*/}
               </div>
 
               <Separator />
