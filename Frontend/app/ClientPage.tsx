@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Place } from "@/types/Place";
 import { PlaceUtility } from "@/types/PlaceUtility";
+import { PlaceCategory } from "@/types/PlaceCategory";
 import UtilityBadge from "@/components/UtilityBadge";
 import CategoryBadge from "@/components/CategoryBadge";
 import { useSearchParams } from "next/navigation";
@@ -21,7 +22,7 @@ import NextJsFullMap from "@/components/NextJsFullMap";
 import { Label } from "recharts";
 import DropDownFilterButton from "@/components/DropDownFilterButton";
 
-export default function Home({ places, availableUtil }: { places: Place[], availableUtil : PlaceUtility[] | null }) {
+export default function Home({ places, availableUtil, availableCategories }: { places: Place[], availableUtil : PlaceUtility[] | null, availableCategories : PlaceCategory[] | null }) {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUtil, setFilteredUtil] = useState(availableUtil?.map((util) => ({name: util.name, checked: false})));
@@ -117,7 +118,7 @@ export default function Home({ places, availableUtil }: { places: Place[], avail
       </div>
 
       <div className="flex space-y-4 max-w-3xl mx-auto mb-4 gap-2">
-        <DropDownFilterButton utilities={availableUtil} handleChange={updateFilter}/>
+        <DropDownFilterButton utilities={availableUtil} categories={availableCategories} handleChange={updateFilter}/>
 
         <Input type="text"          
           placeholder="Sök"

@@ -2,11 +2,12 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Button } from "./ui/button";
 import { ListFilter } from "lucide-react";
 import { PlaceUtility } from "@/types/PlaceUtility";
+import { PlaceCategory } from "@/types/PlaceCategory";
 
 
 
 
-export default function DropDownFilterButton({utilities, handleChange}: {utilities: PlaceUtility[] | null, handleChange: Function}) {   
+export default function DropDownFilterButton({utilities, categories, handleChange}: {utilities: PlaceUtility[] | null, categories: PlaceCategory[] | null, handleChange: Function}) {   
     return <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild >
@@ -26,6 +27,15 @@ export default function DropDownFilterButton({utilities, handleChange}: {utiliti
                 ))}
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Kategorier</DropdownMenuLabel>
+            {categories?.map((category) => (
+                <div key={category.name} className="flex justify-between gap-10 px-5">
+                    <h1>{category.name}</h1>
+                    <input 
+                        type="checkbox"
+                        onChange={() => handleChange(category.name)}
+                    />
+                </div>
+                ))}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

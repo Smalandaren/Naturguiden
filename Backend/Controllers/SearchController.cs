@@ -33,4 +33,12 @@ public class SearchController : ControllerBase
         if (result != null && result.Count > 0) {return Ok(result); }
         return new EmptyResult();
     }
+
+    [HttpGet("categories")]
+    public ActionResult<List<AvailableCategory>> GetAllCategories()
+    {
+        List<AvailableCategory> result = _searchService.GetAllCategories();
+        if (result != null && result.Count > 0) { return Ok(result); }
+        return new EmptyResult();
+    }
 }

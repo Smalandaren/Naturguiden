@@ -53,5 +53,18 @@ public class SearchService
             return null;
         }
     }
+
+    public List<AvailableCategory> GetAllCategories()
+    {
+        try
+        {
+            List<AvailableCategory> result = _context.AvailableCategories.ToList();
+            return result;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 }
 
