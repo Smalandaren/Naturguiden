@@ -25,18 +25,20 @@ namespace Backend.Services
             {
                 int friendId = (id != f.ReceiverId) ? f.ReceiverId : f.SenderId;
 
-                User friend = await _context.Users.FindAsync(friendId);
-
-                FriendDTO friendDTO = new FriendDTO
+                User? friend = await _context.Users.FindAsync(friendId);
+                if(friend != null)
                 {
-                    Id = friendId,
-                    FirstName = friend.FirstName,
-                    LastName = friend.LastName,
-                    Email = friend.Email,
-                    RequestTime = f.TimeSent,
-                    ConfirmedTime = f.TimeConfirmed
-                };
-                friendDTOs.Add(friendDTO);
+                    FriendDTO friendDTO = new FriendDTO
+                    {
+                        Id = friendId,
+                        FirstName = friend.FirstName,
+                        LastName = friend.LastName,
+                        Email = friend.Email,
+                        RequestTime = f.TimeSent,
+                        ConfirmedTime = f.TimeConfirmed
+                    };
+                    friendDTOs.Add(friendDTO);
+                }
             }
             return friendDTOs;
         }
@@ -48,18 +50,22 @@ namespace Backend.Services
 
             foreach (var f in requests) 
             {
-                User sender = await _context.Users.FindAsync(f.SenderId);
+                User? sender = await _context.Users.FindAsync(f.SenderId);
 
-                FriendDTO friendDTO = new FriendDTO
+                if(sender != null)
                 {
-                    Id = f.SenderId,
-                    FirstName = sender.FirstName,
-                    LastName = sender.LastName,
-                    Email = sender.Email,
-                    RequestTime = f.TimeSent,
-                    ConfirmedTime = f.TimeConfirmed
-                };
-                friendDTOs.Add(friendDTO);
+                    FriendDTO friendDTO = new FriendDTO
+                    {
+                        Id = f.SenderId,
+                        FirstName = sender.FirstName,
+                        LastName = sender.LastName,
+                        Email = sender.Email,
+                        RequestTime = f.TimeSent,
+                        ConfirmedTime = f.TimeConfirmed
+                    };
+                    friendDTOs.Add(friendDTO);
+                }
+                
             }
             return friendDTOs;
         }

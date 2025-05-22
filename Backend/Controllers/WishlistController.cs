@@ -20,7 +20,12 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PlaceDTO>>> GetWishlist()
         {
-            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             var places = await _wishlistService.GetWishlist(currentUserID);
             return Ok(places);

@@ -28,14 +28,22 @@ public class SearchService
         {
             for (int i = 0; i < nameMatches.Count; i++)
             {
-                matchesDTO.Add(await _placesService.GetAsync(nameMatches[i].Id));
+                PlaceDTO? place = await _placesService.GetAsync(nameMatches[i].Id);
+                if(place != null)
+                {
+                    matchesDTO.Add(place);
+                }
             }
         }
         if (descMatches.Count > 0)
         {
             for(int i = 0; i < descMatches.Count; i++)
             {
-                matchesDTO.Add(await _placesService.GetAsync(descMatches[i].Id));
+                PlaceDTO? place = await _placesService.GetAsync(descMatches[i].Id);
+                if (place != null)
+                {
+                    matchesDTO.Add(place);
+                }
             }
         }
         return matchesDTO;

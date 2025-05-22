@@ -19,7 +19,7 @@ public partial class Review
     /// </summary>
     public int Rating { get; set; }
 
-    public string Comment { get; set; } = null!;
+    public string? Comment { get; set; } = null!;
 
     public DateTime CreatedTimestamp { get; set; }
 

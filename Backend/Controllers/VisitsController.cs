@@ -42,9 +42,12 @@ public class VisitsController : ControllerBase
     {
         try
         {
-            ClaimsPrincipal currentUser = this.User;
-            int currentUserID = Int32.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value);
-            Console.WriteLine(currentUserID);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             await _visitsService.RegisterVisit(new PlaceVisit { PlaceId = request.PlaceId, UserId = currentUserID });
             return Ok();
@@ -61,8 +64,12 @@ public class VisitsController : ControllerBase
     {
         try
         {
-            ClaimsPrincipal currentUser = this.User;
-            int currentUserID = Int32.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             await _visitsService.RemoveVisit(new PlaceVisit { PlaceId = request.PlaceId, UserId = currentUserID});
             return Ok();

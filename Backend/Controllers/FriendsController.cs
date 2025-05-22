@@ -20,7 +20,12 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<List<FriendDTO>>> GetFriends()
         {
-            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             var friends = await _friendsService.GetFriends(currentUserID);
             return Ok(friends);
@@ -30,7 +35,12 @@ namespace Backend.Controllers
         [HttpGet("get-requests")]
         public async Task<ActionResult<List<FriendDTO>>> GetFriendRequests()
         {
-            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             var requests = await _friendsService.GetRequests(currentUserID);
             return requests;
@@ -40,7 +50,12 @@ namespace Backend.Controllers
         [HttpPost("send-request")]
         public async Task<IActionResult> AddRequest([FromBody] FriendReqDTO request)
         {
-            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             await _friendsService.AddRequest(currentUserID, request.UserId);
             return Ok();
@@ -50,7 +65,12 @@ namespace Backend.Controllers
         [HttpPut("accept-request")]
         public async Task<IActionResult> AcceptRequest([FromBody] FriendReqDTO request) 
         {
-            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             await _friendsService.AcceptRequest(request.UserId, currentUserID);
             return Ok();
@@ -60,7 +80,12 @@ namespace Backend.Controllers
         [HttpDelete("remove")]
         public async Task<IActionResult> RemoveRequest([FromBody] FriendReqDTO request)
         {
-            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             await _friendsService.RemoveRequest(request.UserId, currentUserID);
             return Ok();
@@ -70,8 +95,13 @@ namespace Backend.Controllers
         [HttpPost("check-friends")]
         public async Task<ActionResult<bool>> IsFriends([FromBody] FriendReqDTO request)
         {
-            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
+
             if (await _friendsService.IsFriends(request.UserId, currentUserID))
             {
                 return Ok(true);
@@ -83,8 +113,13 @@ namespace Backend.Controllers
         [HttpPost("check-request")]
         public async Task<ActionResult<int>> IsRequested([FromBody] FriendReqDTO request)
         {
-            int currentUserID = Int32.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
+
             return Ok(await _friendsService.IsRequested(request.UserId, currentUserID));
         }
     }

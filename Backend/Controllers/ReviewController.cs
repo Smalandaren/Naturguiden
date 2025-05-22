@@ -29,13 +29,17 @@ namespace Backend.Controllers
         [HttpPost("create")]
         public async Task<ActionResult> Create([FromBody] ReviewDTO reviewDTO)
         {
-            if (reviewDTO.Rating !>= 1 || reviewDTO.Rating !<= 5)
+            if (reviewDTO.Rating > 5 || reviewDTO.Rating < 1)
             {
                 return BadRequest();
             }
 
-            ClaimsPrincipal currentUser = this.User;
-            int currentUserID = Int32.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int currentUserID))
+            {
+                return Unauthorized("Invalid user id");
+            }
 
             Review review = new Review()
             {

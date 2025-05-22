@@ -19,7 +19,7 @@ namespace Backend.Services
             List<ReviewDTO> reviewDTOs = new List<ReviewDTO>();
             for (int i = 0; i < reviews.Count(); i++)
             {
-                User user = await _context.Users.FindAsync(reviews[i].UserId);
+                User? user = await _context.Users.FindAsync(reviews[i].UserId);
                 if (user == null) {user = new User() { FirstName = "Place", LastName = "Holder"};}
 
                 reviewDTOs.Add(new ReviewDTO()

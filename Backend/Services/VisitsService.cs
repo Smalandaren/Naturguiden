@@ -34,8 +34,13 @@ public class VisitsService
         {
             return false;
         }
-        _context.PlaceVisits.Remove(await _context.PlaceVisits.FindAsync(request.UserId, request.PlaceId));
-        await _context.SaveChangesAsync();
-        return true;
+        PlaceVisit? placeVisit = await _context.PlaceVisits.FindAsync(request.UserId, request.PlaceId);
+        if (placeVisit != null)
+        {
+            _context.PlaceVisits.Remove(placeVisit);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        return false;
     }
 }

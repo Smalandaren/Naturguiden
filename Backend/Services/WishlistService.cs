@@ -23,19 +23,21 @@ namespace Backend.Services
 
             foreach (Wishlist w in wishlistItems) 
             { 
-                Place place = await _context.Places.FindAsync(w.PlaceId);
-
-                PlaceDTO placeDTO = new PlaceDTO
+                Place? place = await _context.Places.FindAsync(w.PlaceId);
+                if(place != null)
                 {
-                    Id = place.Id,
-                    Name = place.Name,
-                    Description = place.Description,
-                    Latitude = place.Latitude,
-                    Longitude = place.Longitude,
-                    CreatedAt = place.CreatedTimestamp,
-                    PlaceUtilities = await _placesService.GetPlaceUtilitiesAsync(place.Id)
-                };
-                returnlist.Add(placeDTO);
+                    PlaceDTO placeDTO = new PlaceDTO
+                    {
+                        Id = place.Id,
+                        Name = place.Name,
+                        Description = place.Description,
+                        Latitude = place.Latitude,
+                        Longitude = place.Longitude,
+                        CreatedAt = place.CreatedTimestamp,
+                        PlaceUtilities = await _placesService.GetPlaceUtilitiesAsync(place.Id)
+                    };
+                    returnlist.Add(placeDTO);
+                }
             }
             return returnlist;
         }
@@ -53,7 +55,7 @@ namespace Backend.Services
 
         public async Task<bool> RemoveFromWishlist(int userId, int placeId)
         {
-            Wishlist wishlist = await _context.Wishlist.FirstOrDefaultAsync(w => w.UserId == userId && w.PlaceId == placeId);
+            Wishlist? wishlist = await _context.Wishlist.FirstOrDefaultAsync(w => w.UserId == userId && w.PlaceId == placeId);
 
             if (wishlist == null)
             {
