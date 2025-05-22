@@ -1,3 +1,4 @@
+import { PlaceCategory } from "./PlaceCategory";
 import { PlaceUtility } from "./PlaceUtility";
 
 export interface Place {
@@ -7,5 +8,6 @@ export interface Place {
   latitude: number;
   longitude: number;
   placeUtilities: PlaceUtility[];
+  placeCategories: PlaceCategory[];
   createdAt: Date;
 }
