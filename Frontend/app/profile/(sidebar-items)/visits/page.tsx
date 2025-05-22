@@ -5,6 +5,7 @@ import { ErrorScreen } from "@/components/ErrorScreen";
 import { Separator } from "@/components/ui/separator";
 import { VisitedPlace } from "@/types/VisitedPlace";
 import { VisitedPlaceCard } from "./VisitedPlaceCard";
+import CenteredLoadingIndicator from "@/components/CenteredLoadingIndicator";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ProfilePage() {
@@ -44,7 +45,7 @@ export default function ProfilePage() {
   }, []);
 
   if (isLoading) {
-    return <p>loading</p>;
+    return <CenteredLoadingIndicator />;
   }
   if (visitedPlaces == null) {
     return (

@@ -7,4 +7,5 @@ public class PlaceDTO
     public decimal Longitude { get; set; }
     public DateTime CreatedAt { get; set; }
     public List<PlaceUtilityDTO>? PlaceUtilities { get; set; } // = new(); om det ska vara en tom array istället för null
+    public List<PlaceCategoryDTO>? PlaceCategories { get; set; }
 }

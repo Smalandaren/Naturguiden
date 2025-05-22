@@ -51,9 +51,7 @@ export default function Onboarding() {
   return (
     <Dialog
       open={open}
-      onOpenChange={(open) => {
-        if (open) setStep(1);
-      }}
+      onOpenChange={setOpen}
     >
       <DialogContent className="gap-0 p-0 [&>button:last-child]:text-white">
         <div className="w-full h-48 flex items-center justify-center bg-primary/20">

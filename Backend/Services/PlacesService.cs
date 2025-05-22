@@ -30,7 +30,8 @@ public class PlacesService : IPlacesService
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
                 CreatedAt = p.CreatedTimestamp,
-                PlaceUtilities = await GetPlaceUtilitiesAsync(p.Id)
+                PlaceUtilities = await GetPlaceUtilitiesAsync(p.Id),
+                PlaceCategories = await GetPlaceCategoriesAsync(p.Id)
             };
             result.Add(placeDTO);
         }
@@ -52,7 +53,8 @@ public class PlacesService : IPlacesService
                 Latitude = place.Latitude,
                 Longitude = place.Longitude,
                 CreatedAt = place.CreatedTimestamp,
-                PlaceUtilities = await GetPlaceUtilitiesAsync(place.Id)
+                PlaceUtilities = await GetPlaceUtilitiesAsync(place.Id),
+                PlaceCategories = await GetPlaceCategoriesAsync(place.Id)
             };
 
             return placeDTO;
@@ -81,12 +83,41 @@ public class PlacesService : IPlacesService
         return placeUtilities;
     }
 
+    public async Task<List<PlaceCategoryDTO>> GetPlaceCategoriesAsync(int placeId)
+    {
+        var placeCategories = await _context.PlaceCategories.Where(u => u.PlaceId == placeId).Select(u => new PlaceCategoryDTO
+        {
+            Name = u.CategoryName,
+            Description = u.Description
+        }).ToListAsync();
+
+        foreach (var placeCategory in placeCategories)
+        {
+            if (placeCategory.Description == null)
+            {
+                var generalDescription = await GetGeneralPlaceCategoryDescriptionAsync(placeCategory.Name);
+                placeCategory.Description = generalDescription;
+            }
+        }
+
+        return placeCategories;
+    }
+
     // Hämtar default beskrivningen för en viss Utility
     // Används om en viss PlaceUtility inte har något egen/unik beskrivning
     public async Task<string?> GetGeneralPlaceUtilityDescriptionAsync(string utilityName)
     {
         var description = await _context.AvailableUtilities
                             .Where(u => u.Name == utilityName)
+                            .Select(u => u.Description)
+                            .FirstOrDefaultAsync();
+        return description;
+    }
+
+    public async Task<string?> GetGeneralPlaceCategoryDescriptionAsync(string categoryName)
+    {
+        var description = await _context.AvailableCategories
+                            .Where(u => u.Name == categoryName)
                             .Select(u => u.Description)
                             .FirstOrDefaultAsync();
         return description;

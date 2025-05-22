@@ -3,7 +3,7 @@ using Backend.Data;
 using Backend.Models;
 using Backend.Interfaces;
 
-public class ProfileService
+public class ProfileService : IProfileService
 {
     private readonly ApplicationDbContext _context;
     private readonly IPlacesService _placesService;
@@ -91,6 +91,30 @@ public class ProfileService
             };
 
             return foreignProfileDTO;
+        }
+        return null;
+    }
+
+    public async Task<ProfileBasicsDTO?> UpdateProfileAsync(int id, string firstName, string lastName)
+    {
+        var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+        if (user != null)
+        {
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            await _context.SaveChangesAsync();
+
+            var profileBasicsDTO = new ProfileBasicsDTO
+            {
+                Id = user.Id,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = user.Email,
+                Provider = user.Provider,
+                CreatedAt = user.CreatedTimestamp
+            };
+
+            return profileBasicsDTO;
         }
         return null;
     }

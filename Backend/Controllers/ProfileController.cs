@@ -11,10 +11,10 @@ namespace Backend.Controllers
     [ApiController]
     public class ProfileController : ControllerBase
     {
-        private readonly ProfileService _profileService;
+        private readonly IProfileService _profileService;
         private readonly IPlacesService _placesService;
 
-        public ProfileController(ProfileService profileService, IPlacesService placesService)
+        public ProfileController(IProfileService profileService, IPlacesService placesService)
         {
             _profileService = profileService;
             _placesService = placesService;
@@ -58,6 +58,20 @@ namespace Backend.Controllers
 
             var visitedPlaces = await _placesService.GetVisitedPlacesByUserIdAsync(userId);
             return Ok(visitedPlaces);
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult<ProfileBasicsDTO>> UpdateProfile([FromBody] UpdateProfileRequest request)
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
+            {
+                return Unauthorized("Invalid user id");
+            }
+
+            var profile = await _profileService.UpdateProfileAsync(userId, request.FirstName, request.LastName);
+            return Ok(profile);
         }
     }
 }
