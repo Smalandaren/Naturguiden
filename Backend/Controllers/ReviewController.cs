@@ -29,6 +29,11 @@ namespace Backend.Controllers
         [HttpPost("create")]
         public async Task<ActionResult> Create([FromBody] ReviewDTO reviewDTO)
         {
+            if (reviewDTO.Rating !>= 1 || reviewDTO.Rating !<= 5)
+            {
+                return BadRequest();
+            }
+
             ClaimsPrincipal currentUser = this.User;
             int currentUserID = Int32.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value);
 

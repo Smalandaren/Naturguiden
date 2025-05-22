@@ -114,7 +114,7 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
             <CardTitle>
               Recensioner
             </CardTitle>
-            {user != null ? (<ReviewForm place={place}/>) : (<></>)}
+            {user != null ? (<ReviewForm place={place}/>) : (<></>)} {/*Om användaren är inloggad, visa skapa-recensionsformuläret*/}
           
           </CardHeader>
           <CardContent>
