@@ -47,7 +47,7 @@ namespace Backend.Tests.Controllers
                 CreatedAt = DateTime.UtcNow
             };
 
-            A.CallTo(() => _profileService.GetBasicProfileInfoAsync(1)).Returns(Task.FromResult<ProfileBasicsDTO?>(profile));
+            A.CallTo(() => _profileService.GetBasicProfileInfoAsync(1)).Returns(profile);
 
             // Act
             var result = await _profileController.GetBasicProfileInfo();
@@ -88,7 +88,7 @@ namespace Backend.Tests.Controllers
                 CreatedAt = DateTime.UtcNow
             };
 
-            A.CallTo(() => _profileService.GetForeignProfileInfoAsync(1)).Returns(Task.FromResult<ForeignProfileDTO?>(profile));
+            A.CallTo(() => _profileService.GetForeignProfileInfoAsync(1)).Returns(profile);
 
             // Act
             var result = await _profileController.GetForeignProfileInfo(1);
@@ -109,6 +109,198 @@ namespace Backend.Tests.Controllers
 
             // Assert
             var notFoundResult = Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task GetVisitedPlaces_ReturnsOk_WhenProfileExists()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            _profileController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            var places = new List<VisitedPlaceDTO>()
+            {
+                new VisitedPlaceDTO
+                {
+                    Id = 1,
+                    Name = "Test 1",
+                    Description = "Test 1",
+
+                },
+                new VisitedPlaceDTO
+                {
+                    Id = 2,
+                    Name = "Test 2",
+                    Description = "Test 2",
+
+                }
+            };
+
+            A.CallTo(() => _placesService.GetVisitedPlacesByUserIdAsync(1)).Returns(places);
+
+            // Act
+            var result = await _profileController.GetVisitedPlaces();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task GetVisitedPlaces_ReturnsUnauthorized_WhenUserIdIsMissing()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity());
+
+            _profileController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            // Act
+            var result = await _profileController.GetVisitedPlaces();
+
+            // Assert
+            var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task UpdateProfile_ReturnsOk_WhenValidUserAndRequestBody()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            _profileController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            var updateRequest = new UpdateProfileRequest
+            {
+                FirstName = "Test",
+                LastName = "Testsson"
+            };
+
+            var updatedProfile = new ProfileBasicsDTO
+            {
+                Id = 1,
+                Email = "test@test.com",
+                FirstName = "Test",
+                LastName = "Testsson",
+                Provider = "local",
+                CreatedAt = DateTime.Now
+            };
+
+            A.CallTo(() => _profileService.UpdateProfileAsync(1, "Test", "Testsson")).Returns(updatedProfile);
+
+            // Act
+            var result = await _profileController.UpdateProfile(updateRequest);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task UpdateProfile_ReturnsUnauthorized_WhenUserIdIsMissing()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity());
+
+            _profileController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            var updateRequest = new UpdateProfileRequest
+            {
+                FirstName = "Test",
+                LastName = "Testsson"
+            };
+
+            var updatedProfile = new ProfileBasicsDTO
+            {
+                Id = 1,
+                Email = "test@test.com",
+                FirstName = "Test",
+                LastName = "Testsson",
+                Provider = "local",
+                CreatedAt = DateTime.Now
+            };
+
+            A.CallTo(() => _profileService.UpdateProfileAsync(1, "Test", "Testsson")).Returns(updatedProfile);
+
+            // Act
+            var result = await _profileController.UpdateProfile(updateRequest);
+
+            // Assert
+            var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task UpdateProfile_ReturnsBadRequest_WhenFirstNameMissing()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            _profileController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            var updateRequest = new UpdateProfileRequest
+            {
+                FirstName = "",
+                LastName = "Testsson"
+            };
+
+            _profileController.ModelState.AddModelError("FirstName", "Required");
+
+            // Act
+            var result = await _profileController.UpdateProfile(updateRequest);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task UpdateProfile_ReturnsBadRequest_WhenLastNameMissing()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            _profileController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            var updateRequest = new UpdateProfileRequest
+            {
+                FirstName = "Test",
+                LastName = ""
+            };
+
+            _profileController.ModelState.AddModelError("LastName", "Required");
+
+            // Act
+            var result = await _profileController.UpdateProfile(updateRequest);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
         }
     }
 }

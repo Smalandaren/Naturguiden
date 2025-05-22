@@ -63,6 +63,11 @@ namespace Backend.Controllers
         [HttpPut("update")]
         public async Task<ActionResult<ProfileBasicsDTO>> UpdateProfile([FromBody] UpdateProfileRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
