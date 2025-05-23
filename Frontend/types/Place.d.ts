@@ -10,5 +10,4 @@ export interface Place {
   placeUtilities: PlaceUtility[];
   placeCategories: PlaceCategory[];
   createdAt: Date;
-  images?: string[];
 }

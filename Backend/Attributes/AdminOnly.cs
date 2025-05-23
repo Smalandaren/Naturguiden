@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Backend.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -7,7 +6,7 @@ public class AdminOnlyAttribute : Attribute, IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        var profileService = context.HttpContext.RequestServices.GetRequiredService<IProfileService>();
+        var profileService = context.HttpContext.RequestServices.GetRequiredService<ProfileService>();
         var user = context.HttpContext.User;
         var userIdString = user.FindFirstValue(ClaimTypes.NameIdentifier);
 

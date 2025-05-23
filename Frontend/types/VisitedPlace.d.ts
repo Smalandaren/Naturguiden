@@ -1,5 +1,4 @@
 import { PlaceUtility } from "./PlaceUtility";
-import { PlaceCategory } from "./PlaceCategory";
 
 export interface VisitedPlace {
   id: number;
@@ -8,8 +7,6 @@ export interface VisitedPlace {
   latitude: number;
   longitude: number;
   placeUtilities: PlaceUtility[];
-  placeCategories: PlaceCategory[];
-  images?: string[];
   visitedAt: Date;
   createdAt: Date;
 }

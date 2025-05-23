@@ -4,7 +4,6 @@ using Backend.Interfaces;
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 using NaturguidenServerPrototype.Services;
 using Scalar.AspNetCore;
 
@@ -101,18 +100,10 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
-    RequestPath = "/uploads"
-});
-
 app.UseHttpsRedirection();
 
 app.UseCors();
 
-app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
