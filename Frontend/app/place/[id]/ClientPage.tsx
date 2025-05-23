@@ -12,23 +12,39 @@ import { Place } from "@/types/Place";
 import { Review } from "@/types/Review";
 import UtilityBadge from "@/components/UtilityBadge";
 import CategoryBadge from "@/components/CategoryBadge";
-import RegisterVisitButton from "@/components/RegisterVisitButton"; 
-import WishlistButton from "@/components/WishlistButton"; 
+import RegisterVisitButton from "@/components/RegisterVisitButton";
+import WishlistButton from "@/components/WishlistButton";
 import { ProfileBasics } from "@/types/ProfileBasics";
 import Map from "@/components/Map";
 import NextJsMap from "@/components/NextJsMap";
 import ReviewForm from "@/components/ReviewForm";
-import {Star} from "lucide-react"
+import { Star } from "lucide-react";
 import { pl } from "date-fns/locale";
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
 
-
-export default function NatureSpotDetail({ place, user, reviews }: { place: Place, user: ProfileBasics | null, reviews: Review[] }) {
+export default function NatureSpotDetail({
+  place,
+  user,
+  initialReviews,
+}: {
+  place: Place;
+  user: ProfileBasics | null;
+  initialReviews: Review[];
+}) {
+  const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const openInMaps = () => {
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`,
       "_blank"
     );
   };
+
+    const handleSuccessfulReview = (review: Review) => {
+        toast.success("Din recension har publicerats!");
+        setReviews((prevReviews) => [review, ...prevReviews]);
+    };
 
   return (
     <main className="container mx-auto py-8 px-4">
@@ -50,7 +66,10 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
           </div>
           <div className="flex gap-3">
             <WishlistButton place={place} user={user}></WishlistButton>
-            <RegisterVisitButton place={place} user={user}></RegisterVisitButton>
+            <RegisterVisitButton
+              place={place}
+              user={user}
+            ></RegisterVisitButton>
           </div>
         </div>
 
@@ -74,26 +93,32 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
               <div>
                 <div className="flex gap-1 flex-wrap">
                   <div className="flex flex-wrap gap-2 w-full">
-                    {(place.placeCategories != null) ?
-                      (place.placeCategories.map((category) => {
+                    {place.placeCategories != null ? (
+                      place.placeCategories.map((category) => {
                         return (
                           <CategoryBadge
                             key={category.name}
                             placeCategory={category}
                           />
                         );
-                      })) : (<></>)}
+                      })
+                    ) : (
+                      <></>
+                    )}
                   </div>
                   <div className="flex flex-wrap gap-2 w-full">
-                    {(place.placeUtilities != null) ?
-                      (place.placeUtilities.map((utility) => {
+                    {place.placeUtilities != null ? (
+                      place.placeUtilities.map((utility) => {
                         return (
                           <UtilityBadge
                             key={utility.name}
                             placeUtility={utility}
                           />
                         );
-                      })) : (<></>)}
+                      })
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
                 {/*
@@ -126,7 +151,7 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
               </div>
 
               <div>
-                <NextJsMap place={place}/>
+                <NextJsMap place={place} />
               </div>
 
               <Separator />
@@ -142,35 +167,100 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
         </Card>
         <Card className="gap-5">
           <CardHeader>
-            <CardTitle>
-              Recensioner
-            </CardTitle>
-            {user != null ? (<ReviewForm place={place}/>) : (<></>)} {/*Om användaren är inloggad, visa skapa-recensionsformuläret*/}
-          
+            <CardTitle>Recensioner</CardTitle>
+            {user != null ? (
+              <ReviewForm
+                onSuccess={(review) => handleSuccessfulReview(review)}
+                place={place}
+              />
+            ) : (
+              <></>
+            )}{" "}
+            {/*Om användaren är inloggad, visa skapa-recensionsformuläret*/}
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-3">
-          {
-          (reviews.length === 0) ? (
+              {reviews.length === 0 ? (
                 <h1>{place.name} har inga recensioner än</h1>
               ) : (
-            reviews.map((review) => 
-           <Card key={review.id}>
-              <CardHeader className="flex content-between flex-row flex-wrap">
-                <CardTitle className="w-full text-xl gap-2">
-                  <div><Link href={`/profile/${review.userId}`}>{review.userName}</Link></div>
-                  <div className="flex gap-0.5">
-                    <Star size={20} fill="green" color="transparent"/>
-                    {(review.rating > 1) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
-                    {(review.rating > 2) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
-                    {(review.rating > 3) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
-                    {(review.rating > 4) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
-                  </div>
-                </CardTitle>
-                <div>{review.comment}</div>
-              </CardHeader>
-            </Card>
-            ))} 
+                <AnimatePresence>
+                  {reviews.map((review) => (
+                    <motion.div key={review.id} layout>
+                      <Card key={review.id}>
+                        <CardHeader className="flex content-between flex-row flex-wrap">
+                          <CardTitle className="w-full text-xl gap-2">
+                            <div>
+                              <Link href={`/profile/${review.userId}`}>
+                                {`${review.foreignProfile?.firstName} ${review.foreignProfile?.lastName}`}
+                              </Link>
+                            </div>
+                            <div className="flex gap-0.5">
+                              <Star
+                                size={20}
+                                fill="green"
+                                color="transparent"
+                              />
+                              {review.rating > 1 ? (
+                                <Star
+                                  size={20}
+                                  fill="green"
+                                  color="transparent"
+                                />
+                              ) : (
+                                <Star
+                                  size={20}
+                                  fill="grey"
+                                  color="transparent"
+                                />
+                              )}
+                              {review.rating > 2 ? (
+                                <Star
+                                  size={20}
+                                  fill="green"
+                                  color="transparent"
+                                />
+                              ) : (
+                                <Star
+                                  size={20}
+                                  fill="grey"
+                                  color="transparent"
+                                />
+                              )}
+                              {review.rating > 3 ? (
+                                <Star
+                                  size={20}
+                                  fill="green"
+                                  color="transparent"
+                                />
+                              ) : (
+                                <Star
+                                  size={20}
+                                  fill="grey"
+                                  color="transparent"
+                                />
+                              )}
+                              {review.rating > 4 ? (
+                                <Star
+                                  size={20}
+                                  fill="green"
+                                  color="transparent"
+                                />
+                              ) : (
+                                <Star
+                                  size={20}
+                                  fill="grey"
+                                  color="transparent"
+                                />
+                              )}
+                            </div>
+                          </CardTitle>
+                          <div>{review.comment}</div>
+                        </CardHeader>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              )}
             </div>
           </CardContent>
         </Card>

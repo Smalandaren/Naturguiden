@@ -1,9 +1,12 @@
+import { ForeignProfile } from "./ForeignProfile";
+
 export interface Review {
-    id: int;
-    userId: int;
-    placeId : int;
-    rating : int;
-    comment: string;
-    timestamp?: EpochTimeStamp;
-    userName: string;
-  }
+  id?: number | null;
+  userId?: number | null;
+  foreignProfile?: ForeignProfile | null;
+  placeId: number;
+  rating: number;
+  comment?: string | null;
+  createdTimestamp?: string | null;
+  userName?: string | null;
+}

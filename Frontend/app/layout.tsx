@@ -60,7 +60,13 @@ export default async function RootLayout({
           <Toaster
             position="top-center"
             richColors
-            toastOptions={{ duration: 6000 }}
+            toastOptions={{
+              duration: 6000,
+              style: {
+                padding: 18,
+                fontSize: 16,
+              },
+            }}
           />
           <Onboarding />
           <TooltipProvider>{children}</TooltipProvider>
