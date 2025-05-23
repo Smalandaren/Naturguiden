@@ -9,10 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Place } from "@/types/Place";
-import { PlaceUtility } from "@/types/PlaceUtility";
-import { PlaceCategory } from "@/types/PlaceCategory";
-import UtilityBadge from "@/components/UtilityBadge";
-import CategoryBadge from "@/components/CategoryBadge";
+import { PlaceAttribute } from "@/types/PlaceAttribute";
+import AttributeBadge from "@/components/AttributeBadge";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -22,7 +20,7 @@ import NextJsFullMap from "@/components/NextJsFullMap";
 import { Label } from "recharts";
 import DropDownFilterButton from "@/components/DropDownFilterButton";
 
-export default function Home({ places, availableUtil, availableCategories }: { places: Place[], availableUtil : PlaceUtility[] | null, availableCategories : PlaceCategory[] | null }) {
+export default function Home({ places, availableUtil, availableCategories }: { places: Place[], availableUtil : PlaceAttribute[] | null, availableCategories : PlaceAttribute[] | null }) {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUtil, setFilteredUtil] = useState(availableUtil?.map((util) => ({name: util.name, checked: false})));
@@ -62,7 +60,7 @@ export default function Home({ places, availableUtil, availableCategories }: { p
     return isFiltered;
   }
 
- function CheckFilter(placeUtilities: PlaceUtility[]): boolean {
+ function CheckFilter(placeUtilities: PlaceAttribute[]): boolean {
   var yes = false;
   
   placeUtilities.forEach(util => {
@@ -158,9 +156,9 @@ export default function Home({ places, availableUtil, availableCategories }: { p
                       {(place.placeCategories != null) ?
                         (place.placeCategories.map((category) => {
                           return (
-                            <CategoryBadge
+                            <AttributeBadge
                               key={category.name}
-                              placeCategory={category}
+                              placeAttribute={category}
                             />
                           );
                         })) : (<></>)
@@ -170,9 +168,9 @@ export default function Home({ places, availableUtil, availableCategories }: { p
                       {(place.placeUtilities != null) ?
                         (place.placeUtilities.map((utility) => {
                           return (
-                            <UtilityBadge
+                            <AttributeBadge
                               key={utility.name}
-                              placeUtility={utility}
+                              placeAttribute={utility}
                             />
                           );
                         })) : (<></>)

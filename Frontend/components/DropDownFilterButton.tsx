@@ -1,13 +1,12 @@
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { ListFilter } from "lucide-react";
-import { PlaceUtility } from "@/types/PlaceUtility";
-import { PlaceCategory } from "@/types/PlaceCategory";
+import { PlaceAttribute } from "@/types/PlaceAttribute";
 
 
 
 
-export default function DropDownFilterButton({utilities, categories, handleChange}: {utilities: PlaceUtility[] | null, categories: PlaceCategory[] | null, handleChange: Function}) {   
+export default function DropDownFilterButton({utilities, categories, handleChange}: {utilities: PlaceAttribute[] | null, categories: PlaceAttribute[] | null, handleChange: Function}) {   
     return <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild >

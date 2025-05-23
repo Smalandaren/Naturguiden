@@ -1,4 +1,4 @@
-import { PlaceUtility } from "./PlaceUtility";
+import { PlaceAttribute } from "./PlaceAttribute";
 
 export interface VisitedPlace {
   id: number;
@@ -6,7 +6,8 @@ export interface VisitedPlace {
   description: string;
   latitude: number;
   longitude: number;
-  placeUtilities: PlaceUtility[];
+  placeUtilities: PlaceAttribute[];
+  placeCategories: PlaceAttribute[]; 
   visitedAt: Date;
   createdAt: Date;
 }

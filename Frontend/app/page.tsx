@@ -1,8 +1,7 @@
 import { ErrorScreen } from "@/components/ErrorScreen";
 import ClientPage from "./ClientPage";
 import { Place } from "@/types/Place";
-import { PlaceUtility } from "@/types/PlaceUtility";
-import { PlaceCategory } from "@/types/PlaceCategory";
+import { PlaceAttribute } from "@/types/PlaceAttribute";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 async function getPlaces(): Promise<Place[] | null> {
@@ -24,7 +23,7 @@ async function getPlaces(): Promise<Place[] | null> {
   }
 }
 
-async function getAvailableUtilities() : Promise<PlaceUtility[] | null>{
+async function getAvailableUtilities() : Promise<PlaceAttribute[] | null>{
   try{
     const response = await fetch(`${apiUrl}/search/utilities`, {
       cache: "no-cache",
@@ -40,7 +39,7 @@ async function getAvailableUtilities() : Promise<PlaceUtility[] | null>{
   return null;
 }
 
-async function getAvailableCategories() : Promise<PlaceCategory[] | null>{
+async function getAvailableCategories() : Promise<PlaceAttribute[] | null>{
   try{
     const response = await fetch(`${apiUrl}/search/categories`, {
       cache: "no-cache",
