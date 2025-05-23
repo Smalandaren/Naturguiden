@@ -67,6 +67,10 @@ const adminItems = [
     title: "Viktigt meddelande",
     url: "admin/announcement",
   },
+  {
+  title: "Platsförslag",
+  url: "admin/places",
+  }
 ];
 
 export function ProfileSidebar({

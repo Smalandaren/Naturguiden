@@ -30,12 +30,8 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
     );
   };
 
-
-
   return (
-    
     <main className="container mx-auto py-8 px-4">
-      
       <Link href="/">
         <Button
           variant="ghost"
@@ -63,6 +59,15 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
             <CardTitle className="text-xl">Om platsen</CardTitle>
           </CardHeader>
           <CardContent>
+            {place.images && place.images.length > 0 && (
+              <div className="w-full flex justify-center">
+                <img
+                  src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
+                  alt="Platsbild"
+                  className="max-w-full max-h-[500px] object-contain rounded border"
+                />
+              </div>
+            )}
             <p className="text-muted-foreground mb-6">{place.description}</p>
 
             <div className="flex flex-col gap-6">
@@ -96,7 +101,7 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
                 <div className="flex flex-wrap gap-2">
                   {place.placeUtilities.map((utility) => {
                     return (
-                      <UtilityBadge key={utility.name} placeUtility={utility} />
+                    <UtilityBadge key={utility.name} placeUtility={utility} />
                     );
                   })}
                 </div>*/}
@@ -144,22 +149,22 @@ export default function NatureSpotDetail({ place, user, reviews }: { place: Plac
           
           </CardHeader>
           <CardContent>
-          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3">
           {
           (reviews.length === 0) ? (
-            <h1>{place.name} har inga recensioner än</h1>
-          ) : (
+                <h1>{place.name} har inga recensioner än</h1>
+              ) : (
             reviews.map((review) => 
-            <Card key={review.id}>
+           <Card key={review.id}>
               <CardHeader className="flex content-between flex-row flex-wrap">
                 <CardTitle className="w-full text-xl gap-2">
                   <div><Link href={`/profile/${review.userId}`}>{review.userName}</Link></div>
                   <div className="flex gap-0.5">
-                  <Star size={20} fill="green" color="transparent"/>
-                  {(review.rating > 1) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
-                  {(review.rating > 2) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
-                  {(review.rating > 3) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
-                  {(review.rating > 4) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
+                    <Star size={20} fill="green" color="transparent"/>
+                    {(review.rating > 1) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
+                    {(review.rating > 2) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
+                    {(review.rating > 3) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
+                    {(review.rating > 4) ? (<Star size={20} fill="green" color="transparent"/>) : (<Star size={20} fill="grey" color="transparent"/>)}
                   </div>
                 </CardTitle>
                 <div>{review.comment}</div>
