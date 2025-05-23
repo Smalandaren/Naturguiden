@@ -5,7 +5,7 @@
         public int? Id { get; set; }
 
         public int? UserId { get; set; }
-
+        public ForeignProfileDTO? ForeignProfile { get; set; }
         public int PlaceId { get; set; }
 
         /// <summary>

@@ -22,12 +22,12 @@ namespace Backend.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<ReviewDTO>>> Get([FromBody] ReviewDTO place)
         {
-            return Ok( await _reviewService.GetReviews(place.PlaceId));
+            return Ok(await _reviewService.GetReviews(place.PlaceId));
         }
 
         [Authorize]
         [HttpPost("create")]
-        public async Task<ActionResult> Create([FromBody] ReviewDTO reviewDTO)
+        public async Task<ActionResult<ReviewDTO?>> Create([FromBody] ReviewDTO reviewDTO)
         {
             if (reviewDTO.Rating > 5 || reviewDTO.Rating < 1)
             {
@@ -48,9 +48,12 @@ namespace Backend.Controllers
                 Rating = reviewDTO.Rating,
                 Comment = reviewDTO.Comment,
             };
-            if (await _reviewService.Create(review))
+
+            ReviewDTO? newReview = await _reviewService.Create(review);
+
+            if (newReview != null)
             {
-                return Ok();
+                return Ok(newReview);
             }
             return BadRequest();
         }

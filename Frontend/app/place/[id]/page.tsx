@@ -66,7 +66,11 @@ export default async function ViewPlace({
     const authCheck = await checkAuth();
     if (place) {
       return (
-        <ClientPage place={place} user={authCheck.user} reviews={reviews} />
+        <ClientPage
+          place={place}
+          user={authCheck.user}
+          initialReviews={reviews}
+        />
       );
     }
 
