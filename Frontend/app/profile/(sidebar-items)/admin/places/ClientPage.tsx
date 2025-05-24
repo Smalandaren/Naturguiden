@@ -155,7 +155,7 @@ export default function AdminPlacesPage() {
                     <p className="text-sm font-semibold mb-1">Kategorier:</p>
                     <div className="flex flex-wrap gap-2">
                       {place.placeCategories.map((c, index) => (
-                        <Badge key={index} variant="secondary">
+                        <Badge key={index} variant="default">
                           {c.name}
                         </Badge>
                       ))}
@@ -168,7 +168,7 @@ export default function AdminPlacesPage() {
                     <p className="text-sm font-semibold mb-1">Attribut:</p>
                     <div className="flex flex-wrap gap-2">
                       {place.placeUtilities.map((u, index) => (
-                        <Badge key={index} variant="secondary">
+                        <Badge key={index} variant="default">
                           {u.name}
                         </Badge>
                       ))}
