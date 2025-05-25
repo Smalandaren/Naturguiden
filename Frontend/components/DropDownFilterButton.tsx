@@ -10,7 +10,7 @@ export default function DropDownFilterButton({utilities, categories, handleChang
     return <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild >
-          <Button className="bg-primary" size="icon"><ListFilter /></Button>
+          <Button className="bg-primary" size="default"><ListFilter />Filter</Button>
         </DropdownMenuTrigger>
         
         <DropdownMenuContent align="start" side="left" sideOffset={10}>

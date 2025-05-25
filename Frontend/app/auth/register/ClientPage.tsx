@@ -84,10 +84,11 @@ export default function RegisterPage() {
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <Label>Lösenord</Label>
+            <Label>Lösenord (Minst 6 tecken)</Label>
             <Input
               type="password"
               value={passwordInput}
+              minLength={6}
               onChange={(e) => setPasswordInput(e.target.value)}
               onKeyDown={handleKeyDown}
             />
