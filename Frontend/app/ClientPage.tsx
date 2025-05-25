@@ -17,8 +17,13 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import NextJsFullMap from "@/components/NextJsFullMap";
+import RegisterVisitButton from "@/components/RegisterVisitButton";
+import WishlistButton from "@/components/WishlistButton";
+import {ProfileBasics} from "@/types/ProfileBasics"
 
-export default function Home({ places }: { places: Place[] }) {
+
+export default function Home({ places, user }: { places: Place[],  user: ProfileBasics | null;
+}) {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -78,8 +83,13 @@ export default function Home({ places }: { places: Place[] }) {
           {filteredPlaces.map((place) => (
             <Link href={`/place/${place.id}`} key={place.id}>
               <Card className="w-full gap-0 hover:border-primary transition">
-                <CardHeader>
+                <CardHeader className="flex justify-between">
                   <CardTitle className="text-xl">{place.name}</CardTitle>
+
+                  <div className="flex gap-3">
+                    <WishlistButton place={place} user={user}></WishlistButton>
+                    <RegisterVisitButton place={place} user={user}></RegisterVisitButton>
+                  </div>
                   {/* <CardDescription>
                     {place.createdAt.toLocaleString()}
                   </CardDescription> */}

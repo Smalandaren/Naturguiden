@@ -103,7 +103,10 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
             <></>
         ) : (
             
-        <Button onClick={HandleClick}>
+        <Button onClick={event => {
+            event.preventDefault();
+            HandleClick();
+            }}>
             Wishlist {onWishlist == false ? (<><Star/></>) : (<><Star fill="white"/></>)} 
         </Button>
     )}

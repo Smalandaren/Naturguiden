@@ -108,7 +108,10 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
             <></>
         ) : (
             
-        <Button onClick={HandleClick}>
+        <Button onClick={event => {
+            event.preventDefault();
+            HandleClick();
+            }}>
             Besökt {isVisited == false ? (<><Circle/></>) : (<><CircleCheckBig/></>)} 
         </Button>
     )}
