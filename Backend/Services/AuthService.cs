@@ -1,10 +1,11 @@
 using Backend.Data;
+using Backend.Interfaces;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace NaturguidenServerPrototype.Services;
 
-public class AuthService
+public class AuthService : IAuthService
 {
     private readonly ApplicationDbContext _context;
 

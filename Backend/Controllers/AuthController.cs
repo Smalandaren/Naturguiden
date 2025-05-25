@@ -3,7 +3,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using NaturguidenServerPrototype.Services;
 using Backend.Interfaces;
 
 namespace NaturguidenServerPrototype.Controllers;
@@ -13,10 +12,10 @@ namespace NaturguidenServerPrototype.Controllers;
 
 public class AuthController : ControllerBase
 {
-    private readonly AuthService _authService;
+    private readonly IAuthService _authService;
     private readonly IProfileService _profileService;
 
-    public AuthController(AuthService authService, IProfileService profileService)
+    public AuthController(IAuthService authService, IProfileService profileService)
     {
         _authService = authService;
         _profileService = profileService;
