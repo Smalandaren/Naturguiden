@@ -2,6 +2,7 @@ import { ErrorScreen } from "@/components/ErrorScreen";
 import ClientPage from "./ClientPage";
 import { Place } from "@/types/Place";
 import { checkAuth } from "@/lib/checkAuth";
+import { PlaceAttribute } from "@/types/PlaceAttribute";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 async function getPlaces(): Promise<Place[] | null> {
@@ -23,13 +24,47 @@ async function getPlaces(): Promise<Place[] | null> {
   }
 }
 
+async function getAvailableUtilities() : Promise<PlaceAttribute[] | null>{
+  try{
+    const response = await fetch(`${apiUrl}/search/utilities`, {
+      cache: "no-cache",
+      method: "GET",
+    });
+
+    const json = await response.json();
+    return json;
+
+  } catch (error: any) {
+    console.log(error);
+  }
+  return null;
+}
+
+async function getAvailableCategories() : Promise<PlaceAttribute[] | null>{
+  try{
+    const response = await fetch(`${apiUrl}/search/categories`, {
+      cache: "no-cache",
+      method: "GET",
+    });
+
+    const json = await response.json();
+    return json;
+
+  } catch (error: any) {
+    console.log(error);
+  }
+  return null;
+}
+
 export default async function Home() {
   try {
     const places = await getPlaces();
+    const placeUtil = await getAvailableUtilities();
+    const placeCats = await getAvailableCategories();
     const authCheck = await checkAuth();
 
     if (places) {
-      return <ClientPage places={places} user={authCheck.user}/>;
+      return <ClientPage places={places} availableUtil={placeUtil} availableCategories={placeCats} user={authCheck.user}/>;
     }
 
     throw new Error("Could not fetch places");

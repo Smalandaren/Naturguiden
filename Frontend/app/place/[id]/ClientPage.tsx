@@ -10,10 +10,9 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { Place } from "@/types/Place";
 import { Review } from "@/types/Review";
-import UtilityBadge from "@/components/UtilityBadge";
-import CategoryBadge from "@/components/CategoryBadge";
-import RegisterVisitButton from "@/components/RegisterVisitButton";
-import WishlistButton from "@/components/WishlistButton";
+import AttributeBadge from "@/components/AttributeBadge";
+import RegisterVisitButton from "@/components/RegisterVisitButton"; 
+import WishlistButton from "@/components/WishlistButton"; 
 import { ProfileBasics } from "@/types/ProfileBasics";
 import Map from "@/components/Map";
 import NextJsMap from "@/components/NextJsMap";
@@ -96,9 +95,9 @@ export default function NatureSpotDetail({
                     {place.placeCategories != null ? (
                       place.placeCategories.map((category) => {
                         return (
-                          <CategoryBadge
+                          <AttributeBadge
                             key={category.name}
-                            placeCategory={category}
+                            placeAttribute={category}
                           />
                         );
                       })
@@ -110,9 +109,9 @@ export default function NatureSpotDetail({
                     {place.placeUtilities != null ? (
                       place.placeUtilities.map((utility) => {
                         return (
-                          <UtilityBadge
+                          <AttributeBadge
                             key={utility.name}
-                            placeUtility={utility}
+                            placeAttribute={utility}
                           />
                         );
                       })
@@ -121,15 +120,6 @@ export default function NatureSpotDetail({
                     )}
                   </div>
                 </div>
-                {/*
-                <h3 className="font-medium mb-2">Bekvämligheter</h3>
-                <div className="flex flex-wrap gap-2">
-                  {place.placeUtilities.map((utility) => {
-                    return (
-                    <UtilityBadge key={utility.name} placeUtility={utility} />
-                    );
-                  })}
-                </div>*/}
               </div>
 
               <Separator />

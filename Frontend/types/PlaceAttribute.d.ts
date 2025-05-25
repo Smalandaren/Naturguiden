@@ -1,4 +1,4 @@
-export interface PlaceCategory {
+export interface PlaceAttribute {
     name: string;
     description: string;
   }

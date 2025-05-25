@@ -26,4 +26,19 @@ public class SearchController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("utilities")]
+    public ActionResult<List<AvailableUtility>> GetAllUtilities()
+    {
+        List<AvailableUtility> result = _searchService.GetAllUtilities(); 
+        if (result != null && result.Count > 0) {return Ok(result); }
+        return new EmptyResult();
+    }
+
+    [HttpGet("categories")]
+    public ActionResult<List<AvailableCategory>> GetAllCategories()
+    {
+        List<AvailableCategory> result = _searchService.GetAllCategories();
+        if (result != null && result.Count > 0) { return Ok(result); }
+        return new EmptyResult();
+    }
 }
