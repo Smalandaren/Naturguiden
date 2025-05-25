@@ -105,7 +105,7 @@ export default function Home({ places, user }: { places: Place[],  user: Profile
                 {filteredPlaces.map((place) => (
                   <Link href={`/place/${place.id}`} key={place.id}>
                     <Card className="w-full gap-0 hover:border-primary transition">
-                      <CardHeader>
+                      <CardHeader className="flex justify-between">
                         <CardTitle className="text-xl">{place.name}</CardTitle>
                         <div className="flex gap-3">
                           <WishlistButton place={place} user={user}></WishlistButton>
