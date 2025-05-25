@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
             User = profileInfo,
             IsAdmin = isAdmin ? true : null
         };
-        return response;
+        return Ok(response);
     }
 
     [UnauthorizedOnly]
