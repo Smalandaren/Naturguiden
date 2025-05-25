@@ -9,4 +9,6 @@ export interface VisitedPlace {
   placeUtilities: PlaceUtility[];
   visitedAt: Date;
   createdAt: Date;
+  placeCategories: PlaceCategory[];
+  images?: string[];
 }

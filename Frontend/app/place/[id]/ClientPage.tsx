@@ -41,10 +41,10 @@ export default function NatureSpotDetail({
     );
   };
 
-  const handleSuccessfulReview = (review: Review) => {
-    toast.success("Din recension har publicerats!");
-    setReviews((prevReviews) => [review, ...prevReviews]);
-  };
+    const handleSuccessfulReview = (review: Review) => {
+        toast.success("Din recension har publicerats!");
+        setReviews((prevReviews) => [review, ...prevReviews]);
+    };
 
   return (
     <main className="container mx-auto py-8 px-4">
@@ -78,6 +78,15 @@ export default function NatureSpotDetail({
             <CardTitle className="text-xl">Om platsen</CardTitle>
           </CardHeader>
           <CardContent>
+            {place.images && place.images.length > 0 && (
+              <div className="w-full flex justify-center">
+                <img
+                  src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
+                  alt="Platsbild"
+                  className="max-w-full max-h-[500px] object-contain rounded border"
+                />
+              </div>
+            )}
             <p className="text-muted-foreground mb-6">{place.description}</p>
 
             <div className="flex flex-col gap-6">
@@ -117,7 +126,7 @@ export default function NatureSpotDetail({
                 <div className="flex flex-wrap gap-2">
                   {place.placeUtilities.map((utility) => {
                     return (
-                      <UtilityBadge key={utility.name} placeUtility={utility} />
+                    <UtilityBadge key={utility.name} placeUtility={utility} />
                     );
                   })}
                 </div>*/}
