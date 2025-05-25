@@ -1,6 +1,8 @@
 using Backend.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
+using Backend.DTO;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 namespace Backend.Controllers
 {
     [Route("api/[controller]")]
@@ -33,6 +35,65 @@ namespace Backend.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<int>> Create([FromBody] CreatePlaceDTO dto)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized();
+            }
+
+            var placeId = await _placesService.CreateAsync(dto, userId);
+
+            return Ok(placeId);
+        }
+
+
+        [HttpGet("pending")]
+        [Authorize]
+        public async Task<ActionResult<List<PlaceDTO>>> GetPending()
+        {
+            var places = await _placesService.GetPendingAsync();
+            return Ok(places);
+        }
+
+        [HttpPatch("{id}/approve")]
+        [Authorize]
+        public async Task<IActionResult> ApprovePlace(int id)
+        {
+            var success = await _placesService.ApproveAsync(id);
+            if (!success) return NotFound();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var success = await _placesService.DeleteAsync(id);
+            if (!success) return NotFound();
+
+            return NoContent();
+        }
+
+        [HttpPost("{id}/upload-image")]
+        [Authorize]
+        public async Task<IActionResult> UploadImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("Ingen fil vald");
+
+            var result = await _placesService.UploadImageAsync(id, file);
+
+            if (!result.success)
+                return BadRequest(result.message);
+
+            return Ok(new { filename = result.filename });
         }
     }
 }

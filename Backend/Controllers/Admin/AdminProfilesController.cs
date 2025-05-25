@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Backend.Interfaces;
 
 [Authorize] // Hela denna controllern kräver autentisering
 [AdminOnly] // Hela denna controllern kräver att den autentiserade användaren är admin
@@ -7,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/admin/profiles")]
 public class AdminProfilesController : ControllerBase
 {
-    private readonly ProfileService _profileService;
+    private readonly IProfileService _profileService;
 
-    public AdminProfilesController(ProfileService profileService)
+    public AdminProfilesController(IProfileService profileService)
     {
         _profileService = profileService;
     }
