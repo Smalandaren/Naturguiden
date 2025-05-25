@@ -20,37 +20,39 @@ export default function DropDownFilterButton({utilities, categories, handleChang
         {filterVisible === true ? (
         <div className="absolute top-0 right-25 w-75">
             <Card>
-                <CardHeader>
-                    <CardTitle>Filter</CardTitle>
-                </CardHeader>
+                <CardContent>
+                    <div className="space-y-2">
+                        <CardTitle>Kategorier</CardTitle>
+                        <div>
+                            {categories?.map((category) => (
+                                <div key={category.name} className="flex justify-between gap-10 px-5">
+                                    <h1>{category.name}</h1>
+                                    <input 
+                                        type="checkbox"
+                                        onChange={() => handleChange(category.name)}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </CardContent>
 
                 <Separator />
 
                 <CardContent>
                     <div className="space-y-2">
-                    <CardTitle>Bekvämligheter</CardTitle>
-                    {utilities?.map((util) => (
-                        <div key={util.name} className="flex justify-between gap-10 px-5">
-                            <h1>{util.name}</h1>
-                            <input 
-                                type="checkbox"
-                                onChange={() => handleChange(util.name)}
-                            />
+                        <CardTitle>Bekvämligheter</CardTitle>
+                        <div>
+                            {utilities?.map((util) => (
+                                <div key={util.name} className="flex justify-between gap-10 px-5">
+                                    <h1>{util.name}</h1>
+                                    <input 
+                                        type="checkbox"
+                                        onChange={() => handleChange(util.name)}
+                                    />
+                                </div>
+                            ))}
                         </div>
-                    ))}
-
-                    <Separator />
-
-                    <CardTitle>Kategorier</CardTitle>
-                    {categories?.map((category) => (
-                        <div key={category.name} className="flex justify-between gap-10 px-5">
-                            <h1>{category.name}</h1>
-                            <input 
-                                type="checkbox"
-                                onChange={() => handleChange(category.name)}
-                            />
-                        </div>
-                    ))}
                     </div>
                 </CardContent>
             </Card>
