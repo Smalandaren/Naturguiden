@@ -26,9 +26,10 @@ import { Label } from "recharts";
 import DropDownFilterButton from "@/components/DropDownFilterButton";
 
 export default function Home({ places, availableUtil, availableCategories, user }: { places: Place[], availableUtil : PlaceAttribute[] | null, availableCategories : PlaceAttribute[] | null, user : ProfileBasics | null}) {
+  const availableAttributes: PlaceAttribute[] = (availableUtil ?? []).concat(availableCategories ?? []);  
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredUtil, setFilteredUtil] = useState(availableUtil?.map((util) => ({name: util.name, checked: false})));
+  const [filteredAttributes, setFilteredAttributes] = useState(availableAttributes?.map((attribute) => ({name: attribute.name, checked: false})));
   const router = useRouter();
   const [authenticated, setAuthenticated] = useState(false);
 
@@ -39,13 +40,13 @@ export default function Home({ places, availableUtil, availableCategories, user 
 
   function CheckSearch(place: Place): boolean {
     if (IsFiltered() && searchTerm == "") {
-      return CheckFilter(place.placeUtilities);
+      return CheckFilter(place.placeUtilities) || CheckFilter(place.placeCategories);
     }
 
     if (searchTerm != "" && IsFiltered()) {
       return (place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       place.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      CheckFilter(place.placeUtilities);
+      (CheckFilter(place.placeUtilities) || CheckFilter(place.placeCategories));
     }
 
     if (!IsFiltered() && searchTerm != "") {
@@ -59,7 +60,7 @@ export default function Home({ places, availableUtil, availableCategories, user 
   function IsFiltered(): boolean {
     var isFiltered = false;
 
-    filteredUtil?.forEach(element => {
+    filteredAttributes?.forEach(element => {
       if (element.checked) {
         isFiltered = true;
       }
@@ -67,12 +68,12 @@ export default function Home({ places, availableUtil, availableCategories, user 
     return isFiltered;
   }
 
- function CheckFilter(placeUtilities: PlaceAttribute[]): boolean {
+ function CheckFilter(placeAttributes: PlaceAttribute[]): boolean {
   var yes = false;
   
-  placeUtilities.forEach(util => {
-    filteredUtil?.forEach(element => {
-      if (util.name === element.name && element.checked) {
+  placeAttributes.forEach(attribute => {
+    filteredAttributes?.forEach(element => {
+      if (attribute.name === element.name && element.checked) {
         yes = true;
       }
     });
@@ -82,11 +83,11 @@ export default function Home({ places, availableUtil, availableCategories, user 
  }
 
  function updateFilter(name: string) {
-      setFilteredUtil(
-        filteredUtil?.map((util) =>
-          util.name === name
-            ? { ...util, checked: !util.checked }
-            : util
+      setFilteredAttributes(
+        filteredAttributes?.map((attribute) =>
+          attribute.name === name
+            ? { ...attribute, checked: !attribute.checked }
+            : attribute
       )
     )
  }
