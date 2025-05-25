@@ -132,7 +132,8 @@ export default function Home({ places, availableUtil, availableCategories, user 
                 </p>
             </div>
 
-      <div className="flex space-y-4 max-w-3xl mx-auto mb-4 gap-2">
+      <div className="flex fex-col flex-wrap justify-center space-y-4 max-w-3xl mx-auto mb-4 gap-2">
+        <div className="flex flex-row w-full gap-1">
         <DropDownFilterButton utilities={availableUtil} categories={availableCategories} handleChange={updateFilter}/>
 
         <Input type="text"          
@@ -141,6 +142,7 @@ export default function Home({ places, availableUtil, availableCategories, user 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}>
         </Input>
+        </div>
         {authenticated && (
                   <Button
                       onClick={() => router.push("/place/create")}
