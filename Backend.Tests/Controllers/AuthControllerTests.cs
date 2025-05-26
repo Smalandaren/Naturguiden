@@ -3,6 +3,7 @@
 
 using Backend.Controllers;
 using Backend.Interfaces;
+using Backend.Models;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +83,94 @@ namespace Backend.Tests.Controllers
 
             // Assert
             var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task Login_ReturnsBadRequest_WhenEmailIsInvalid()
+        {
+            // Arrange
+            LoginRequest loginRequest = new LoginRequest
+            { 
+                Email = "test",
+                Password = "test"
+            };
+
+            User user = new User();
+
+            A.CallTo(() => _authService.AuthenticateAsync(loginRequest.Email, loginRequest.Password)).Returns(user);
+
+            // Act
+            var result = await _authController.Login(loginRequest);
+
+            // Assert
+            var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Login_ReturnsBadRequest_WhenEmailIsEmpty()
+        {
+            // Arrange
+            LoginRequest loginRequest = new LoginRequest
+            {
+                Email = "",
+                Password = "test"
+            };
+
+            _authController.ModelState.AddModelError("Email", "Required");
+
+            User user = new User();
+
+            A.CallTo(() => _authService.AuthenticateAsync(loginRequest.Email, loginRequest.Password)).Returns(user);
+
+            // Act
+            var result = await _authController.Login(loginRequest);
+
+            // Assert
+            var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Login_ReturnsBadRequest_WhenPasswordIsEmpty()
+        {
+            // Arrange
+            LoginRequest loginRequest = new LoginRequest
+            {
+                Email = "test@test.com",
+                Password = ""
+            };
+
+            _authController.ModelState.AddModelError("Password", "Required");
+
+            User user = new User();
+
+            A.CallTo(() => _authService.AuthenticateAsync(loginRequest.Email, loginRequest.Password)).Returns(user);
+
+            // Act
+            var result = await _authController.Login(loginRequest);
+
+            // Assert
+            var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Login_ReturnsUnauthorized_WhenInvalidCredentials()
+        {
+            // Arrange
+            LoginRequest loginRequest = new LoginRequest
+            {
+                Email = "test@test.com",
+                Password = "tes"
+            };
+
+            User user = new User();
+
+            A.CallTo(() => _authService.AuthenticateAsync(loginRequest.Email, loginRequest.Password)).Returns(Task.FromResult<User?>(null));
+
+            // Act
+            var result = await _authController.Login(loginRequest);
+
+            // Assert
+            var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result);
         }
     }
 }
