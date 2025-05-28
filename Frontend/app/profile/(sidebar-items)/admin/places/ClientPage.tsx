@@ -86,7 +86,7 @@ export default function AdminPlacesPage() {
   }, []);
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="mx-6 pt-16">
       <h1 className="text-3xl font-bold mb-4">Platsförslag</h1>
       <Separator className="mb-6" />
 
@@ -111,7 +111,7 @@ export default function AdminPlacesPage() {
       ) : places.length === 0 ? (
         <p className="text-muted-foreground">Inga nya platsförslag att visa.</p>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-4xl mx-auto">
+        <div className="flex flex-col gap-6 mt-4 max-w-4xl">
           {places.map((place) => (
             <Card key={place.id}>
               <CardHeader>
