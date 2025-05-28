@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FoldHorizontal, TreePine, Plus} from "lucide-react";
+import { TreePine, Plus} from "lucide-react";
 import {
     Card,
     CardContent,
@@ -22,7 +22,6 @@ import NextJsFullMap from "@/components/NextJsFullMap";
 import RegisterVisitButton from "@/components/RegisterVisitButton";
 import WishlistButton from "@/components/WishlistButton";
 import {ProfileBasics} from "@/types/ProfileBasics"
-import { Label } from "recharts";
 import DropDownFilterButton from "@/components/DropDownFilterButton";
 
 export default function Home({ places, availableUtil, availableCategories, user }: { places: Place[], availableUtil : PlaceAttribute[] | null, availableCategories : PlaceAttribute[] | null, user : ProfileBasics | null}) {
@@ -40,13 +39,18 @@ export default function Home({ places, availableUtil, availableCategories, user 
 
   function CheckSearch(place: Place): boolean {
     if (IsFiltered() && searchTerm == "") {
-      return CheckFilter(place.placeUtilities) || CheckFilter(place.placeCategories);
+      if (CheckFilter(place.placeUtilities) + CheckFilter(place.placeCategories) == IsFiltered()) { return true; }
+
+      return false;
     }
 
     if (searchTerm != "" && IsFiltered()) {
+      var x = false;
+      if (CheckFilter(place.placeUtilities) + CheckFilter(place.placeCategories) == IsFiltered()) 
+        {x = true;}
+
       return (place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      place.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (CheckFilter(place.placeUtilities) || CheckFilter(place.placeCategories));
+      place.description.toLowerCase().includes(searchTerm.toLowerCase())) && x;
     }
 
     if (!IsFiltered() && searchTerm != "") {
@@ -57,29 +61,30 @@ export default function Home({ places, availableUtil, availableCategories, user 
     return true; 
   }
 
-  function IsFiltered(): boolean {
-    var isFiltered = false;
+  function IsFiltered(): number {
+    var isFiltered = 0;
 
     filteredAttributes?.forEach(element => {
       if (element.checked) {
-        isFiltered = true;
+        isFiltered++;
       }
     });
+
     return isFiltered;
   }
 
- function CheckFilter(placeAttributes: PlaceAttribute[]): boolean {
-  var yes = false;
+ function CheckFilter(placeAttributes: PlaceAttribute[]): number {
+  var count = 0;
   
   placeAttributes.forEach(attribute => {
     filteredAttributes?.forEach(element => {
       if (attribute.name === element.name && element.checked) {
-        yes = true;
+        count++;
       }
     });
   });
 
-  return yes;
+  return count;
  }
 
  function updateFilter(name: string) {
