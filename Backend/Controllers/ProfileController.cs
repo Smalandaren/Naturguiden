@@ -68,6 +68,11 @@ namespace Backend.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (request.FirstName.Length > 25 || request.LastName.Length > 40)
+            {
+                return BadRequest();
+            }
+
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
