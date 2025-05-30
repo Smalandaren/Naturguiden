@@ -98,8 +98,8 @@ export default function CreatePlaceForm() {
         credentials: "include",
         body: JSON.stringify({
           ...form,
-            latitude: parseFloat(form.latitude),
-            longitude: parseFloat(form.longitude),
+          latitude: parseFloat(form.latitude),
+          longitude: parseFloat(form.longitude),
         }),
       });
 
@@ -117,13 +117,13 @@ export default function CreatePlaceForm() {
           formData.append("file", image);
 
             const uploadRes = await fetch(
-                `${apiUrl}/places/${placeId}/upload-image`,
-                {
+            `${apiUrl}/places/${placeId}/upload-image`,
+            {
             method: "POST",
             credentials: "include",
             body: formData,
-                }
-            );
+            }
+          );
 
           if (!uploadRes.ok) throw new Error("Bilden kunde inte laddas upp");
           toast.success("Bilden uppladdad!", { id: uploadToast });
@@ -258,8 +258,8 @@ export default function CreatePlaceForm() {
         <div>
           <h3 className="font-semibold mb-1">Bekvämligheter</h3>
           <div className="space-y-1">
-                      {["Toalett", "Utsiktsplats", "Parkering", "Vandringsleder"].map(
-                          (attr) => (
+              {["Toalett", "Utsiktsplats", "Parkering", "Vandringsleder"].map(
+              (attr) => (
               <label key={attr} className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -306,7 +306,7 @@ export default function CreatePlaceForm() {
               />
               <Button
                 type="button"
-                              variant="secondary"
+                variant="secondary"
                 onClick={() => {
                   setImage(null);
                   setPreviewUrl(null);
