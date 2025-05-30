@@ -181,7 +181,7 @@ export default function AdminPlacesPage() {
 
                 {place.placeUtilities.length > 0 && (
                   <div>
-                    <p className="text-sm font-semibold mb-1">Attribut:</p>
+                    <p className="text-sm font-semibold mb-1">Bekvämligheter:</p>
                     <div className="flex flex-wrap gap-2">
                       {place.placeUtilities.map((u, index) => (
                         <Badge key={index} variant="default">
