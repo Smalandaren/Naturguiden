@@ -73,88 +73,69 @@ export default function NatureSpotDetail({
         </div>
 
         <Card className="gap-1">
-          <CardHeader>
-            <CardTitle className="text-xl">Om platsen</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {place.images && place.images.length > 0 && (
-              <div className="w-full flex justify-center">
-                <img
-                  src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
-                  alt="Platsbild"
-                  className="max-w-full max-h-[500px] object-contain rounded border"
-                />
-              </div>
-            )}
-            <p className="text-muted-foreground mb-6">{place.description}</p>
+  <CardHeader>
+    <CardTitle className="text-xl">Om platsen</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-muted-foreground mb-6">{place.description}</p>
 
-            <div className="flex flex-col gap-6">
-              <div>
-                <div className="flex gap-1 flex-wrap">
-                  <div className="flex flex-wrap gap-2 w-full">
-                    {place.placeCategories != null ? (
-                      place.placeCategories.map((category) => {
-                        return (
-                          <AttributeBadge
-                            key={category.name}
-                            placeAttribute={category}
-                          />
-                        );
-                      })
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                  <div className="flex flex-wrap gap-2 w-full">
-                    {place.placeUtilities != null ? (
-                      place.placeUtilities.map((utility) => {
-                        return (
-                          <AttributeBadge
-                            key={utility.name}
-                            placeAttribute={utility}
-                          />
-                        );
-                      })
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                </div>
-              </div>
+    <div className="flex gap-1 flex-wrap mb-6">
+      <div className="flex flex-wrap gap-2 w-full">
+        {place.placeCategories?.map((category) => (
+          <AttributeBadge key={category.name} placeAttribute={category} />
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-2 w-full">
+        {place.placeUtilities?.map((utility) => (
+          <AttributeBadge key={utility.name} placeAttribute={utility} />
+        ))}
+      </div>
+    </div>
 
-              <Separator />
+    {place.images && place.images.length > 0 && (
+      <div className="w-full flex justify-center mb-6">
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
+          alt="Platsbild"
+          className="max-w-full max-h-[500px] object-contain rounded border"
+        />
+      </div>
+    )}
 
-              <div>
-                <h3 className="font-medium mb-2">Plats</h3>
-                <div className="flex items-center gap-2 mb-4">
-                  <MapPin size={16} className="text-muted-foreground" />
-                  <span>
-                    {place.latitude}, {place.longitude}
-                  </span>
-                </div>
-                <Button
-                  onClick={openInMaps}
-                  className="w-full sm:w-auto hover:cursor-pointer"
-                >
-                  Öppna i Google Maps
-                </Button>
-              </div>
+    <div className="flex flex-col gap-6">
+      <Separator />
 
-              <div>
-                <NextJsMap place={place} />
-              </div>
+      <div>
+        <h3 className="font-medium mb-2">Plats</h3>
+        <div className="flex items-center gap-2 mb-4">
+          <MapPin size={16} className="text-muted-foreground" />
+           <span>
+             {place.latitude}, {place.longitude}
+           </span>
+        </div>
+        <Button
+          onClick={openInMaps}
+          className="w-full sm:w-auto hover:cursor-pointer"
+        >
+          Öppna i Google Maps
+        </Button>
+      </div>
 
-              <Separator />
+      <div>
+        <NextJsMap place={place} />
+      </div>
 
-              <div>
-                <h3 className="font-medium mb-2">Tillagd</h3>
-                <p className="text-muted-foreground">
-                  {format(new Date(place.createdAt), "d MMMM yyyy")}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <Separator />
+
+      <div>
+        <h3 className="font-medium mb-2">Tillagd</h3>
+        <p className="text-muted-foreground">
+          {format(new Date(place.createdAt), "d MMMM yyyy")}
+        </p>
+      </div>
+    </div>
+  </CardContent>
+</Card>
         <Card className="gap-5">
           <CardHeader>
             <CardTitle>Recensioner</CardTitle>

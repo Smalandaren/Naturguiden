@@ -47,9 +47,15 @@ namespace Backend.Controllers
                 return Unauthorized();
             }
 
-            var placeId = await _placesService.CreateAsync(dto, userId);
-
-            return Ok(placeId);
+            try
+            {
+                var placeId = await _placesService.CreateAsync(dto, userId);
+                return Ok(placeId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
 

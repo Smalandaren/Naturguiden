@@ -266,6 +266,8 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("Wishlist_user_id_fkey");
         });
 
+        modelBuilder.Entity<Place>().HasIndex(p => p.Name).IsUnique();
+
         OnModelCreatingPartial(modelBuilder);
     }
 
