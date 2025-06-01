@@ -15,11 +15,11 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5112); // HTTP port
-    options.ListenLocalhost(7055, listenOptions =>
+    options.ListenAnyIP(5112); // HTTP port
+    /*options.ListenAnyIP(7055, listenOptions =>
     {
         listenOptions.UseHttps(); // Enables HTTPS on port 7055
-    });
+    });*/
 });
 
 // CORS konfiguration. Krävs för att kommunikation mellan webbläsare och API ska fungera
@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000", "https://localhost:3000") // Vår front-end måste finnas på denna adressen
+            policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://naturguiden.net", "http://naturguiden.net") // Vår front-end måste finnas på denna adressen
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();

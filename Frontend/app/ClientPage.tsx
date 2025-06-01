@@ -13,7 +13,7 @@ import { Place } from "@/types/Place";
 import { useSearchParams, useRouter } from "next/navigation";
 import { PlaceAttribute } from "@/types/PlaceAttribute";
 import AttributeBadge from "@/components/AttributeBadge";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,6 @@ import DropDownFilterButton from "@/components/DropDownFilterButton";
 
 export default function Home({ places, availableUtil, availableCategories, user }: { places: Place[], availableUtil : PlaceAttribute[] | null, availableCategories : PlaceAttribute[] | null, user : ProfileBasics | null}) {
   const availableAttributes: PlaceAttribute[] = (availableUtil ?? []).concat(availableCategories ?? []);  
-  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredAttributes, setFilteredAttributes] = useState(availableAttributes?.map((attribute) => ({name: attribute.name, checked: false})));
   const router = useRouter();
@@ -92,6 +91,11 @@ export default function Home({ places, availableUtil, availableCategories, user 
     )
  }
 
+ function AuthErrorFunction(){
+  const searchParams = useSearchParams();
+
+ return <>{
+  
   // Detta tillåter oss bl.a visa felmeddelande vid Google inloggning. Fråga Thor om mer info.
   useEffect(() => {
     const authError = searchParams.get("authError");
@@ -119,10 +123,14 @@ export default function Home({ places, availableUtil, availableCategories, user 
                     setAuthenticated(true);
                 }
             });
-    }, [searchParams]);
+    }, [searchParams])}
+    </>
+ }
+
 
     return (
         <main className="container mx-auto py-8 px-4">
+                 <Suspense><AuthErrorFunction></AuthErrorFunction></Suspense>
             <div className="text-center mb-10">
                 <div className="flex flex-row items-center justify-center gap-2">
                     <h1 className="text-4xl font-bold mb-1">NaturGuiden</h1>

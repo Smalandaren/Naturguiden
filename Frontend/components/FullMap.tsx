@@ -19,7 +19,7 @@ export default function FullMap({ places }: { places: Place[] }){
             />
 
             {places.map((place) => (
-                <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} key={place.id}>
+                <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng.src, iconSize: [25, 41], iconAnchor: [12, 41]})} key={place.id}>
                     <Popup>
                         <div>
                             <h1 className="text-xl">{place.name}</h1>

@@ -16,7 +16,7 @@ export default function Map({ place }: { place: Place }){
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} >
+            <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng.src, iconSize: [25, 41], iconAnchor: [12, 41]})} >
             <Popup>
                 {place.name}
                 <br/>

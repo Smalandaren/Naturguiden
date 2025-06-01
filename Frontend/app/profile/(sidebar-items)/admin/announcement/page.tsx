@@ -178,7 +178,7 @@ function LabelAndInput({
   );
 }
 
-export function LabelAndSelect({
+function LabelAndSelect({
   title,
   value,
   options,

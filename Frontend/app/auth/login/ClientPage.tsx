@@ -99,7 +99,7 @@ export default function ClientPage({
           ) : (
             <Link
               className="w-full"
-              href="https://localhost:7055/api/GoogleAuth/log-in"
+              href={`${apiUrl}/GoogleAuth/log-in`}
             >
               <Button disabled={!googleAuthAvailable} className="w-full">
                 Logga in med Google
@@ -107,7 +107,7 @@ export default function ClientPage({
             </Link>
           )}
           <p className="text-muted-foreground">eller</p>
-          <Link className="w-full" href="register">
+          <Link className="w-full" href="/auth/register">
             <Button className="w-full" variant="outline">
               Skapa konto
             </Button>
