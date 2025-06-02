@@ -119,4 +119,25 @@ public class ProfileService : IProfileService
         return null;
     }
 
+    public async Task<bool> DeleteProfileAsync(int id)
+    {
+        var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+        if (user != null)
+        {
+            try
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+
+        }
+        return false;
+    }
+
 }
