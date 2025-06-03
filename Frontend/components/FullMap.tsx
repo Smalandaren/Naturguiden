@@ -9,6 +9,7 @@ import "../node_modules/leaflet/dist/leaflet.css"
 //import 'leaflet-defaulticon-compatibility';
 import { Place } from "@/types/Place";
 import { Link } from "lucide-react";
+import MapMarker from "@/siteImages/MapMarker.png"
 
 export default function FullMap({ places }: { places: Place[] }){
     return <>
@@ -20,7 +21,7 @@ export default function FullMap({ places }: { places: Place[] }){
             />
 
             {places.map((place) => (
-                <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} key={place.id}>
+                <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: MapMarker.src, iconSize: [25, 41], iconAnchor: [12, 41]})} key={place.id}>
                     <Popup>
                         <div>
                             <h1 className="text-xl">{place.name}</h1>
