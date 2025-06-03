@@ -169,10 +169,10 @@ export default function Home({ places, availableUtil, availableCategories, user 
           <p className="text-muted-foreground">Inga naturplatser hittades.</p>
         </div>
       ) : (
-        <div className="md:grid md:grid-cols-2 md:gap-4 flex flex-col space-y-4 max-w-4xl mx-auto p-4">
+        <div className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 grid-cols-1 max-w-4xl mx-auto p-4">
           {filteredPlaces.map((place) => (
             <Link href={`/place/${place.id}`} key={place.id}>
-              <Card className="w-full md:h-full gap-0 py-0 pb-6 hover:border-primary transition">
+              <Card className="w-full h-full gap-0 py-0 pb-6 hover:border-primary transition">
                         <img
                             src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
                             alt="Platsbild"
