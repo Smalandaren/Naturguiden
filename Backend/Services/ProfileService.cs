@@ -121,23 +121,37 @@ public class ProfileService : IProfileService
 
     public async Task<bool> DeleteProfileAsync(int id)
     {
-        var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
-        if (user != null)
+        try
         {
-            try
+            var user = await _context.Users.Where(u => u.Id == id)
+                    .Include(u => u.PlaceVisits)
+                    .Include(u => u.Wishlist)
+                    .Include(u => u.Reviews)
+                    .Include(u => u.FriendReceivers)
+                    .Include(u => u.FriendSenders)
+                    .Include(u => u.Places)
+                    .AsSplitQuery() // Tar bort ett varningsmeddelande i loggen och kanske förbättrar prestanda för hela query
+                    .FirstOrDefaultAsync();
+            if (user != null)
             {
+                _context.PlaceVisits.RemoveRange(user.PlaceVisits);
+                _context.Wishlist.RemoveRange(user.Wishlist);
+                _context.Reviews.RemoveRange(user.Reviews);
+                _context.Friends.RemoveRange(user.FriendReceivers);
+                _context.Friends.RemoveRange(user.FriendSenders);
+
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-
+            return false;
         }
-        return false;
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+
     }
 
 }
