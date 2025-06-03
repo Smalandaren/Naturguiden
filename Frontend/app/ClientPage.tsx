@@ -200,10 +200,11 @@ export default function Home({ places, availableUtil, availableCategories, user 
                       {(place.placeCategories != null) ?
                         (place.placeCategories.map((category) => {
                           return (
+                          <div key={category.name} className="[&>*]:bg-green-800">
                             <AttributeBadge
-                              key={category.name}
                               placeAttribute={category}
                             />
+                          </div>
                           );
                         })) : (<></>)
                       }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Place } from "@/types/Place";
 import { ProfileBasics } from "@/types/ProfileBasics";
@@ -16,7 +16,10 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function RegisterVisitButton({place, user, text}: {place: Place, user: ProfileBasics | null, text:boolean}) {
     const [isVisited, setIsVisited] = useState(Boolean);
-    getIsVisited().then(val => setIsVisited(val))
+
+    useEffect(() => {
+     getIsVisited().then(val => setIsVisited(val))
+    },[])
 
     async function getIsVisited(): Promise<boolean> {
         try{

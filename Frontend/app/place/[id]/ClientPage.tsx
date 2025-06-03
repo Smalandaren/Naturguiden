@@ -83,7 +83,9 @@ export default function NatureSpotDetail({
     <div className="flex gap-1 flex-wrap mb-6">
       <div className="flex flex-wrap gap-2 w-full">
         {place.placeCategories?.map((category) => (
-          <AttributeBadge key={category.name} placeAttribute={category} />
+          <div key={category.name} className="[&>*]:bg-green-800">
+            <AttributeBadge placeAttribute={category} />
+          </div>
         ))}
       </div>
       <div className="flex flex-wrap gap-2 w-full">
