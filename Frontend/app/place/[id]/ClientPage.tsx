@@ -97,7 +97,7 @@ export default function NatureSpotDetail({
         <img
           src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
           alt="Platsbild"
-          className="max-w-full max-h-[500px] object-contain rounded border"
+          className="max-w-full max-h-[500px] object-contain rounded-xl"
         />
       </div>
     )}
