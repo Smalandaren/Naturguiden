@@ -130,8 +130,9 @@ export default function Home({ places, availableUtil, availableCategories, user 
         <main className="mx-auto py-8">
             <div className="text-center mb-10">
                 <div className="flex flex-row items-center justify-center gap-2">
-                    <h1 className="text-4xl font-bold mb-1">NaturGuiden</h1>
                     <TreePine size={40} color="green" />
+                    <h1 className="text-4xl font-bold mb-1">NaturGuiden</h1>
+                    
                 </div>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
                     Samling av naturplatser i Skåne
