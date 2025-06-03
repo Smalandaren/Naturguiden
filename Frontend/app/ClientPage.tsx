@@ -172,7 +172,11 @@ export default function Home({ places, availableUtil, availableCategories, user 
         <div className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 grid-cols-1 max-w-4xl mx-auto p-4">
           {filteredPlaces.map((place) => (
             <Link href={`/place/${place.id}`} key={place.id}>
-              <Card className="w-full h-full gap-0 py-0 pb-6 hover:border-primary transition">
+              <Card className="w-full h-full gap-0 py-0 pb-6 hover:border-primary transition relative">
+                  <div className="absolute flex gap-2 top-2 right-2">
+                      <WishlistButton place={place} user={user} text={false}></WishlistButton>
+                      <RegisterVisitButton place={place} user={user} text={false}></RegisterVisitButton>
+                  </div>
                         <img
                             src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
                             alt="Platsbild"
@@ -180,14 +184,14 @@ export default function Home({ places, availableUtil, availableCategories, user 
                         />
                 <CardHeader className="flex justify-between">
                   <CardTitle className="text-xl">{place.name}</CardTitle>
-                  <div className="flex gap-3">
-                          <WishlistButton place={place} user={user}></WishlistButton>
-                          <RegisterVisitButton place={place} user={user}></RegisterVisitButton>
-                        </div>
+
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
-                    {place.description}
+                    {place.description.length > 45 ? 
+                      (place.description.substring(0, 45) + "…") : 
+                      (place.description)  
+                    }
                   </p>
                 </CardContent>
                 <CardFooter>

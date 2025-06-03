@@ -9,7 +9,7 @@ import {
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export default function RegisterVisitButton({place, user}: {place: Place, user: ProfileBasics | null}) {
+export default function RegisterVisitButton({place, user, text}: {place: Place, user: ProfileBasics | null, text:boolean}) {
     const [onWishlist, setOnWishlist] = useState(Boolean);
     GetOnWishlist().then(val => setOnWishlist(val))
 
@@ -107,7 +107,7 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
             event.preventDefault();
             HandleClick();
             }}>
-            Wishlist {onWishlist == false ? (<><Star/></>) : (<><Star fill="white"/></>)} 
+            {text == true ? (<>Wishlist</>) : (<></>)} {onWishlist == false ? (<><Star/></>) : (<><Star fill="white"/></>)} 
         </Button>
     )}
     </>

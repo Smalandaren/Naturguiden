@@ -64,10 +64,11 @@ export default function NatureSpotDetail({
             <h1 className="text-3xl font-bold">{place.name}</h1>
           </div>
           <div className="flex gap-3">
-            <WishlistButton place={place} user={user}></WishlistButton>
+            <WishlistButton place={place} user={user} text={true}></WishlistButton>
             <RegisterVisitButton
               place={place}
               user={user}
+              text={true}
             ></RegisterVisitButton>
           </div>
         </div>

@@ -14,7 +14,7 @@ import {
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export default function RegisterVisitButton({place, user}: {place: Place, user: ProfileBasics | null}) {
+export default function RegisterVisitButton({place, user, text}: {place: Place, user: ProfileBasics | null, text:boolean}) {
     const [isVisited, setIsVisited] = useState(Boolean);
     getIsVisited().then(val => setIsVisited(val))
 
@@ -112,7 +112,7 @@ export default function RegisterVisitButton({place, user}: {place: Place, user: 
             event.preventDefault();
             HandleClick();
             }}>
-            Besökt {isVisited == false ? (<><Circle/></>) : (<><CircleCheckBig/></>)} 
+            {text == true ? (<>Besökt</>) : (<></>)} {isVisited == false ? (<><Circle/></>) : (<><CircleCheckBig/></>)} 
         </Button>
     )}
     </>
