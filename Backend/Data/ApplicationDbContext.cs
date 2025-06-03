@@ -33,7 +33,7 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<AnnouncementBanner> AnnouncementBanners { get; set; }
-    
+
     public virtual DbSet<Wishlist> Wishlist { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -114,6 +114,12 @@ public partial class ApplicationDbContext : DbContext
                 .HasPrecision(9, 6)
                 .HasColumnName("longitude");
             entity.Property(e => e.Name).HasColumnName("name");
+            entity
+            .HasOne(p => p.CreatedByUser)
+            .WithMany(u => u.Places)
+            .HasForeignKey(p => p.CreatedBy)
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
         });
 
         modelBuilder.Entity<PlaceCategory>(entity =>
