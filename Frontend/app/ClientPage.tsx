@@ -177,11 +177,13 @@ export default function Home({ places, availableUtil, availableCategories, user 
                       <WishlistButton place={place} user={user} text={false}></WishlistButton>
                       <RegisterVisitButton place={place} user={user} text={false}></RegisterVisitButton>
                   </div>
+                      {place.images && place.images.length > 0 && (
                         <img
                             src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
                             alt="Platsbild"
                             className="max-w-full h-70/100 object-cover rounded-t-xl pb-2"
                         />
+                      )}
                 <CardHeader className="flex justify-between">
                   <CardTitle className="text-xl">{place.name}</CardTitle>
 
