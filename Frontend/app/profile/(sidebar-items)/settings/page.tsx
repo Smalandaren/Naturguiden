@@ -10,7 +10,7 @@ export default function SettingsPage() {
       <Separator />
       <div className="flex flex-col mt-4 gap-8">
         <ThemePicker />
-        <AccountActions allowPasswordChange={false} />
+        <AccountActions allowPasswordChange={true} />
       </div>
     </div>
   );

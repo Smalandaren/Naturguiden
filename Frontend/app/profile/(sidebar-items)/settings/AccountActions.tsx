@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
+import { ChangePasswordDialog } from "./ChangePasswordDialog";
 
 export default function AccountActions({
   allowPasswordChange,
@@ -19,11 +20,11 @@ export default function AccountActions({
         Kontoåtgärder
       </legend>
       <div className="flex flex-col gap-4">
-        {/* {allowPasswordChange ? (
-          <Button className="w-full">Ändra lösenord</Button>
+        {allowPasswordChange ? (
+          <ChangePasswordDialog />
         ) : (
           <DisabledPasswordChangeButton />
-        )} */}
+        )}
 
         <DeleteAccountDialog />
       </div>
