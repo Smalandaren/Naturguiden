@@ -8,11 +8,12 @@ import {
 } from "@/components/ui/tooltip";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import { ChangePasswordDialog } from "./ChangePasswordDialog";
+import { CanChangePasswordResult } from "./page";
 
 export default function AccountActions({
   allowPasswordChange,
 }: {
-  allowPasswordChange: boolean;
+  allowPasswordChange: CanChangePasswordResult;
 }) {
   return (
     <fieldset className="space-y-4 max-w-3xs">
@@ -20,10 +21,10 @@ export default function AccountActions({
         Kontoåtgärder
       </legend>
       <div className="flex flex-col gap-4">
-        {allowPasswordChange ? (
+        {allowPasswordChange == true ? (
           <ChangePasswordDialog />
         ) : (
-          <DisabledPasswordChangeButton />
+          <DisabledPasswordChangeButton reason={allowPasswordChange} />
         )}
 
         <DeleteAccountDialog />
@@ -32,7 +33,11 @@ export default function AccountActions({
   );
 }
 
-function DisabledPasswordChangeButton() {
+function DisabledPasswordChangeButton({
+  reason,
+}: {
+  reason: CanChangePasswordResult;
+}) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -44,7 +49,9 @@ function DisabledPasswordChangeButton() {
       </TooltipTrigger>
       <TooltipContent>
         <p className="p-1">
-          Ditt konto är skapat via en tredje part och har därav inget lösenord
+          {reason == "unknown"
+            ? "Ditt lösenord kan inte ändras"
+            : "Ditt konto är skapat via en tredje part och har därav inget lösenord"}
         </p>
       </TooltipContent>
     </Tooltip>
