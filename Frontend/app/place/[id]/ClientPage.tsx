@@ -64,10 +64,11 @@ export default function NatureSpotDetail({
             <h1 className="text-3xl font-bold">{place.name}</h1>
           </div>
           <div className="flex gap-3">
-            <WishlistButton place={place} user={user}></WishlistButton>
+            <WishlistButton place={place} user={user} text={true}></WishlistButton>
             <RegisterVisitButton
               place={place}
               user={user}
+              text={true}
             ></RegisterVisitButton>
           </div>
         </div>
@@ -82,7 +83,9 @@ export default function NatureSpotDetail({
     <div className="flex gap-1 flex-wrap mb-6">
       <div className="flex flex-wrap gap-2 w-full">
         {place.placeCategories?.map((category) => (
-          <AttributeBadge key={category.name} placeAttribute={category} />
+          <div key={category.name} className="[&>*]:bg-green-800">
+            <AttributeBadge placeAttribute={category} />
+          </div>
         ))}
       </div>
       <div className="flex flex-wrap gap-2 w-full">
@@ -97,7 +100,7 @@ export default function NatureSpotDetail({
         <img
           src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
           alt="Platsbild"
-          className="max-w-full max-h-[500px] object-contain rounded border"
+          className="max-w-full max-h-[500px] object-contain rounded-xl"
         />
       </div>
     )}

@@ -127,18 +127,23 @@ export default function Home({ places, availableUtil, availableCategories, user 
     }, [searchParams]);
 
     return (
-        <main className="container mx-auto py-8 px-4">
+        <main className="mx-auto py-8">
             <div className="text-center mb-10">
                 <div className="flex flex-row items-center justify-center gap-2">
-                    <h1 className="text-4xl font-bold mb-1">NaturGuiden</h1>
                     <TreePine size={40} color="green" />
+                    <h1 className="text-4xl font-bold mb-1">NaturGuiden</h1>
+                    
                 </div>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
                     Samling av naturplatser i Skåne
                 </p>
             </div>
 
-      <div className="flex fex-col flex-wrap justify-center space-y-4 max-w-3xl mx-auto mb-4 gap-2">
+      <div className="w-full">
+        <NextJsFullMap places={places}/>
+      </div>
+
+      <div className="flex fex-col flex-wrap justify-center space-y-4 max-w-4xl mx-auto p-4 gap-2">
         <div className="flex flex-row w-full gap-1">
         <DropDownFilterButton utilities={availableUtil} categories={availableCategories} handleChange={updateFilter}/>
 
@@ -165,24 +170,31 @@ export default function Home({ places, availableUtil, availableCategories, user 
           <p className="text-muted-foreground">Inga naturplatser hittades.</p>
         </div>
       ) : (
-        <div className="flex flex-col space-y-4 max-w-3xl mx-auto">
+        <div className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 grid-cols-1 max-w-4xl mx-auto p-4">
           {filteredPlaces.map((place) => (
             <Link href={`/place/${place.id}`} key={place.id}>
-              <Card className="w-full gap-0 hover:border-primary transition">
+              <Card className="w-full h-full gap-0 py-0 pb-6 hover:border-primary transition relative">
+                  <div className="absolute flex gap-2 top-2 right-2">
+                      <WishlistButton place={place} user={user} text={false}></WishlistButton>
+                      <RegisterVisitButton place={place} user={user} text={false}></RegisterVisitButton>
+                  </div>
+                      {place.images && place.images.length > 0 && (
+                        <img
+                            src={`${process.env.NEXT_PUBLIC_API_URL?.replace("/api", "")}/uploads/${place.images[0]}`}
+                            alt="Platsbild"
+                            className="max-w-full h-70/100 object-cover rounded-t-xl pb-2"
+                        />
+                      )}
                 <CardHeader className="flex justify-between">
                   <CardTitle className="text-xl">{place.name}</CardTitle>
-                  <div className="flex gap-3">
-                          <WishlistButton place={place} user={user}></WishlistButton>
-                          <RegisterVisitButton place={place} user={user}></RegisterVisitButton>
-                        </div>
+
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
-                    {place.description}
-                  </p>
-                  <p className="text-sm mb-4">
-                    <span className="font-medium">Koordinater: </span>
-                    {place.latitude}, {place.longitude}
+                    {place.description.length > 45 ? 
+                      (place.description.substring(0, 45) + "…") : 
+                      (place.description)  
+                    }
                   </p>
                 </CardContent>
                 <CardFooter>
@@ -191,10 +203,11 @@ export default function Home({ places, availableUtil, availableCategories, user 
                       {(place.placeCategories != null) ?
                         (place.placeCategories.map((category) => {
                           return (
+                          <div key={category.name} className="[&>*]:bg-green-800">
                             <AttributeBadge
-                              key={category.name}
                               placeAttribute={category}
                             />
+                          </div>
                           );
                         })) : (<></>)
                       }
@@ -216,7 +229,6 @@ export default function Home({ places, availableUtil, availableCategories, user 
               </Card>
             </Link>
           ))}
-          <NextJsFullMap places={places}/>
         </div>
       )}
     </main>
