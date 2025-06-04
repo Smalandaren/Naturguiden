@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
-import { Input } from "@/components/ui/input";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -29,7 +28,6 @@ type Place = {
 export default function AdminPlacesPage() {
   const [places, setPlaces] = useState<Place[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchPlaces = async () => {
     setIsLoading(true);
@@ -87,24 +85,10 @@ export default function AdminPlacesPage() {
     fetchPlaces();
   }, []);
 
-  const filteredPlaces = places.filter((place) =>
-    place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    place.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
-    <div className="mx-6 pt-16">
+    <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-4">Platsförslag</h1>
       <Separator className="mb-6" />
-
-      <div className="max-w-md mb-6">
-      <Input type="text"
-        placeholder="Sök"
-        className="hover:border-primary transition"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}>
-      </Input>
-      </div>
 
       {isLoading ? (
         <div className="grid grid-cols-1 gap-6 max-w-4xl mx-auto">
@@ -124,11 +108,11 @@ export default function AdminPlacesPage() {
             </Card>
           ))}
         </div>
-      ) : filteredPlaces.length === 0 ? (
+      ) : places.length === 0 ? (
         <p className="text-muted-foreground">Inga nya platsförslag att visa.</p>
       ) : (
-        <div className="flex flex-col gap-6 mt-4 max-w-4xl">
-          {filteredPlaces.map((place) => (
+        <div className="grid grid-cols-1 gap-6 max-w-4xl mx-auto">
+          {places.map((place) => (
             <Card key={place.id}>
               <CardHeader>
                 <CardTitle className="text-xl">{place.name}</CardTitle>
@@ -181,7 +165,7 @@ export default function AdminPlacesPage() {
 
                 {place.placeUtilities.length > 0 && (
                   <div>
-                    <p className="text-sm font-semibold mb-1">Bekvämligheter:</p>
+                    <p className="text-sm font-semibold mb-1">Attribut:</p>
                     <div className="flex flex-wrap gap-2">
                       {place.placeUtilities.map((u, index) => (
                         <Badge key={index} variant="default">

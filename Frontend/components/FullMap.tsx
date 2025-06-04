@@ -9,19 +9,17 @@ import "../node_modules/leaflet/dist/leaflet.css"
 //import 'leaflet-defaulticon-compatibility';
 import { Place } from "@/types/Place";
 import { Link } from "lucide-react";
-import MapMarker from "@/siteImages/MapMarker.png"
 
 export default function FullMap({ places }: { places: Place[] }){
-    return <>
-        <MapContainer center={[55.983250, 13.544403]} zoom={8} scrollWheelZoom={true} className="w-full justify-self-center px-10 m-0 z-0 rounded-xl border h-100   
-                    sm:transition-height sm:duration-500 sm:ease-in-out sm:h-50 sm:transform sm:hover:h-90">
+    return <div>
+        <MapContainer center={[55.92875, 13.6231121]} zoom={8} scrollWheelZoom={true} className="h-100 w-full justify-self-center px-10 m-0 z-0 rounded-xl border">
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
             {places.map((place) => (
-                <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: MapMarker.src, iconSize: [25, 41], iconAnchor: [12, 41]})} key={place.id}>
+                <Marker position={[place.latitude, place.longitude]}icon={new Icon({iconUrl: markerIconPng.src, iconSize: [25, 41], iconAnchor: [12, 41]})} key={place.id}>
                     <Popup>
                         <div>
                             <h1 className="text-xl">{place.name}</h1>
@@ -34,5 +32,5 @@ export default function FullMap({ places }: { places: Place[] }){
                 </Marker>
             ))}
         </MapContainer>
-    </>
+    </div>
 };

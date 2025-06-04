@@ -34,21 +34,15 @@ namespace Backend.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddToWishlist([FromBody] WishlistDTO wishlistDTO)
         {
-            if(await _wishlistService.AddToWishlist(wishlistDTO.UserId, wishlistDTO.PlaceId))
-            {
-                return Ok();
-            }
-            return BadRequest();
+            await _wishlistService.AddToWishlist(wishlistDTO.UserId, wishlistDTO.PlaceId);
+            return Ok();
         }
 
         [HttpDelete("remove")]
         public async Task<IActionResult> RemoveFromWishlist([FromBody] WishlistDTO wishlistDTO)
         {
-            if (await _wishlistService.RemoveFromWishlist(wishlistDTO.UserId, wishlistDTO.PlaceId))
-            {
-                return Ok();
-            }
-            return BadRequest();
+            await _wishlistService.RemoveFromWishlist(wishlistDTO.UserId, wishlistDTO.PlaceId);
+            return Ok();
         }
 
         [HttpPost("check")]

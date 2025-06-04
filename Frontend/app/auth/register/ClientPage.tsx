@@ -102,7 +102,6 @@ export default function RegisterPage() {
               value={firstNameInput}
               onChange={(e) => setFirstNameInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              maxLength={25}
             />
           </div>
 
@@ -114,7 +113,6 @@ export default function RegisterPage() {
               value={lastNameInput}
               onChange={(e) => setLastNameInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              maxLength={40}
             />
           </div>
 

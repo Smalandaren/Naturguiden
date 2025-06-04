@@ -10,28 +10,8 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-function LocationPicker({ setCoordinates }: { setCoordinates: (lat: number, lng: number) => void }) {
-  useMapEvents({
-    click(e) {
-      setCoordinates(e.latlng.lat, e.latlng.lng);
-    }
-  });
-  return null;
-}
 
 export default function CreatePlaceForm() {
   const [form, setForm] = useState({
@@ -74,22 +54,13 @@ export default function CreatePlaceForm() {
 
     try {
       if (!form.name || form.name.length < 3) {
-        throw new Error("Namn måste vara minst 3 tecken långt.");
+        throw new Error("Namn måste vara minst 3 tecken");
       }
-
-      const lat = parseFloat(form.latitude);
-      const lon = parseFloat(form.longitude);
-
-        if (isNaN(parseFloat(form.latitude))) {
-        throw new Error("Latitud saknas eller är ogiltig. Ange ett korrekt decimaltal.");
+      if (isNaN(parseFloat(form.latitude))) {
+        throw new Error("Ogiltig latitud");
       }
-
-        if (isNaN(parseFloat(form.longitude))) {
-        throw new Error("Longitud saknas eller är ogiltig. Ange ett korrekt decimaltal.");
-      }
-
-      if (lat < 55.3 || lat > 56.5 || lon < 12.5 || lon > 14.5) {
-        throw new Error("Platsen verkar inte ligga inom Skåne. Kontrollera koordinaterna.");
+      if (isNaN(parseFloat(form.longitude))) {
+        throw new Error("Ogiltig longitud");
       }
 
       const res = await fetch(`${apiUrl}/places`, {
@@ -103,10 +74,7 @@ export default function CreatePlaceForm() {
         }),
       });
 
-      if (!res.ok) {
-        const errorBody = await res.json().catch(() => ({}));
-        throw new Error(errorBody.message || "Ett fel uppstod vid skapande av plats.");
-      }
+      if (!res.ok) throw new Error("Ett fel uppstod vid skapande av plats");
 
       const placeId = await res.json();
 
@@ -116,12 +84,12 @@ export default function CreatePlaceForm() {
           const formData = new FormData();
           formData.append("file", image);
 
-            const uploadRes = await fetch(
+          const uploadRes = await fetch(
             `${apiUrl}/places/${placeId}/upload-image`,
             {
-            method: "POST",
-            credentials: "include",
-            body: formData,
+              method: "POST",
+              credentials: "include",
+              body: formData,
             }
           );
 
@@ -133,7 +101,7 @@ export default function CreatePlaceForm() {
         }
       }
 
-      toast.success("Platsförslag skickat! Det kommer att granskas av en admin innan det publiceras.");
+      toast.success("Platsförslag skickat!");
       router.push("/");
     } catch (error: any) {
       toast.error(error.message);
@@ -154,16 +122,12 @@ export default function CreatePlaceForm() {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="bg-card text-card-foreground max-w-xl mx-auto mt-6 p-6 pb-10 rounded-xl border border-border space-y-6"
+        className="bg-card text-card-foreground max-w-xl mx-auto mt-6 p-6 rounded-xl border border-border space-y-6"
       >
         <h2 className="text-2xl font-bold">Föreslå en ny plats</h2>
 
-        <p className="text-sm text-muted-foreground">
-          Fält markerade med <span className="text-red-500">*</span> är obligatoriska.
-        </p>
-
         <div className="space-y-2">
-          <Label htmlFor="name">Platsens namn <span className="text-red-500">*</span></Label>
+          <Label htmlFor="name">Platsens namn</Label>
           <Input
             name="name"
             value={form.name}
@@ -173,7 +137,7 @@ export default function CreatePlaceForm() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="description">Beskrivning <span className="text-red-500">*</span></Label>
+          <Label htmlFor="description">Beskrivning</Label>
           <Textarea
             name="description"
             value={form.description}
@@ -182,40 +146,9 @@ export default function CreatePlaceForm() {
           />
         </div>
 
-        <div className="space-y-2">
-           <Label htmlFor="address">Adress</Label>
-           <Input
-             name="address"
-             value={form.address}
-             onChange={handleChange}
-           />
-         </div>
-
-        <div className="space-y-2">
-          <Label>Välj plats på karta</Label>
-          <MapContainer center={[56.0, 13.5]} zoom={8} style={{ height: "300px", borderRadius: "8px" }}>
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution="&copy; OpenStreetMap contributors"
-            />
-            <LocationPicker
-              setCoordinates={(lat, lng) => {
-                setForm((prev) => ({
-                  ...prev,
-                  latitude: lat.toString(),
-                  longitude: lng.toString(),
-                }));
-              }}
-            />
-            {form.latitude && form.longitude && (
-              <Marker position={[parseFloat(form.latitude), parseFloat(form.longitude)]} />
-            )}
-          </MapContainer>
-        </div>
-
         <div className="flex space-x-4">
           <div className="w-1/2 space-y-2">
-            <Label htmlFor="latitude">Latitud <span className="text-red-500">*</span></Label>
+            <Label htmlFor="latitude">Latitud</Label>
             <Input
               name="latitude"
               value={form.latitude}
@@ -223,11 +156,10 @@ export default function CreatePlaceForm() {
               type="number"
               step="any"
               required
-              className="no-spinner"
             />
           </div>
           <div className="w-1/2 space-y-2">
-            <Label htmlFor="longitude">Longitud <span className="text-red-500">*</span></Label>
+            <Label htmlFor="longitude">Longitud</Label>
             <Input
               name="longitude"
               value={form.longitude}
@@ -235,8 +167,17 @@ export default function CreatePlaceForm() {
               type="number"
               step="any"
               required
-              className="no-spinner"/>
+            />
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="address">Adress (valfri)</Label>
+          <Input
+            name="address"
+            value={form.address}
+            onChange={handleChange}
+          />
         </div>
 
         <div>
@@ -256,19 +197,19 @@ export default function CreatePlaceForm() {
         </div>
 
         <div>
-          <h3 className="font-semibold mb-1">Bekvämligheter</h3>
+          <h3 className="font-semibold mb-1">Attribut</h3>
           <div className="space-y-1">
-              {["Toalett", "Utsiktsplats", "Parkering", "Vandringsleder"].map(
+            {["Toalett", "Utsiktsplats", "Parkering", "Vandringsleder"].map(
               (attr) => (
-              <label key={attr} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={form.utilityNames.includes(attr)}
-                  onChange={() => handleCheckboxChange("utilityNames", attr)}
-                />
-                {attr}
-              </label>
-            )
+                <label key={attr} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={form.utilityNames.includes(attr)}
+                    onChange={() => handleCheckboxChange("utilityNames", attr)}
+                  />
+                  {attr}
+                </label>
+              )
             )}
           </div>
         </div>
@@ -302,7 +243,7 @@ export default function CreatePlaceForm() {
               <img
                 src={previewUrl}
                 alt="Förhandsvisning"
-                className="max-h-64 rounded-lg border border-muted-foreground/20"
+                className="max-h-64 rounded-lg border-2 border-muted p-1 bg-background"
               />
               <Button
                 type="button"
@@ -317,11 +258,11 @@ export default function CreatePlaceForm() {
             </div>
           )}
         </div>
+
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Skickar..." : "Skicka"}
         </Button>
       </form>
-      <div className="h-10" />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { Place } from "@/types/Place";
 import { ProfileBasics } from "@/types/ProfileBasics";
@@ -14,12 +14,9 @@ import {
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export default function RegisterVisitButton({place, user, text}: {place: Place, user: ProfileBasics | null, text:boolean}) {
+export default function RegisterVisitButton({place, user}: {place: Place, user: ProfileBasics | null}) {
     const [isVisited, setIsVisited] = useState(Boolean);
-
-    useEffect(() => {
-     getIsVisited().then(val => setIsVisited(val))
-    },[])
+    getIsVisited().then(val => setIsVisited(val))
 
     async function getIsVisited(): Promise<boolean> {
         try{
@@ -115,7 +112,7 @@ export default function RegisterVisitButton({place, user, text}: {place: Place, 
             event.preventDefault();
             HandleClick();
             }}>
-            {text == true ? (<>Besökt</>) : (<></>)} {isVisited == false ? (<><Circle/></>) : (<><CircleCheckBig/></>)} 
+            Besökt {isVisited == false ? (<><Circle/></>) : (<><CircleCheckBig/></>)} 
         </Button>
     )}
     </>

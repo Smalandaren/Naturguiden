@@ -8,6 +8,5 @@
         Task<bool> GetUserAdminStatusAsync(int id);
         Task<ForeignProfileDTO?> GetForeignProfileInfoAsync(int id);
         Task<ProfileBasicsDTO?> UpdateProfileAsync(int id, string firstName, string lastName);
-        Task<bool> DeleteProfileAsync(int id);
     }
 }

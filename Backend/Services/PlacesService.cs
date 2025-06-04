@@ -166,12 +166,6 @@ public class PlacesService : IPlacesService
 
     public async Task<int> CreateAsync(CreatePlaceDTO dto, int userId)
     {
-        var exists = await _context.Places
-        .AnyAsync(p => p.Name.ToLower() == dto.Name.ToLower());
-
-        if (exists)
-            throw new Exception("En plats med detta namn finns redan.");
-
         var nextId = await _context.Places.MaxAsync(p => (int?)p.Id) ?? 0;
         nextId += 1;
 
@@ -185,8 +179,8 @@ public class PlacesService : IPlacesService
             Address = dto.Address,
             Approved = false,
             CreatedBy = userId,
-            CreatedTimestamp = DateTime.Now
-    };
+            CreatedTimestamp = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified) 
+        };
 
         _context.Places.Add(place);
         foreach (var category in dto.CategoryNames ?? new())

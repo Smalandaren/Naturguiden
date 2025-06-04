@@ -57,11 +57,8 @@ namespace Backend.Controllers
                 return Unauthorized("Invalid user id");
             }
 
-            if (await _friendsService.AddRequest(currentUserID, request.UserId))
-            {
-                return Ok();
-            }
-            return BadRequest();
+            await _friendsService.AddRequest(currentUserID, request.UserId);
+            return Ok();
         }
 
         [Authorize]
@@ -75,11 +72,8 @@ namespace Backend.Controllers
                 return Unauthorized("Invalid user id");
             }
 
-            if (await _friendsService.AcceptRequest(request.UserId, currentUserID)) 
-            {
-                return Ok(); 
-            }
-            return BadRequest();
+            await _friendsService.AcceptRequest(request.UserId, currentUserID);
+            return Ok();
         }
 
         [Authorize]
@@ -93,11 +87,8 @@ namespace Backend.Controllers
                 return Unauthorized("Invalid user id");
             }
 
-            if (await _friendsService.RemoveRequest(request.UserId, currentUserID))
-            {
-                return Ok();
-            }
-            return BadRequest();
+            await _friendsService.RemoveRequest(request.UserId, currentUserID);
+            return Ok();
         }
 
         [Authorize]

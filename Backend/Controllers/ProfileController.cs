@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Interfaces;
 using Backend.Services;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Backend.Controllers
 {
@@ -70,11 +68,6 @@ namespace Backend.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (request.FirstName.Length > 25 || request.LastName.Length > 40)
-            {
-                return BadRequest();
-            }
-
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
@@ -84,25 +77,6 @@ namespace Backend.Controllers
 
             var profile = await _profileService.UpdateProfileAsync(userId, request.FirstName, request.LastName);
             return Ok(profile);
-        }
-
-        [HttpDelete("delete")]
-        public async Task<ActionResult<bool>> DeleteProfile()
-        {
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
-            {
-                return Unauthorized("Invalid user id");
-            }
-
-            var deletion = await _profileService.DeleteProfileAsync(userId);
-            if (deletion == true)
-            {
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                return Ok(new { Message = "Profile deleted" });
-            }
-            return StatusCode(500, new { Message = "Could not delete profile" });
         }
     }
 }

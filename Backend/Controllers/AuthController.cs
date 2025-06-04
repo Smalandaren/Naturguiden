@@ -89,11 +89,6 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Invalid email format" });
         }
 
-        if (register.FirstName.Length > 25 || register.LastName.Length > 40)
-        {
-            return BadRequest("Invalid name");
-        }
-
         var user = await _authService.RegisterAsync(register.Email, register.Password, register.FirstName, register.LastName);
 
         if (user == null)
