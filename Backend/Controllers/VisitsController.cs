@@ -52,7 +52,7 @@ public class VisitsController : ControllerBase
             await _visitsService.RegisterVisit(new PlaceVisit { PlaceId = request.PlaceId, UserId = currentUserID });
             return Ok();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return BadRequest();
         }
@@ -77,7 +77,7 @@ public class VisitsController : ControllerBase
             }
             return BadRequest();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return BadRequest();
         }
