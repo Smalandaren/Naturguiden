@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using NaturguidenServerPrototype.Services;
 using Backend.Interfaces;
+using Backend.Models;
 
 namespace NaturguidenServerPrototype.Controllers;
 
@@ -118,5 +119,71 @@ public class AuthController : ControllerBase
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         return Ok(new { Message = "Logout successful" });
+    }
+
+    [Authorize]
+    [HttpGet("can-change-password")]
+    public async Task<ActionResult<CanChangePasswordResponse>> CanChangePassword()
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        // Endast autentiserade användare kan nå den här punkten
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
+        {
+            return Unauthorized("Invalid user id");
+        }
+
+        var profileInfo = await _profileService.GetBasicProfileInfoAsync(userId);
+        if (profileInfo == null)
+        {
+            return NotFound();
+        }
+        if (profileInfo.Provider == "local")
+        {
+            return Ok(new { canChangePassword = true });
+        }
+        else
+        {
+            return StatusCode(403, new { canChangePassword = false });
+
+        }
+    }
+
+    [Authorize]
+    [HttpPut("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        // Endast autentiserade användare kan nå den här punkten
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(userIdString, out int userId)) // Variabeln userId skapas bara om userIdString går att omvandla till en int
+        {
+            return Unauthorized("Invalid user id");
+        }
+
+        User? user = await _authService.AuthenticateAsync(userId, request.CurrentPassword);
+        if (user == null)
+        {
+            return Unauthorized(new { Message = "Invalid current password" });
+        }
+
+        bool passwordChange = await _authService.UpdatePasswordAsync(userId, request.NewPassword);
+
+        if (passwordChange == true)
+        {
+            return Ok(new { message = "Password changed" });
+        }
+        else
+        {
+            return StatusCode(500, "Could not change password");
+        }
     }
 }
