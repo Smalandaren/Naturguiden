@@ -44,13 +44,20 @@ namespace Backend.Services
 
         public async Task<bool> AddToWishlist(int userId, int placeId)
         {
-            if (await _context.Wishlist.FindAsync(userId, placeId) != null)
+            try
+            {
+                if (await _context.Wishlist.FindAsync(userId, placeId) != null)
+                {
+                    return false;
+                }
+                _context.Wishlist.Add(new Wishlist { UserId = userId, PlaceId = placeId });
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
             {
                 return false;
             }
-            _context.Wishlist.Add(new Wishlist { UserId = userId, PlaceId = placeId});
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> RemoveFromWishlist(int userId, int placeId)

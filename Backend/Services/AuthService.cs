@@ -27,6 +27,19 @@ public class AuthService : IAuthService
         return null;
     }
 
+    public async Task<User?> AuthenticateAsync(int userId, string password)
+    {
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user != null && user.PasswordHash != null && user.Provider == "local") // logga endast in "local" användare via denna metod
+        {
+            if (VerifyPassword(password, user.PasswordHash))
+            {
+                return user;
+            }
+        }
+        return null;
+    }
+
     public Boolean VerifyPassword(string inputPassword, string passwordHash)
     {
         if (SecretHasher.Verify(inputPassword, passwordHash))
@@ -60,6 +73,29 @@ public class AuthService : IAuthService
         await _context.SaveChangesAsync();
 
         return newUser;
+    }
+
+    public async Task<bool> UpdatePasswordAsync(int userId, string newPassword)
+    {
+        try
+        {
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null || user.Provider != "local")
+            {
+                return false;
+            }
+
+            string hashedPassword = SecretHasher.Hash(newPassword);
+
+            user.PasswordHash = hashedPassword;
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public async Task<User?> AuthenticateOAuthAsync(string provider, string providerId, string email, string firstName, string lastName)
