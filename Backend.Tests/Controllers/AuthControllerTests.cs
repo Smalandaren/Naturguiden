@@ -172,5 +172,113 @@ namespace Backend.Tests.Controllers
             // Assert
             var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result);
         }
+
+        [Fact]
+        public async Task CanChangePassword_ReturnsUnauthorized_WhenUserIdIsMissing()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity());
+
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            // Act
+            var result = await _authController.CanChangePassword();
+
+            // Assert
+            var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task CanChangePassword_ReturnsNotFound_WhenProfileDoesNotExist()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            A.CallTo(() => _profileService.GetBasicProfileInfoAsync(1)).Returns(Task.FromResult<ProfileBasicsDTO?>(null));
+
+            // Act
+            var result = await _authController.CanChangePassword();
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task CanChangePassword_ReturnsOk_WhenProfileProviderIsLocal()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            var profile = new ProfileBasicsDTO
+            {
+                Id = 1,
+                FirstName = "Test",
+                LastName = "Testsson",
+                Email = "test@test.com",
+                Provider = "local",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            A.CallTo(() => _profileService.GetBasicProfileInfoAsync(1)).Returns(profile);
+
+            // Act
+            var result = await _authController.CanChangePassword();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task CanChangePassword_ReturnsForbidden_WhenProfileProviderIsNotLocal()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            var profile = new ProfileBasicsDTO
+            {
+                Id = 1,
+                FirstName = "Test",
+                LastName = "Testsson",
+                Email = "test@test.com",
+                Provider = "google",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            A.CallTo(() => _profileService.GetBasicProfileInfoAsync(1)).Returns(profile);
+
+            // Act
+            var result = await _authController.CanChangePassword();
+
+            // Assert
+            var objectResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(403, objectResult.StatusCode);
+        }
     }
 }
