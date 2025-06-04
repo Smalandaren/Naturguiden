@@ -280,5 +280,29 @@ namespace Backend.Tests.Controllers
             var objectResult = Assert.IsType<ObjectResult>(result.Result);
             Assert.Equal(403, objectResult.StatusCode);
         }
+
+        [Fact]
+        public async Task ChangePassword_ReturnsUnauthorized_WhenUserIdIsMissing()
+        {
+            // Arrange
+            var user = new ClaimsPrincipal(new ClaimsIdentity());
+
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            var changePasswordRequest = new ChangePasswordRequest
+            {
+                CurrentPassword = "123",
+                NewPassword = "123456"
+            };
+
+            // Act
+            var result = await _authController.ChangePassword(changePasswordRequest);
+
+            // Assert
+            var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result);
+        }
     }
 }
