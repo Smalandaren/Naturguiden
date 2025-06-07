@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
-using NaturguidenServerPrototype.Services;
 using Backend.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Backend.Interfaces;
 
 namespace NaturguidenServerPrototype.Controllers;
 
@@ -13,10 +13,10 @@ namespace NaturguidenServerPrototype.Controllers;
 
 public class GoogleAuthController : ControllerBase
 {
-    private readonly AuthService _authService;
+    private readonly IAuthService _authService;
     private readonly IConfiguration _configuration; // Behövs för att hämta vår frontend-adress från appsettings.json
 
-    public GoogleAuthController(AuthService authService, IConfiguration configuration)
+    public GoogleAuthController(IAuthService authService, IConfiguration configuration)
     {
         _authService = authService;
         _configuration = configuration;

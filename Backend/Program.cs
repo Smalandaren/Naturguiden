@@ -46,7 +46,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Registrera våra egna services
 builder.Services.AddScoped<IPlacesService, PlacesService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
-builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<VisitsService>();
 builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<AnnouncementBannerService>();

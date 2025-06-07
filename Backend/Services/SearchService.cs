@@ -49,27 +49,27 @@ public class SearchService
         return matchesDTO;
     }
 
-    public List<AvailableUtility> GetAllUtilities()
+    public List<AvailableUtility>? GetAllUtilities()
     {
         try
         {
             List<AvailableUtility> result = _context.AvailableUtilities.ToList();
             return result;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
     }
 
-    public List<AvailableCategory> GetAllCategories()
+    public List<AvailableCategory>? GetAllCategories()
     {
         try
         {
             List<AvailableCategory> result = _context.AvailableCategories.ToList();
             return result;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
