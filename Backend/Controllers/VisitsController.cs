@@ -54,7 +54,7 @@ public class VisitsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest();
         }
     }
 
@@ -71,12 +71,15 @@ public class VisitsController : ControllerBase
                 return Unauthorized("Invalid user id");
             }
 
-            await _visitsService.RemoveVisit(new PlaceVisit { PlaceId = request.PlaceId, UserId = currentUserID});
-            return Ok();
+            if (await _visitsService.RemoveVisit(new PlaceVisit { PlaceId = request.PlaceId, UserId = currentUserID }))
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest();
         }
     }
 }
