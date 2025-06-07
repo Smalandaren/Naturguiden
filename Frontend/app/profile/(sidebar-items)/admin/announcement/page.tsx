@@ -109,12 +109,14 @@ export default function ProfilePage() {
             title="Titel"
             value={banner.title}
             onChange={(v) => setBanner({ ...banner, title: v })}
+            maxLength={60}
           />
 
           <LabelAndInput
             title="Undertitel"
             value={banner.subtitle || ""}
             onChange={(v) => setBanner({ ...banner, subtitle: v })}
+            maxLength={60}
           />
 
           <LabelAndSelect
@@ -138,6 +140,7 @@ export default function ProfilePage() {
                 title="Knapptext"
                 value={banner.buttonText || ""}
                 onChange={(v) => setBanner({ ...banner, buttonText: v })}
+                maxLength={15}
               />
               <LabelAndInput
                 title="Knapplänk (/example/123)"
@@ -161,9 +164,11 @@ function LabelAndInput({
   title,
   value,
   onChange,
+  maxLength,
 }: {
   title: string;
   value: string;
+  maxLength?: number;
   onChange: (val: string) => void;
 }) {
   return (
@@ -172,6 +177,7 @@ function LabelAndInput({
       <Input
         className="h-11 px-4 !text-lg"
         value={value}
+        maxLength={maxLength ? maxLength : undefined}
         onChange={(e) => onChange(e.target.value)}
       />
     </div>
