@@ -2,7 +2,7 @@
 import { Crown, LogIn, LogOut, UserCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ProfileBasics } from "@/types/ProfileBasics";
 import {
   DropdownMenu,
@@ -24,6 +24,10 @@ export default function TopRightAuthButton({
   isAdmin?: boolean;
 }) {
   const router = useRouter();
+
+  const pathname = usePathname();
+
+  const isLoginPage = pathname === "/auth/login/";
 
   async function handleLogOut() {
     try {
@@ -81,13 +85,15 @@ export default function TopRightAuthButton({
   if (authenticated) {
     return <InitialsAvatar user={user} />;
   } else {
-    return (
-      <Link href="/auth/login">
-        <Button>
-          <LogIn />
-          Logga in
-        </Button>
-      </Link>
-    );
+    if (!isLoginPage) {
+      return (
+        <Link href="/auth/login">
+          <Button>
+            <LogIn />
+            Logga in
+          </Button>
+        </Link>
+      );
+    }
   }
 }
