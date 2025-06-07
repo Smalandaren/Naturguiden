@@ -1,11 +1,15 @@
 import { TriangleAlert } from "lucide-react";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export function ErrorScreen({
   showIcon = true,
+  showBackButton = false,
   title,
   subtitle,
 }: {
   showIcon?: boolean;
+  showBackButton?: boolean;
   title: string;
   subtitle: string;
 }) {
@@ -17,6 +21,11 @@ export function ErrorScreen({
         <h1 className="text-lg text-center text-muted-foreground">
           {subtitle}
         </h1>
+        {showBackButton ? (
+          <Link href="/">
+            <Button variant="default">Tillbaka till startsidan</Button>
+          </Link>
+        ) : null}
       </div>
     </div>
   );
