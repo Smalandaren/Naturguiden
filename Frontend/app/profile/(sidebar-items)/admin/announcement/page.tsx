@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -29,6 +30,7 @@ const defaultBanner: AnnouncementBanner = {
 };
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [banner, setBanner] = useState<AnnouncementBanner>(defaultBanner);
 
@@ -64,6 +66,7 @@ export default function ProfilePage() {
       });
       if (response.ok) {
         toast.success("Meddelande uppdaterat");
+        router.refresh();
       } else {
         throw new Error("Ett fel uppstod");
       }
