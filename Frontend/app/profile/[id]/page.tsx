@@ -7,7 +7,7 @@ import { format, isLastDayOfMonth } from "date-fns";
 import { MapPin } from "lucide-react";
 import FriendRequestButton from "@/components/FriendRequestButton";
 import { checkAuth } from "@/lib/checkAuth";
-import { is } from "date-fns/locale";
+import { is, sv } from "date-fns/locale";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 async function getProfile(id: string): Promise<ForeignProfile | null> {
@@ -76,7 +76,10 @@ export default async function ViewForeignProfile({
                 </div>
 
                 <div className="pt-4 border-t text-center text-sm text-muted-foreground">
-                  Gick med {format(new Date(profile.createdAt), "d MMMM yyyy")}
+                  Gick med{" "}
+                  {format(new Date(profile.createdAt), "d MMMM yyyy", {
+                    locale: sv,
+                  })}
                 </div>
               </div>
             </CardContent>
