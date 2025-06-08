@@ -104,5 +104,12 @@ namespace Backend.Controllers
             }
             return StatusCode(500, new { Message = "Could not delete profile" });
         }
+
+        [HttpGet("search/{query}")]
+        public async Task<ActionResult<List<ForeignProfileDTO>>> Search(string query)
+        {
+            var profiles = await _profileService.SearchAsync(query);
+            return Ok(profiles);
+        }
     }
 }

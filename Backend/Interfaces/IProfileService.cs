@@ -9,5 +9,6 @@
         Task<ForeignProfileDTO?> GetForeignProfileInfoAsync(int id);
         Task<ProfileBasicsDTO?> UpdateProfileAsync(int id, string firstName, string lastName);
         Task<bool> DeleteProfileAsync(int id);
+        Task<List<ForeignProfileDTO>> SearchAsync(string searchQuery);
     }
 }

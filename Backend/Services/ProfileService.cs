@@ -153,4 +153,34 @@ public class ProfileService : IProfileService
         }
 
     }
+
+    public async Task<List<ForeignProfileDTO>> SearchAsync(string searchQuery)
+    {
+        if (string.IsNullOrWhiteSpace(searchQuery))
+            return new List<ForeignProfileDTO>();
+
+        // Splittar söktermen till indivudella ord så att man kan söka efter någons fulla namn t.ex "Demo McDemosson"
+        var terms = searchQuery
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(t => t.ToLower())
+            .ToArray();
+
+        var users = await _context.Users
+            .Where(u => terms.All(term =>
+                u.FirstName.ToLower().Contains(term) ||
+                u.LastName.ToLower().Contains(term)))
+            .Select(u => new ForeignProfileDTO
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                VisitedPlaces = u.PlaceVisits.Count,
+                CreatedAt = u.CreatedTimestamp
+            })
+            .ToListAsync();
+
+        return users;
+    }
+
+
 }
