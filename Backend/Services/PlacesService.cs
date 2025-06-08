@@ -267,9 +267,11 @@ public class PlacesService : IPlacesService
         foreach (var image in place.Images)
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", image.Filename);
-            if (File.Exists(filePath))
+            var linuxPath = filePath.Replace('\\','/');
+
+            if (File.Exists(linuxPath))
             {
-                File.Delete(filePath);
+                File.Delete(linuxPath);
             }
         }
 
@@ -285,14 +287,14 @@ public class PlacesService : IPlacesService
     public async Task<(bool success, string message, string? filename)> UploadImageAsync(int placeId, IFormFile file)
     {
         var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-
-        if (!Directory.Exists(uploadsPath))
-            Directory.CreateDirectory(uploadsPath);
+        var linuxPath = uploadsPath.Replace('\\','/');
+        if (!Directory.Exists(linuxPath))
+            Directory.CreateDirectory(linuxPath);
 
         var fileName = $"{Guid.NewGuid()}_{file.FileName}";
-        var filePath = Path.Combine(uploadsPath, fileName);
+        var filePath = Path.Combine(linuxPath, fileName);
 
-        using (var stream = new FileStream(filePath, FileMode.Create))
+        using (var stream = new FileStream(linuxPath, FileMode.Create))
         {
             await file.CopyToAsync(stream);
         }
