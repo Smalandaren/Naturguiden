@@ -72,7 +72,7 @@ Spara filen `appsettings.json`.
 Nu behöver du populera backenden med några bilder på naturplatser som medföljer inlämningen av projektet:
 
 1. I den inlämnade .zip-filen med kod finns en folder "uploads".
-2. Planera hela den foldern i mappen Backend/wwwroot. Om där redan finns en "uploads"-folder, ersätt den.
+2. Placera hela den foldern i mappen Backend/wwwroot. Om där redan finns en "uploads"-folder, ersätt den.
 3. Kontrollera att "uploads" foldern innehåller bilder.
 
 Slutligen:
