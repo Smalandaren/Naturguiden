@@ -82,6 +82,7 @@ export default async function ViewPlace({
         <ErrorScreen
           title="Ett fel uppstod"
           subtitle="Platsen kunde inte visas"
+          showBackButton
         />
       </div>
     );

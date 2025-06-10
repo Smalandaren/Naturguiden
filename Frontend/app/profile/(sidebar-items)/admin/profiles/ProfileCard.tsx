@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FullProfile } from "@/types/FullProfile";
 import { format } from "date-fns";
+import { sv } from "date-fns/locale/sv";
 
 export default function ProfileCard({ profile }: { profile: FullProfile }) {
   return (
@@ -26,7 +27,9 @@ export default function ProfileCard({ profile }: { profile: FullProfile }) {
         <div>
           <p className="text-sm text-muted-foreground">Registrerad</p>
           <p className="font-medium">
-            {format(new Date(profile.createdAt), "d MMMM yyyy")}
+            {format(new Date(profile.createdAt), "d MMMM yyyy", {
+              locale: sv,
+            })}
           </p>
         </div>
       </CardContent>

@@ -37,6 +37,7 @@ export default function ClientPage({
         throw new Error("Ogiltigt format på förfrågan");
       }
       if (response.ok) {
+        toast.success("Inloggning lyckades");
         router.replace("/");
         router.refresh();
       } else {

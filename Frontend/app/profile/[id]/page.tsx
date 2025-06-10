@@ -5,9 +5,9 @@ import { getSessionCookie } from "@/lib/checkAuth";
 import { ForeignProfile } from "@/types/ForeignProfile";
 import { format, isLastDayOfMonth } from "date-fns";
 import { MapPin } from "lucide-react";
-import FriendRequestButton from "@/components/FriendRequestButton"
+import FriendRequestButton from "@/components/FriendRequestButton";
 import { checkAuth } from "@/lib/checkAuth";
-import { is } from "date-fns/locale";
+import { is, sv } from "date-fns/locale";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 async function getProfile(id: string): Promise<ForeignProfile | null> {
@@ -69,11 +69,17 @@ export default async function ViewForeignProfile({
                 </div>
 
                 <div className="flex items-center justify-center">
-                  <FriendRequestButton friendId={profile.id} self={(await checkAuth()).user}></FriendRequestButton>
+                  <FriendRequestButton
+                    friendId={profile.id}
+                    self={(await checkAuth()).user}
+                  ></FriendRequestButton>
                 </div>
 
                 <div className="pt-4 border-t text-center text-sm text-muted-foreground">
-                  Gick med {format(new Date(profile.createdAt), "d MMMM yyyy")}
+                  Gick med{" "}
+                  {format(new Date(profile.createdAt), "d MMMM yyyy", {
+                    locale: sv,
+                  })}
                 </div>
               </div>
             </CardContent>
@@ -86,10 +92,13 @@ export default async function ViewForeignProfile({
   } catch (error: any) {
     console.error("Error:", error.message);
     return (
-      <ErrorScreen
-        title="Ett fel uppstod"
-        subtitle="Profilen kunde inte visas. Säkerställ att URL:en är korrekt."
-      />
+      <div className="h-screen">
+        <ErrorScreen
+          title="Ett fel uppstod"
+          subtitle="Profilen kunde inte visas. Säkerställ att URL:en är korrekt."
+          showBackButton
+        />
+      </div>
     );
   }
 }
