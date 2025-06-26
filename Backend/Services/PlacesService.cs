@@ -307,5 +307,74 @@ public class PlacesService : IPlacesService
 
         return (true, "Uppladdad", fileName);
     }
+    public async Task<bool> UpdateAsync(int id, UpdatePlaceDTO dto)
+    {
+        var place = await _context.Places
+            .Include(p => p.PlaceCategories)
+            .Include(p => p.PlaceUtilities)
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id);
 
+        if (place == null) return false;
+
+        place.Name = dto.Name;
+        place.Description = dto.Description;
+
+        if (decimal.TryParse(dto.Coordinates.Split(',')[0], out var lat))
+            place.Latitude = lat;
+        if (decimal.TryParse(dto.Coordinates.Split(',')[1], out var lng))
+            place.Longitude = lng;
+
+        place.PlaceCategories.Clear();
+        foreach (var categoryName in dto.CategoryNames)
+        {
+            var category = await _context.AvailableCategories
+                .FirstOrDefaultAsync(c => c.Name == categoryName);
+
+            if (category != null)
+            {
+                place.PlaceCategories.Add(new PlaceCategory
+                {
+                    PlaceId = place.Id,
+                    CategoryName = category.Name
+                });
+            }
+        }
+
+        place.PlaceUtilities.Clear();
+        foreach (var utilityName in dto.AttributeNames)
+        {
+            var utility = await _context.AvailableUtilities
+                .FirstOrDefaultAsync(u => u.Name == utilityName);
+
+            if (utility != null)
+            {
+                place.PlaceUtilities.Add(new PlaceUtility
+                {
+                    PlaceId = place.Id,
+                    UtilityName = utility.Name
+                });
+            }
+        }
+
+        if (dto.Images != null)
+        {
+            var existingImages = await _context.Images
+                .Where(img => img.PlaceId == place.Id)
+                .ToListAsync();
+            _context.Images.RemoveRange(existingImages);
+
+            foreach (var filename in dto.Images)
+            {
+                place.Images.Add(new Image
+                {
+                    PlaceId = place.Id,
+                    Filename = filename
+                });
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

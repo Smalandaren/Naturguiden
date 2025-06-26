@@ -14,5 +14,6 @@ namespace Backend.Interfaces
         Task<bool> ApproveAsync(int placeId);
         Task<bool> DeleteAsync(int id);
         Task<(bool success, string message, string? filename)> UploadImageAsync(int placeId, IFormFile file);
+        Task<bool> UpdateAsync(int id, UpdatePlaceDTO dto);
     }
 }

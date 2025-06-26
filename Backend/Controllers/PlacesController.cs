@@ -101,5 +101,17 @@ namespace Backend.Controllers
 
             return Ok(new { filename = result.filename });
         }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdatePlaceDTO dto)
+        {
+            var success = await _placesService.UpdateAsync(id, dto);
+
+            if (!success)
+                return NotFound();
+
+            return NoContent();
+        }
     }
 }
